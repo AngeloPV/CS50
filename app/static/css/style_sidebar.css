@@ -1,0 +1,348 @@
+/* Estilo do botão hambúrguer */
+.menu-toggle {
+    display: none;
+    width: 30px;
+    height: 30px;
+    background-color: transparent; 
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001; /* Garante que o botão fique acima da sidebar */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Ícone de hambúrguer */
+.menu-toggle::before {
+    content: "\2630"; /* Unicode para o ícone de hambúrguer */
+    font-size: 24px;
+    color: #FFF; /* Cor do ícone */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Estilos da Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; /* Garante altura completa da viewport */
+    width: 55px; /* Largura recolhida */
+    background-color: #111312;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    overflow-y: auto; /* Permite rolagem vertical dentro da sidebar */
+    overflow-x: hidden; /* Oculta a rolagem horizontal */
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 10px; /* Espaçamento superior para os ícones */
+    opacity: 1; /* Inicialmente oculto */
+}
+
+.sidebar:hover{
+    width: 250px;
+}
+/* Expansão da sidebar */
+.sidebar.expanded {
+    width: 250px; /* Largura expandida */
+    opacity: 1; /* Torna visível */
+}
+
+/* Animações de expansão e contração */
+.sidebar.expand-animation {
+    animation: expandAnimation 0.3s forwards; /* Animação de expansão */
+}
+
+.sidebar.contract-animation {
+    animation: contractAnimation 0.3s forwards; /* Animação de contração */
+}
+
+@keyframes expandAnimation {
+    from {
+        width: 55px; /* Largura inicial */
+        opacity: 0; /* Inicialmente oculto */
+    }
+    to {
+        width: 250px; /* Largura final */
+        opacity: 1; /* Torna visível */
+    }
+}
+
+@keyframes contractAnimation {
+    from {
+        width: 250px; /* Largura inicial */
+        opacity: 1; /* Inicialmente visível */
+    }
+    to {
+        width: 55px; /* Largura final */
+        opacity: 0; /* Torna oculto */
+    }
+}
+
+/* Estilo dos itens da sidebar */
+.sidebar .menu-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #FFFFFF;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Efeito de hover nos itens da sidebar */
+.sidebar .menu-item:hover {
+    background-color: #FF6F3C;
+    color: #FFFFFF;
+    padding-left: 20px; /* Ajuste para evitar que o botão ocupe 100% */
+    padding-right: 20px; /* Ajuste para evitar que o botão ocupe 100% */
+}
+
+.sidebar .menu-item .icon {
+    margin-right: 15px;
+    font-size: 20px;
+    transition: margin-right 0.3s ease-in-out;
+}
+
+.sidebar:hover .menu-item .icon {
+    margin-right: 10px;
+}
+
+.sidebar .menu-item .text {
+    display: none;
+    margin-right: auto; /* Garante que o texto fique à esquerda e a seta à direita */
+}
+
+.sidebar:hover .menu-item .text {
+    display: inline;
+}
+
+.sidebar.expanded .menu-item::after {
+    content: "▼";
+    display: block;
+    position: absolute;
+    right: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar .menu-item::after {
+    content: "▼";
+    display: none;
+    position: absolute;
+    right: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar #notificacao::after {
+    content: "";
+}
+
+.sidebar:hover .menu-item::after {
+    display: block;
+}
+
+.sidebar .menu-item:hover::after {
+    transform: rotate(180deg); /* Gira a seta para cima quando em hover */
+}
+
+hr {
+    width: 80%; /* Ajuste para não ocupar 100% da largura */
+    border-color: #495057;
+    border-width: 1px;
+    transition: opacity 0.3s;
+}
+
+.sidebar:hover hr {
+    opacity: 0;
+}
+
+#logo {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: #111312;
+}
+
+#img_logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: transform 0.3s ease; /* Adiciona uma transição suave para a transformação */
+}
+
+#img_logo:hover {
+    transform: scale(1.15); /* Aumenta o tamanho da logo em 15% ao passar o mouse */
+}
+
+.sidebar.expanded #img_logo, .sidebar:hover #img_logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px; /* Espaço adicional quando expandido */
+}
+
+#icons {
+    width: 22px; /* Ajuste a largura conforme necessário */
+    height: 22px; /* Ajuste a altura conforme necessário */
+    margin-right: 15px; /* Espaçamento à direita, igual ao dos ícones */
+    vertical-align: middle; /* Alinha verticalmente com o texto */
+    color: #F8F9FA;
+}
+
+/* Estilo específico para o perfil na parte inferior */
+#perfil {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 0;
+    background-color: #111312;
+    transition: width 0.3s;
+    color: #F8F9FA;
+}
+
+#perfil_foto {
+    display: none;
+    max-width: 60%; 
+    max-height: 60%;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.tooltip {
+    visibility: hidden; /* Inicialmente escondido */
+    width: 160px; /* Largura do tooltip */
+    background-color: transparent; /* Cor de fundo do tooltip */
+    color: #FFFFFF; /* Cor do texto do tooltip */
+    text-align: center; /* Alinhamento do texto */
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 5px; /* Espaçamento interno */
+    position: absolute; /* Posiciona o tooltip */
+    bottom: 125%; /* Posiciona acima do elemento */
+    left: 50%; /* Centraliza horizontalmente */
+    top: 5%;
+    margin-left: -80px; /* Ajusta a posição horizontal para centralizar */
+    opacity: 0; /* Torna o tooltip invisível */
+    transition: opacity 0.3s; /* Adiciona uma transição suave */
+    z-index: 1; /* Garante que o tooltip apareça acima dos outros elementos */
+}
+
+#perfil:hover .tooltip {
+    visibility: visible; /* Torna o tooltip visível ao passar o mouse */
+    opacity: 1; /* Torna o tooltip opaco */
+    transition-duration: 1s;
+}
+
+.sidebar:hover #perfil_foto {
+    display: block;
+}
+
+#perfil .text {
+    display: none;
+}
+
+.sidebar:hover #perfil .text {
+    display: block;
+}
+
+.sidebar.expanded #perfil_foto {
+    display: block; /* Garante que a foto do perfil seja visível quando expandido */
+    max-width: 60%; 
+    max-height: 60%;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Dropdown */
+.submenu {
+    display: none; /* Oculta o submenu por padrão */
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.sidebar.expanded .submenu {
+    display: block; /* Mostra o submenu quando a sidebar está expandida */
+}
+
+.sidebar.expanded .menu-item .text {
+    display: inline; /* Exibe o texto quando a sidebar está expandida */
+}
+
+.sub_menu-item {
+    margin-top: 5px;
+    cursor: pointer;
+    margin-left: 3vh;
+    margin-right: 3vh;
+    padding: 10px 15px;
+    color: #FFFFFF;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.sub_menu-item:hover {
+    background-color: #FF6F3C;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    /* Estilos da Sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh; /* Garante altura completa da viewport */
+        width: 55px; /* Largura recolhida */
+        background-color: #111312;
+        transition: width 0.3s ease, opacity 0.3s ease;
+        overflow-y: auto; /* Permite rolagem vertical dentro da sidebar */
+        overflow-x: hidden; /* Oculta a rolagem horizontal */
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 10px; /* Espaçamento superior para os ícones */
+        opacity: 0; /* Inicialmente oculto */
+    }
+    .sidebar.expand-animation {
+        animation: expandAnimation 0.3s forwards; /* Animação de expansão */
+    }
+
+    .sidebar.contract-animation {
+        animation: contractAnimation 0.3s forwards; /* Animação de contração */
+    }
+
+    @keyframes expandAnimation {
+        from {
+            width: 55px; /* Largura inicial */
+            opacity: 0; /* Inicialmente oculto */
+        }
+        to {
+            width: 250px; /* Largura final */
+            opacity: 1; /* Torna visível */
+        }
+    }
+
+    @keyframes contractAnimation {
+        from {
+            width: 250px; /* Largura inicial */
+            opacity: 1; /* Inicialmente visível */
+        }
+        to {
+            width: 55px; /* Largura final */
+            opacity: 0; /* Torna oculto */
+        }
+    }
+}
