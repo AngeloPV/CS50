@@ -1,0 +1,50 @@
+/* Reset e configuração geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    font-family: 'Roboto', sans-serif;
+}   
+
+html, body {
+    background-color: #1B263B;
+    height: 100%;
+    width: 100%;
+}
+
+h1, p {
+    text-align: center;
+    color: #F8F9FA;
+}
+
+h1 {
+    color: #FF6F3C;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+/* Estilo para navegadores baseados em WebKit (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 12px; /* Largura da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #495057; /* Cor da barra de rolagem */
+    border-radius: 20px; /* Bordas arredondadas */
+    border: 3px solid #1B263B; /* Adiciona uma borda ao redor do thumb para contraste */
+
+}
+
+::-webkit-scrollbar-track {
+    background-color: #1B263B; /* Cor de fundo da trilha da barra de rolagem */
+}
+
+/* Estilo para o Firefox */
+* {
+    scrollbar-width: thin; /* Define a largura da barra de rolagem como fina */
+    scrollbar-color: #495057 #1B263B; /* Cor da barra de rolagem e a cor de fundo da trilha */
+}
