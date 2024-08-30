@@ -14,7 +14,7 @@ class Read(Conn):
 
     # full read: Recebe todo o select exemplo - "SELECT name, email FROM user_data WHERE name = %s and email = %s LIMIT %s"
     # string_dic: Recebe uma f-string no formato de dicionario exemplo - f'{{"name": "{data["name"]}", "email": "{data["email"]}", "LIMIT": "3"}}')
-    def full_read(self, full_read, string_dic=None):
+    def exeSelect(self, full_read, string_dic=None):
         self.sql = full_read
 
         if string_dic is not None:
