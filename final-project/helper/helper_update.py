@@ -17,8 +17,10 @@ class Update(Conn):
     # data_where: Recebe um dic ou uma string
     # operator: Recebe um string com os operadores que cada %s vai possuir, exemplo - ' =, =, =, =, =, =, ='. TEM QUE SEGUIR ESTE FORMATO
     # onde cada %s represanta respectivamente um = ou > ou <
-    def exeUpdate(self, data, table_name, data_where, operator=None):
+    def exeUpdate(self, data, table_name, data_where, operator=None, close_conn=False):
         self.table_name = table_name
+
+        self.close_conn = close_conn
 
         self.data_where = data_where
 
@@ -73,10 +75,10 @@ class Update(Conn):
 
         self.sql_update = f"UPDATE {self.table_name} SET {values_data} WHERE {values_data_where}"
 
-        self.update_table()
+        self.table_update()
 
     
-    def update_table(self): 
+    def table_update(self): 
         try:
             cursor = self.connection.cursor()
             
@@ -97,5 +99,5 @@ class Update(Conn):
             self.result = False
         finally:
             cursor.close()
-            self.connection.close()
-
+            if(self.close_conn):
+                self.connection.close()
