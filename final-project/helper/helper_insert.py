@@ -13,8 +13,10 @@ class Insert(Conn):
     # data: Recebe um dic com todos os dados que queria inserir na tabela
     # table_name: Recebe o nome da tabela que deseja manipular
     # create_table: Recebe a string de caso a tabela não exista, para que possa criada
-    def exeInsert(self, data, table_name, create_table=None):
+    def exeInsert(self, data, table_name, create_table=None, close_conn=False):
         self.table_name = table_name
+
+        self.close_conn = close_conn
 
         if (create_table is not None):
             self.create_table = create_table
@@ -66,5 +68,5 @@ class Insert(Conn):
             self.result = False
         finally:
             cursor.close()
-            self.connection.close()
-
+            if(self.close_conn):
+                self.connection.close()
