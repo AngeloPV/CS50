@@ -2,7 +2,7 @@ from ..models.db_connection import Conn
 from flask import session
 import json
 
-class Read(Conn):
+class Select(Conn):
     def __init__(self):
         self.connection = Conn().connect()
         self.result = None
@@ -14,8 +14,10 @@ class Read(Conn):
 
     # full read: Recebe todo o select exemplo - "SELECT name, email FROM user_data WHERE name = %s and email = %s LIMIT %s"
     # string_dic: Recebe uma f-string no formato de dicionario exemplo - f'{{"name": "{data["name"]}", "email": "{data["email"]}", "LIMIT": "3"}}')
-    def exeSelect(self, full_read, string_dic=None):
+    def exeSelect(self, full_read, string_dic=None, close_conn=False):
         self.sql = full_read
+
+        self.close_conn = close_conn
 
         if string_dic is not None:
                 self.dic = json.loads(string_dic)
@@ -37,10 +39,10 @@ class Read(Conn):
                 # elif "LIMIT" in self.dic and isinstance(self.dic["LIMIT"], str) and self.dic["LIMIT"].isdigit():
                 #     self.dic["LIMIT"] = int(self.dic["LIMIT"])
 
-        self.execute()
+        self.table_select()
 
     
-    def execute(self): 
+    def table_select(self): 
         try:
             cursor = self.connection.cursor()
             
@@ -69,5 +71,5 @@ class Read(Conn):
             self.result = None
         finally:
             cursor.close()
-            self.connection.close()
-
+            if(self.close_conn):
+                self.connection.close()
