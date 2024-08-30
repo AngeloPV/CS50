@@ -17,7 +17,7 @@ class Update(Conn):
     # data_where: Recebe um dic ou uma string
     # operator: Recebe um string com os operadores que cada %s vai possuir, exemplo - ' =, =, =, =, =, =, ='. TEM QUE SEGUIR ESTE FORMATO
     # onde cada %s represanta respectivamente um = ou > ou <
-    def infoUpdate(self, data, table_name, data_where, operator=None):
+    def exeUpdate(self, data, table_name, data_where, operator=None):
         self.table_name = table_name
 
         self.data_where = data_where
