@@ -1,0 +1,111 @@
+from flask import Flask, render_template, request, flash, jsonify
+import os, sys, matplotlib
+
+matplotlib.use('Agg')
+
+# Adiciona o caminho do diretório pai para importações dos módulos
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from app.controllers.plot_creator import Plot_Creator
+from controllers.get_crypto_data import GetCryptoData
+from controllers.set_user_data import SetUserData
+
+USER_ID = 1
+DIGITS = []
+app = Flask(__name__)
+app.secret_key = 'senha-muito-dificil-de-qubrar'
+
+#Classe responsavel por exibir o dashboard
+class Dashboard:
+    def __init__(self):
+        self.data = GetCryptoData() #cria uma instancia da classe responsavel pelos dados do usuário/cripto
+        self.dashboard = Plot_Creator() #cria uma instancia da classe responsavel por gerar os graficos
+    def get_default_data(self):
+        #Pega os dados padrao q no caso é o do bitcoin
+        self.dashboard.create_plot_range_value('bitcoin') #carrega o plot do btc atualizado
+        return {
+            'plot_url': 'static/images/dashboard/bitcoin.png',
+            'history_plot_url': f'static/images/dashboard/crypto_history_1_{USER_ID}.png',
+            'title': "Bitcoin",
+            'volume': self.data.get_volume('bitcoin'),
+            'spent_plot_url': os.path.join('static', 'images', 'dashboard', f'crypto_spent_{USER_ID}_1.png'),
+            'spent_plot_data': self.dashboard.create_plot_spent(user_id=USER_ID, time='1')[1],
+            'last_buy_date': self.data.get_last_buy_date(USER_ID),
+            'last_trade_data': self.data.get_last_trade_data(USER_ID)
+        }
+
+    def get_crypto_data(self, crypto_name):
+        #Pega os dados da moeda selecionada
+        crypto_id = 1 if crypto_name == 'bitcoin' else 2
+        self.dashboard.create_plot_range_value(crypto_name)
+        self.dashboard.create_plot_history(crypto_id, USER_ID)
+        return {
+            'plot_url': os.path.join('static', 'images', 'dashboard', f'{crypto_name}.png'),
+            'history_plot_url': os.path.join('static', 'images', 'dashboard', f'crypto_history_{crypto_id}_{USER_ID}.png'),
+            'title': crypto_name.capitalize(),
+            'volume': self.data.get_volume(crypto_name)
+        }
+
+    def update_spent_plot(self, total_spent):
+        #Atualiza o grafico de gastos
+        return {
+            'spent_plot_url': os.path.join('static', 'images', 'dashboard', f'crypto_spent_{USER_ID}_{total_spent}.png'),
+            'spent_plot_data': self.dashboard.create_plot_spent(user_id=USER_ID, time=total_spent)[1]
+        }
+    
+    def verify_password(self):
+        #Verifica se a senha é de 4 digitos e se ela tem algum valor que nao seja numerico
+        #Se um valor nao for numerico n é adicionado na tmp_digits, no final verifica se a tmp_digits tem os 4 digitos
+        form_sent = request.form.get('submit_4_digits_form')
+        tmp_digits = []
+        for c in range(1, 5):
+            digit = (request.form.get(f'digit-{c}'))
+            if digit.isdigit():
+                tmp_digits.append(digit)
+        if form_sent:
+            if len(tmp_digits) < 4:
+                msg = 'Senha inválida, digite apenas valores numéricos de 0-9'
+            else:
+                DIGITS.append(tmp_digits)
+                msg = DIGITS
+            return msg
+
+
+##usar blueprint qnd juntar
+show_dashboard = Dashboard()
+verificado = False
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    global verificado
+    msg = ''
+    stats = ''
+    data = show_dashboard.get_default_data()
+
+    #verifica se o cara tem a senha de 4 digitos, se n tiver exibe o modal e vai pedir a senha de 4 digitos
+    #verifica a senha e se for aprovada nao precisa mais fazer
+    if not verificado:
+        if request.method == 'POST':
+            if request.form.get('submit_4_digits_form'):
+                msg = show_dashboard.verify_password()
+                stats = 'denied'
+                if DIGITS == msg:
+                    password = ''.join(DIGITS[0])  # Supondo que DIGITS é uma lista de uma única lista de dígitos.
+                    SetUserData.define_4_digits_pass(password, USER_ID)
+                    verificado = True
+                    stats = 'aproved'
+
+    if request.method == 'POST':            
+        crypto_name = request.form.get('crypto') #verifica se foi pressionado   
+        total_spent = request.form.get('total_spent', '1') 
+        if crypto_name:
+            data.update(show_dashboard.get_crypto_data(crypto_name))  #altera o grafico entre btc-eth
+
+        if total_spent:
+            data.update(show_dashboard.update_spent_plot(total_spent)) #altera o total spent entre 1 mes, 6 meses e ao todo
+   
+    return render_template('dashboard.html', **data, verificado=verificado, digits=DIGITS, msg=msg, stats=stats)
+
+if __name__ == '__main__':
+    app.run(debug=True)
