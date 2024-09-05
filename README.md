@@ -60,7 +60,43 @@
 
 <p>Este projeto utiliza um arquivo <code>.env</code> para armazenar variáveis de ambiente essenciais que configuram a aplicação. Essas variáveis são usadas para definir chaves secretas, parâmetros de sessão, configurações de banco de dados, e-mail e outras informações sensíveis. O arquivo <code>.env</code> não é incluído no controle de versão (está listado no <code>.gitignore</code>) para proteger essas informações.</p>
 Estrutura do arquivo .env
-<p>Aqui está um exemplo de como o arquivo <code>.env</code> deve ser configurado:</p><pre><code># Variáveis de ambiente para serem usadas em todo o código do seu projeto <br># Configurações do Flask SECRET_KEY=afdes123 <br>DEBUG=True <br>TESTING=False <br>LOGGING_LEVEL=DEBUG <br># Configurações de sessão <br>SESSION_COOKIE_NAME=coockie_AF <br>SESSION_COOKIE_SECURE=True <br>PERMANENT_SESSION_LIFETIME=5 # em dias <br>REMEMBER_COOKIE_DURATION=30 # em dias <br># Configuração para uploads <br>UPLOAD_FOLDER=/path/to/upload <br>MAX_CONTENT_LENGTH=16777216 # 16 MB # Internacionalização <br>BABEL_DEFAULT_LOCALE=en <br># Configuração do banco de dados <br>DB_HOST=localhost <br>DB_USER=root <br>DB_PASSWORD= DB_DATABASE=cs50 <br># Configurações de e-mail <br>MAIL_SERVER=sandbox.smtp.mailtrap.io <br>MAIL_PORT=2525 <br>MAIL_USERNAME=43e6e4f4e74b0c <br>MAIL_PASSWORD=717f977164cfcc <br>MAIL_USE_TLS=True MAIL_USE_SSL=False </code></pre>
+
+<pre><code># Variáveis de ambiente para serem usadas em todo o código do seu projeto
+
+# Configurações do Flask
+SECRET_KEY=afdes123
+DEBUG=True
+TESTING=False
+LOGGING_LEVEL=DEBUG
+
+# Configurações de sessão
+SESSION_COOKIE_NAME=coockie_AF
+SESSION_COOKIE_SECURE=True
+PERMANENT_SESSION_LIFETIME=5  # em dias
+REMEMBER_COOKIE_DURATION=30  # em dias
+
+# Configuração para uploads
+UPLOAD_FOLDER=/path/to/upload
+MAX_CONTENT_LENGTH=16777216  # 16 MB
+
+# Internacionalização
+BABEL_DEFAULT_LOCALE=en
+
+# Configuração do banco de dados
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_DATABASE=cs50
+
+# Configurações de e-mail
+MAIL_SERVER=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=43e6e4f4e74b0c
+MAIL_PASSWORD=717f977164cfcc
+MAIL_USE_TLS=True
+MAIL_USE_SSL=False
+</code></pre>
+
 Detalhes das Variáveis
 <ul> <li><strong>SECRET_KEY</strong>: Protege dados como sessões e tokens de CSRF. É fundamental manter esta chave em segredo.</li> <li><strong>DEBUG</strong>: Defina como <code>True</code> para desenvolvimento e <code>False</code> em produção.</li> <li><strong>SESSION_COOKIE_SECURE</strong>: Garante que os cookies de sessão só sejam transmitidos via HTTPS (mantenha <code>False</code> durante o desenvolvimento).</li> <li><strong>UPLOAD_FOLDER</strong>: Defina o caminho onde os arquivos enviados serão armazenados.</li> <li><strong>DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE</strong>: Informações de conexão com o banco de dados.</li> <li><strong>MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD</strong>: Configurações para enviar e-mails através de um servidor SMTP. É recomendado usar um serviço de sandbox (como Mailtrap) durante o desenvolvimento.</li> </ul>
 Carregar as Variáveis de Ambiente no Código
