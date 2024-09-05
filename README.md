@@ -112,7 +112,26 @@ secret_key = os.getenv("SECRET_KEY")
 database_host = os.getenv("DB_HOST")
 </code></pre>
 
+## 🔧 Configurando o Arquivo `.flaskenv`
 
+<p>O arquivo <code>.flaskenv</code> é utilizado para definir variáveis de ambiente específicas para o Flask. Este arquivo facilita a configuração do ambiente de desenvolvimento e pode ser usado para definir a aplicação Flask principal, o ambiente e arquivos adicionais que devem ser monitorados. O arquivo <code>.flaskenv</code> também não é incluído no controle de versão (está listado no <code>.gitignore</code>) para proteger essas configurações específicas.</p>
+
+### Estrutura do arquivo `.flaskenv`
+
+<p>Aqui está um exemplo de como o arquivo <code>.flaskenv</code> deve ser configurado:</p>
+<pre><code># Configuração do Flask
+FLASK_APP=src.finalProject.app:app
+FLASK_ENV=development
+FLASK_RUN_EXTRA_FILES=src/finalProject/templates/*.html
+</code></pre>
+
+### Explicação das Variáveis
+
+<ul>
+  <li><strong>FLASK_APP:</strong> Define o módulo da aplicação Flask. Neste caso, está configurado para <code>src.finalProject.app:app</code>, onde <code>app</code> é o objeto Flask.</li>
+  <li><strong>FLASK_ENV:</strong> Define o ambiente do Flask. <code>development</code> configura o Flask para o modo de desenvolvimento, que inclui recarregamento automático e detalhes de erro mais detalhados.</li>
+  <li><strong>FLASK_RUN_EXTRA_FILES:</strong> Lista arquivos adicionais que devem ser monitorados pelo Flask. Qualquer alteração nesses arquivos causará uma reinicialização automática da aplicação.</li>
+</ul>
 
 ## 🤝 Contribuições
 
