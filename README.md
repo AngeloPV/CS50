@@ -97,10 +97,19 @@ MAIL_USE_TLS=True
 MAIL_USE_SSL=False
 </code></pre>
 
-Detalhes das Variáveis
-<ul> <li><strong>SECRET_KEY</strong>: Protege dados como sessões e tokens de CSRF. É fundamental manter esta chave em segredo.</li> <li><strong>DEBUG</strong>: Defina como <code>True</code> para desenvolvimento e <code>False</code> em produção.</li> <li><strong>SESSION_COOKIE_SECURE</strong>: Garante que os cookies de sessão só sejam transmitidos via HTTPS (mantenha <code>False</code> durante o desenvolvimento).</li> <li><strong>UPLOAD_FOLDER</strong>: Defina o caminho onde os arquivos enviados serão armazenados.</li> <li><strong>DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE</strong>: Informações de conexão com o banco de dados.</li> <li><strong>MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD</strong>: Configurações para enviar e-mails através de um servidor SMTP. É recomendado usar um serviço de sandbox (como Mailtrap) durante o desenvolvimento.</li> </ul>
-Carregar as Variáveis de Ambiente no Código
-<p>Para garantir que as variáveis de ambiente sejam carregadas corretamente, o projeto utiliza a biblioteca <a href="https://pypi.org/project/python-dotenv/" target="_blank">python-dotenv</a>. Abaixo está um exemplo de como fazer isso no arquivo <code>app.py</code>:</p> <pre><code>from dotenv import load_dotenv import os # Carregar variáveis do arquivo .env load_dotenv() # Exemplo de acesso a uma variável secret_key = os.getenv("SECRET_KEY") database_host = os.getenv("DB_HOST") </code></pre> <p>Com isso, as variáveis de ambiente serão corretamente carregadas na sua aplicação.</p>
+<pre><code># Carregar as Variáveis de Ambiente no Código
+
+<p>Para garantir que as variáveis de ambiente sejam carregadas corretamente, o projeto utiliza a biblioteca <a href="https://pypi.org/project/python-dotenv/" target="_blank">python-dotenv</a>. Abaixo está um exemplo de como fazer isso no arquivo <code>app.py</code>:</p>
+<pre><code>from dotenv import load_dotenv
+import os
+
+# Carregar variáveis do arquivo .env
+load_dotenv()
+
+# Exemplo de acesso a uma variável
+secret_key = os.getenv("SECRET_KEY")
+database_host = os.getenv("DB_HOST")
+</code></pre>
 
 
 ## 🤝 Contribuições
