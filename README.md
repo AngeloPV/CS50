@@ -43,15 +43,18 @@
 ## 📝 Instalação
 
 <ol>
-  <li>Clone o repositório:
-    <pre><code>git clone https://github.com/AngeloPV/CS50.git</code></pre>
-  </li>
   <li>Instale as dependências com o <a href="https://python-poetry.org/" target="_blank">Poetry</a>:
     <pre><code>poetry install</code></pre>
   </li>
   <li>Configure as variáveis de ambiente no arquivo <code>.env</code>.</li>
   <li>Execute a aplicação:
     <pre><code>poetry run flask run</code></pre>
+  </li>
+  <li>Crie o repositório poetry:
+    <pre><code>peotry new my_project</code></pre>
+  </li>
+  <li>Clone o repositório dentro do poetry:
+    <pre><code>git clone https://github.com/AngeloPV/CS50.git</code></pre>
   </li>
 </ol>
 
