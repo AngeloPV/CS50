@@ -112,6 +112,7 @@ database_host = os.getenv("DB_HOST")
 </code></pre>
 
 
+
 ## 🤝 Contribuições
 
 <p>Contribuições são bem-vindas! Sinta-se à vontade para abrir uma <i>issue</i> ou enviar um <i>pull request</i>.</p>
