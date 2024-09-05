@@ -63,7 +63,6 @@ Estrutura do arquivo .env
 
 ### Variáveis de ambiente para serem usadas em todo o código do seu projeto
 <pre><code>
-
 # Configurações do Flask
 SECRET_KEY=afdes123
 DEBUG=True
