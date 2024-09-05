@@ -1,0 +1,44 @@
+#  variáveis de ambiente para serem usadas em todo o código do seu projeto
+
+# Configurações do Flask
+SECRET_KEY=afdes123
+DEBUG=True
+TESTING=False
+LOGGING_LEVEL=DEBUG
+
+# Configurações de sessão
+SESSION_COOKIE_NAME=coockie_AF
+SESSION_COOKIE_SECURE=True
+PERMANENT_SESSION_LIFETIME=5  # em dias
+REMEMBER_COOKIE_DURATION=30  # em dias
+
+# Configuração para uploads
+UPLOAD_FOLDER=/path/to/upload
+MAX_CONTENT_LENGTH=16777216  # 16 MB
+
+# Internacionalização
+BABEL_DEFAULT_LOCALE=en
+
+# Configuração do banco de dados
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_DATABASE=cs50
+
+
+# Configurações de e-mail
+MAIL_SERVER = sandbox.smtp.mailtrap.io
+MAIL_PORT = 2525
+MAIL_USERNAME = 43e6e4f4e74b0c
+MAIL_PASSWORD = 717f977164cfcc
+MAIL_USE_TLS = True
+MAIL_USE_SSL = False
+# from dotenv import load_dotenv
+
+# # Carregar variáveis do arquivo .env
+# load_dotenv()
+
+# # Acessar variáveis de ambiente
+# database_url = os.getenv("DATABASE_URL")
+# secret_key = os.getenv("SECRET_KEY")
+# print(database_url)
