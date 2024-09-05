@@ -44,7 +44,7 @@
 
 <ol>
   <li>Clone o repositório:
-    <pre><code>git clone https://github.com/username/crypto-exchange-platform.git</code></pre>
+    <pre><code>git clone https://github.com/AngeloPV/CS50.git</code></pre>
   </li>
   <li>Instale as dependências com o <a href="https://python-poetry.org/" target="_blank">Poetry</a>:
     <pre><code>poetry install</code></pre>
