@@ -61,7 +61,8 @@
 <p>Este projeto utiliza um arquivo <code>.env</code> para armazenar variáveis de ambiente essenciais que configuram a aplicação. Essas variáveis são usadas para definir chaves secretas, parâmetros de sessão, configurações de banco de dados, e-mail e outras informações sensíveis. O arquivo <code>.env</code> não é incluído no controle de versão (está listado no <code>.gitignore</code>) para proteger essas informações.</p>
 Estrutura do arquivo .env
 
-<pre><code># Variáveis de ambiente para serem usadas em todo o código do seu projeto
+# Variáveis de ambiente para serem usadas em todo o código do seu projeto
+<pre><code>
 
 # Configurações do Flask
 SECRET_KEY=afdes123
@@ -97,9 +98,10 @@ MAIL_USE_TLS=True
 MAIL_USE_SSL=False
 </code></pre>
 
-<pre><code># Carregar as Variáveis de Ambiente no Código
 
+# Carregar as Variáveis de Ambiente no Código
 <p>Para garantir que as variáveis de ambiente sejam carregadas corretamente, o projeto utiliza a biblioteca <a href="https://pypi.org/project/python-dotenv/" target="_blank">python-dotenv</a>. Abaixo está um exemplo de como fazer isso no arquivo <code>app.py</code>:</p>
+
 <pre><code>from dotenv import load_dotenv
 import os
 
