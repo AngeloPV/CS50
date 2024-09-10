@@ -5,7 +5,8 @@ from flask import session
 from email_validator import validate_email, EmailNotValidError # type: ignore
 from validate_docbr import CPF # type: ignore
 import phonenumbers # type: ignore
-from password_validator import PasswordValidator
+from password_validator import PasswordValidator # type: ignore
+import bcrypt # type: ignore
 
 
 class Validate():   
@@ -13,10 +14,14 @@ class Validate():
         self.insert = Insert()
         self.select = Select()
 
+        if 'error_validate' in session:
+            del session["error_validate"]
+
 
     def valitdate_email(self, data):
-        self.select.exeSelect("SELECT email FROM user_data WHERE email = %s LIMIT %s", f'{{"email": "{data}", "LIMIT": "1"}}')
+        self.select.exe_select("SELECT email FROM user_data WHERE email = %s LIMIT %s", f'{{"email": "{data}", "LIMIT": "1"}}')
 
+        
         if not self.select.get_result():
             try:
                 email = validate_email(data, check_deliverability=False)
@@ -26,14 +31,15 @@ class Validate():
 
                 # The exception message is human-readable explanation of why it's
                 # not a valid (or deliverable) email address.
-                session["Error_email"] = str(e)
+                session["error_validate"] = str(e)
                 print(str(e))
                 return False
-        
+            
+        session["error_validate"] = "email ja cadastrado em nossos sistemas!!"
         return False
 
     def valitdate_cpf(self, data):
-        self.select.exeSelect("SELECT cpf FROM user_data WHERE cpf = %s LIMIT %s", f'{{"cpf": "{data}", "LIMIT": "1"}}')
+        self.select.exe_select("SELECT cpf FROM user_data WHERE cpf = %s LIMIT %s", f'{{"cpf": "{data}", "LIMIT": "1"}}')
 
         if not self.select.get_result():
 
@@ -42,28 +48,34 @@ class Validate():
             if cpf.validate(data):
                 return True
             
-            session["Error_cpf"] = "Cpf invalido!!"
-            print(session["Error_cpf"])
+            session["error_validate"] = "Cpf invalido!!"
             return False
         
-        session["Error_cpf"] = "Cpf ja cadastrado em nossos sistemas!!"
+        session["error_validate"] = "Cpf ja cadastrado em nossos sistemas!!"
         return False
         
+
     def valitdate_phone(self, data, region="BR"):
-        self.select.exeSelect("SELECT phone FROM user_data WHERE phone = %s LIMIT %s", f'{{"phone": "{data}", "LIMIT": "1"}}')
-
+        self.select.exe_select("SELECT phone FROM user_data WHERE phone = %s LIMIT %s", f'{{"phone": "{data}", "LIMIT": "1"}}', True)
+    
         if not self.select.get_result():
-
+            print("b")
             try:
                 parserd_number = phonenumbers.parse(data, region)
 
-                if phonenumbers.is_valid_number(parserd_number):
+                if phonenumbers.is_valid_number(parserd_number):    
                     return True
-            except phonenumbers.NumberParseException:
-                session["Error_phone"] = "Phone invalido!!"
+                
+                session["error_validate"] = "Número de telefone inválido!!"
+                return False
+            except phonenumbers.NumberParseException as e:
+                session["error_validate"] = "Phone invalido!!"
+                print(f"NumberParseException: {e}")  # Para depuração
+
+
                 return False
             
-        session["Error_phone"] = "Phone ja cadastrado em nossos sistemas!!"
+        session["error_validate"] = "Phone ja cadastrado em nossos sistemas!!"
         return False
 
     def valitdate_password(self, data):
@@ -77,14 +89,21 @@ class Validate():
         .has().digits()\
         .has().no().spaces()\
         .has().symbols()\
-        .has().no().spaces()\
-        .has().no().repeating()\
-        .has().no().sequences() 
+        # .has().no().spaces()\
+        # .has().no().repeating()\
+        # .has().no().sequences() 
 
         if schema.validate(data):
             return True
         
-        session["Error_password"] = "Password invalido!!"
+        session["error_validate"] = "Password invalido!!"
         return False
-    # def valitdate_email(self):
 
+
+    def validate_pass_cripto(self, user_password, db_password=None):
+        if db_password is not None:
+            if bcrypt.checkpw(user_password.encode("utf-8"), db_password.encode('utf-8')):
+                return True
+            return False
+        
+        return bcrypt.hashpw(user_password.encode('utf-8'), bcrypt.gensalt())
