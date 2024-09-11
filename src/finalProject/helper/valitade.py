@@ -100,10 +100,11 @@ class Validate():
         return False
 
 
-    def validate_pass_cripto(self, user_password, db_password=None):
+    def encryption(self, user_password, db_password=None):
         if db_password is not None:
-            if bcrypt.checkpw(user_password.encode("utf-8"), db_password.encode('utf-8')):
+            if bcrypt.checkpw(user_password.encode("utf-8"), db_password.replace('_', '/').encode('utf-8')):
                 return True
             return False
         
-        return bcrypt.hashpw(user_password.encode('utf-8'), bcrypt.gensalt())
+        password_hased = bcrypt.hashpw(user_password.encode('utf-8'), bcrypt.gensalt())
+        return password_hased.decode('utf-8').replace('/', '_')
