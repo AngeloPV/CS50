@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register</title>
+    </head>
+    <body>
+        <form action="" method="post"> 
+            <input autocomplete="off" autofocus name="name" placeholder="Digite seu Nome" type="text" value="{{ name if name else '' }}"> 
+            <input autocomplete="off" autofocus name="email" placeholder="Digite seu Email" type="email" value="{{ email if email else '' }}">
+            <input autocomplete="off" autofocus name="cpf" placeholder="000.000.000-00"  type="text" maxlength="14" value="{{ cpf if cpf else '' }}">
+            <input autocomplete="off" autofocus name="phone" placeholder="(00) 0000-0000" type="text" maxlength="15" value="{{ phone if phone else '' }}">
+            <input autocomplete="off" autofocus name="password" placeholder="Digite sua Senha" type="password" value="{{ password if password else '' }}">
+            <input autocomplete="off" autofocus name="ConfirmPass" placeholder="Confirme sua Senha" type="password" value="{{ ConfirmPass if ConfirmPass else '' }}">
+            <input name="SendRegister" type="submit" value="Cadastrar-se">
+        </form>
+    </body>
+</html>

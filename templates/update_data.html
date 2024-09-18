@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update phone</title>
+</head>
+<body>
+    <!-- Se o usuario tiver verificado vai pedir os dados pra ele alterar, senao vai pedir o código-->
+    {% if msg %}
+        {{ msg }}
+    {% endif %}
+    {% if verified %}
+        <h2> update data </h2>
+        <form name="form_update_data" method="post" action="/account/{{ to_update }}">
+            <input type="text" placeholder="{{ to_update }}" name="{{ to_update }}">
+            <input type="text" placeholder="confirm your {{ to_update }}" name="confirm_{{ to_update }}">
+            <input type="submit" value="send" name="update_send_button">
+        </form>
+    {% else %}
+        <form name="form_password" method="post">
+            <input type="text" placeholder="password" name="password">
+            <input type="submit" value="send" name="send_button">
+        </form>
+    {% endif %}
+</body>
+</html>
