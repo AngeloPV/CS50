@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_deposit_confirm.css') }}">
+
+    <title>Deposit confirmation</title>
+    {% include 'layouts/layout.html' %}
+</head>
+<body>
+    <br><br>
+    {% if msg %}
+        <h1>{{ msg }}</h1>
+    {% else %}
+        <h1>Você deseja fazer o deposito no valor de {{ currency }} {{ deposited_value }}?</h1>
+        <form action="/deposit/confirm", method="post">
+            <input type="submit" value="Sim, eu desejo" name="button" id="button">
+        </form>
+    {% endif %}
+
+</body>
+<script>
+
+
+</script>
+</html>
