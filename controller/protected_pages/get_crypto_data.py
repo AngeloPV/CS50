@@ -1,0 +1,87 @@
+import requests
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from ...models.dashboard_data import Dashboard_data
+from ...models.update_criptocurrencies import CryptoUpdate
+
+class GetCryptoData:
+    def __init__(self):
+        self.dashboard = Dashboard_data()
+        self.update = CryptoUpdate()
+
+    #pega os dados da api dos ultimos 6 meses
+    def get_cripto_data(crypto_id):
+
+        url = f'https://api.coingecko.com/api/v3/coins/{crypto_id}/market_chart'
+        params = {
+            'vs_currency': 'usd',
+            'days': '180',
+            'interval': 'daily'
+        }
+
+        try:
+            response = requests.get(url, params=params)
+            response.raise_for_status()  # verifica se houve algum erro na solicitação
+            data = response.json()
+
+            prices = data.get('prices', [])
+            total_volumes = data.get('total_volumes', [])
+
+            # armazena os valores dos dias referente ao mes no dicionario
+            periods = {
+                "price_6_months_ago": 0,     # 180 dias atrás
+                "price_5_months_ago": 30,    # aproximadamente 150 dias atrás
+                "price_4_months_ago": 60,    # aproximadamente 120 dias atrás
+                "price_3_months_ago": 90,    # aproximadamente 90 dias atrás
+                "price_2_months_ago": 120,   # aproximadamente 60 dias atrás
+                "price_1_month_ago": 150,    # aproximadamente 30 dias atrás
+                "price_7_days_ago": -8,      # 7 dias atrás
+                "price_1_day_ago": -2,       # 1 dia atrás
+                "current_price": -1          # preço atual
+            }
+
+            def get_price_at_index(index, default=None):
+                """Retorna o preço no índice especificado ou um valor padrão."""
+                try:
+                    return prices[index][1]
+                except IndexError:
+                    return default
+
+            # pega os indices referente aos dias e armazena o valor da moeda naquele dia 
+            price_data = {key: get_price_at_index(index) for key, index in periods.items()}
+            return price_data
+        
+        #caso dê algum erro na requisição, retorna o erro
+        except requests.RequestException as e:
+            return {"error": str(e)}
+
+    #chama a funcao no valor referente a moeda
+    crypto_data = {
+        "bitcoin": get_cripto_data('bitcoin'),
+        "ethereum": get_cripto_data('ethereum')
+    }
+
+    #atualiza o banco com o valor atual das moedas
+    def do_update_database(self):
+        self.update.update_database(self.crypto_data)  
+
+    #pega os dados de compra do usuario (amount, created )
+    def get_crypto_buy(self, crypto_id, user_id):
+        return self.dashboard.get_crypto_buy(crypto_id=crypto_id, user_id=user_id)
+
+    #pega o total gasto pelo usuario (criptocurrencies_id, SUM(cost))
+    def get_total_spent(self, user_id, time): 
+        return self.dashboard.get_total_spent(time=time, user_id=user_id)
+
+    #pega a data da ultima compra (created)
+    def get_last_buy_date(self, user_id):
+        return self.dashboard.get_last_buy_date(user_id=user_id)
+
+    #pega as informações da ultima trade (cripto_sender_id, cripto_recipient_id, amount_sender, amount_recipient, created)
+    def get_last_trade_data(self, user_id):
+        return self.dashboard.get_last_trade(user_id=user_id)
+    
+    
