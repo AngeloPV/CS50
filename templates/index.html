@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket with Flask</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        document.addEventListener('DOMContentLoaded', () => {
+            // Conectar ao namespace /notifications
+            var socket = io.connect('/notifications');
+            
+            socket.on('connect', () => {
+                console.log('Connected to server');
+
+                // Emitir um evento para o servidor
+                socket.emit('my_event', { message: 'Hello from client!' });
+            });
+
+            socket.on('response', (data) => {
+                console.log('Received response: ' + data.data);
+                document.getElementById('response').innerText = data.data;
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>WebSocket with Flask</h1>
+    <div>
+        <p>Response from server: <span id="response"></span></p>
+    </div>
+</body>
