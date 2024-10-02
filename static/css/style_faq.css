@@ -1,0 +1,138 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box; 
+}
+
+body {
+    background-color: #495057;
+}
+
+header{
+    margin-top: 5vh;
+    text-align: center;
+    color: #F8F9FA;
+
+    & h2{
+        font-size: 36px;
+        color: #FF6F3C;
+    }
+
+    & h3{
+        font-size: 20px;
+    }
+}
+
+h2, h3, .title{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.title{
+    font-size: 24px;
+    color: #FF6F3C;
+    max-width: 90%;
+
+}
+
+.content{
+    color: #F8F9FA;
+    font-size: 18px;
+    max-width: 80%;
+    padding-left: 2vh;
+    padding-top: 1vh;
+
+}
+
+.faq{
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-bottom: 10vh;
+
+}
+
+.left-side, .right-side{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5vh;
+}
+.left-side{
+    margin-left: 10%;
+    text-align: left;
+    justify-content: right;
+}
+.left-size .slide{
+    align-items: right;
+
+}
+.right-side{
+    text-align: left;
+    justify-content: left;
+}
+.slide{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    gap: 3vh;
+    
+}
+.icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+#icons {
+    width: 80px;
+    height: 80px;
+    margin-right: 15px;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    background-color: #1B263B;
+    border-radius: 50%;
+    transform: translate(-57%, -50%);
+    opacity: 0;
+    transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    z-index: -1;
+}
+
+.icon-container:hover .circle {
+    width: 120px;
+    height: 120px;
+    opacity: 1;
+}
+
+#icons:hover {
+    transform: scale(1.2);
+}
+
+/*Estilizacao da barra de rolagem*/
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #495057;
+    border-radius: 20px;
+    border: 3px solid #1B263B;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #1B263B;
+}
+
+/* para o firefoz */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #495057 #1B263B;
+}
