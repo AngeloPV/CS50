@@ -1,0 +1,165 @@
+h2{
+    font-family: 'Montserrat', 'sans-serif';
+    font-size: 36px;
+    text-align: center;
+    color: #FF6F3C;
+    padding-top: 2vh;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 0px;
+    margin: 20px 0; 
+    margin-left: 55px;
+}
+
+table, th, td {
+    border: 1px solid #111312; 
+    font-family: 'Montserrat', 'sans-serif';
+}
+
+th, td {
+    padding: 12px; 
+    text-align: left;
+}
+
+th {
+    background-color: #343A40; 
+    color: #FF6F3C;
+    
+}
+
+
+tr:nth-child(odd) {
+    background-color: #F8F9FA; 
+}
+
+tr:nth-child(even) {
+    background-color: #495057; 
+    color: white; 
+}
+
+tr:hover {
+    background-color: #FF6F3C; 
+}
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff; /* Fundo branco */
+}
+
+.container {
+    width: 90%; /* Ocupar quase toda a tela */
+    max-width: 90%; /* Limitar a largura máxima */
+    height: 90%;
+    margin: 50px auto; /* Centralizar e criar espaçamento vertical */
+    padding: 25px; /* Espaçamento interno para não tocar as bordas */
+    background-color: #f8f9fae9; /* Fundo cinza claro */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para destacar a caixa */
+}
+
+.header {
+    width: 100%; /* Ocupar quase toda a tela */
+    display: flex;
+    justify-content: flex-start;
+    align-items: right;
+    /* margin-left: -84.4%; */
+    margin-bottom: 20px;
+
+}
+
+.header h1 {
+    /* position: absolute; */
+    /* right: 50%; */
+    /* top: 10%;  */
+    justify-content: flex-start;
+
+    font-size: 22px;    
+    color: #333;
+}
+
+nav.tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: #fff; /* Fundo branco */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav.tabs span {
+    font-size: 17.6px;
+    padding: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    cursor: pointer;
+    color: #555;
+}
+
+nav.tabs span.active {
+    font-weight: bold;
+    color: red;
+}
+
+section.notification-item {
+    display: flex;
+    align-items: center;
+    
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve para destacar cada notificação */
+
+    & .icon {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    & .content {
+        flex-grow: 1;
+        color: #333;
+    }
+
+    & .actions {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    & .actions .time {
+        font-size: 14px;
+        color: #888;
+        margin-right: 20px;
+    }
+
+    & .actions .delete {
+        font-size: 18px;
+        color: red;
+        cursor: pointer;
+    }
+    & .star {
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    
+    & .status {
+        margin-right: 10px;
+    }
+    
+    & .status.green {
+        color: green;
+    }
+    
+    & .status.black {
+        color: black;
+    }
+}
+

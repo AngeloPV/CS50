@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Photo</title>
+
+    <style>
+        .file-upload {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}
+
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    width: 80%;
+    height: 20%;
+    cursor: pointer;
+    background-color: #54606e; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s; /* Transição suave */
+    margin-bottom: 5vh;
+}
+
+.custom-file-upload:hover {
+    background-color: #FF6F3C; /* Cor ao passar o mouse */
+}
+
+.input-field {
+    display: none; /* Oculta o input padrão */
+}
+    </style>
+</head>
+<body>
+    {% include "layouts/sidebar.html" %}
+    {% extends "layouts/form.html" %}
+
+    {% if msg %}
+        {% set error = msg %}    
+    {% endif %}
+
+    {% set title = "Upload profile photo" %}  
+    
+    {% block form_inline %}
+    <form method="POST" enctype="multipart/form-data" action="">
+        <div class="file-upload">
+            <label class="custom-file-upload" for="profilePic">Escolha uma imagem de perfil</label>
+            <input class="input-field" type="file" id="profilePic" name="profilePic" accept="image/*"><br>
+        </div>
+        <input class="submit-btn" type="submit" value="Send" name="send_button">
+    </form>
+    {% endblock %}
+
+</body>
+</html>

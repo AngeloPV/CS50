@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_deposit.css') }}">
+    <script src="{{ url_for('static', filename='js/deposit.js') }}" defer></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit</title>
+ 
+
+</head>
+<body>
+    {% extends 'layouts/form.html' %}
+    {% include 'layouts/sidebar.html' %}
+    {% if qr_code %}
+        {% include 'modal_confirmation.html' %}
+    {% endif %}
+    {% set title = "Deposit" %}    
+        
+    <!-- Mensagem de erro, se houver -->
+    {% if error_message %}
+        {% set error = error_message %}    
+    {% endif %}
+
+
+    {% block form_inputs %}
+        {% if deposited_value %}
+            <input class="input-field" type="text" autocomplete="off" autofocus name="deposited_value" id="deposited_value" value="{{ deposited_value }}">
+        {% else %}
+            <input class="input-field" type="text" autocomplete="off" autofocus name="deposited_value" id="deposited_value" placeholder="Amount to be deposited">
+        {% endif %}
+
+        <select name="currency"> 
+            <option disabled selected value="">Currency</option>
+            {% for currency in currencies %}
+                {% if currency_selected %}
+                    <option selected value="{{ currency_selected }}">{{ currency_selected }}</option>
+                {% else %}
+                    <option value="{{ currency }}">{{ currency }}</option>
+                {% endif %}
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" name="send_form_deposit" class="submit-btn" value="Send">
+
+    {% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href)
+            }
+        
+            passwordStrength();
+        });
+    </script>
+</body>
+</html>

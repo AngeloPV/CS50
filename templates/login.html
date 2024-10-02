@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+
+</head>
+<body>
+    
+    {% extends "layouts/form.html" %}
+
+    {% set title = "Login" %}    
+    <!-- Mensagem de erro, se houver -->
+    {% if error_message %}
+        {% set error = error_message %}    
+    {% endif %}
+
+    <!-- Todos os inputs com os labels -->
+    {% block form_inputs %}
+        <label for="username" class="input-label" >Usuário:</label>
+        <input class="input-field" autocomplete="off" autofocus name="user" placeholder="Digite seu Email ou seu Nome" type="text" value="{{ user if user else '' }}">
+
+        <label for="password" class="input-label" >Senha:</label>
+        <input class="input-field" autocomplete="off" autofocus name="password" placeholder="Digite sua Senha" type="password" value="{{ password if password else '' }}">
+    
+        <input name="SendLogin" class="submit-btn" type="submit" value="Acessar">
+
+    {% endblock %}
+
+    <!-- Links para recuperação de senha e cadastro -->
+    {% set num_links = 2 %}
+    {% block links_container %}
+        <a href='{{ url_for("main_routes.route_method", route_name="Recover_password", method="index") }}' class="link">Esqueceu a senha?</a>
+        <a href='{{ url_for("main_routes.route_method", route_name="Register", method="index") }}' class="link">Cadastrar-se</a>
+    {% endblock %}
+
+    {% if register_email %}
+        <script>
+            // Exibir SweetAlert se o usuário não estiver logado
+            document.addEventListener('DOMContentLoaded', function() {
+                css = ["custom-title_warning", "custom-warning-button"]
+                showCustomAlert(
+                    'Verifique seu email',
+                    '<p>Conta cadastrada com sucesso, verifique o email enviado ao seu email cadastrado, para autorizar sua conta</p>',
+                    'warning',
+                    'Continuar',
+                    css
+                );
+            });        
+        </script>
+    {% endif %}
+
+    {% if authorize %}
+        <script>
+            // Exibir SweetAlert se o usuário não estiver logado
+            document.addEventListener('DOMContentLoaded', function() {
+                css = ["custom-title_succes", "custom-succes-button"]
+                showCustomAlert(
+                    'Conta Verificada com Sucesso',
+                    '<p>Sua conta foi verificada por nosco com sucesso!!</p>',
+                    'sucess',
+                    'Continuar',
+                    css
+                );
+            });
+        </script>
+    {% elif authorize == False %}
+        <script>
+            // Exibir SweetAlert se o usuário não estiver logado
+            document.addEventListener('DOMContentLoaded', function() {
+                css = ["custom-title_error", "custom-error-button"]
+                showCustomAlert(
+                    'Ocorreu um Error',
+                    `<p>Não foi possível verificar sua conta pelo email, clique aqui <a href="{{ url_for('main_routes.route_method', route_name='Resend_authentication_email', method='index') }}" 
+                    style="color: #FF6F3C; text-decoration: underline;">Resend</a>, para pordemos inciar o precosso de vericação da sua conta de novo. Caso o problema continue entre em contanto conosco</p>`,
+                    'error',
+                    'Continuar',
+                    css
+                );
+            });
+        </script>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href)
+            }
+        
+            passwordStrength();
+        });
+    </script>
+</body> 
+</html>

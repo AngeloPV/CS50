@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/dashboard.css">
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+
+    {% include 'layouts/layout.html' %}
+    
+</head>
+<body>
+    {% include 'layouts/sidebar.html' %}
+    
+    <div id="preloader">
+        <div class="loading-text"><h3 id="loading">Loading...</h3></div>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    {% if not verificado and not stats%}
+        {% include 'modal_welcome.html' %}
+    {% endif %}
+    <header class="header">
+        <div class="flip-card" onclick="handleFlip(this)">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h2>Bitcoin</h2>
+                </div>
+                <div class="flip-card-back">
+                    <h2>Ethereum</h2>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="card">
+            <h3>Total gasto neste mes</h3>
+            {% if spent_1_month %}
+                <h4>{{ spent_1_month }}</h4>
+            {% else %} 
+                <h4>Sem dados</h4>
+            {% endif %}
+        </div>
+        <div class="card">
+            <h3 >Ultima troca</h3>
+            {% if last_trade_data %}
+                {% set crypto1 = 'Bitcoin' if last_trade_data[0][0] == 1 else 'Ethereum' %}
+                {% set crypto2 = 'Bitcoin' if last_trade_data[0][1] == 1 else 'Ethereum' %}
+                {% set amount1 = last_trade_data[0][2] %}
+                {% set amount2 = last_trade_data[0][3] %}
+                {% set formatted_date = last_trade_data[0][4].strftime('%Y/%m/%d') %}
+            
+                <h4 class="last_trade_text">{{ crypto1 }}: {{ amount1 }} → {{ crypto2 }}: {{ amount2 }}</h4>
+                <h4 class="last_trade_text">{{ formatted_date }}</h4>
+            {% else %} 
+                <h4>Sem dados</h4>
+            {% endif %}
+        </div>
+        <div class="card">
+            <div class="dado1 active">
+                {% if btc_history_plot %}
+                    <iframe src="{{ url_for('serve_file', filename=btc_history_plot) }}" 
+                            scrolling="no" frameborder="0"></iframe>   
+                {% else %}
+                    <h3 >Last buyed Bitcoins</h3>
+                    <h4 >No data</h4>
+                {% endif %}         
+            </div>
+            <div class="dado2">
+                {% if eth_history_plot %}
+                    <iframe src="{{ url_for('serve_file', filename=eth_history_plot) }}" 
+                    scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h3>Last buyed Ethereums</h3>
+                    <h4 >No data</h4>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="dado1 active">
+                {% if btc_plot %}
+                    <iframe src="{{ url_for('serve_file', filename=btc_plot) }}" 
+                            scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h4 >No data</h4>
+                {% endif %}
+            
+            </div>
+            <div class="dado2">
+                {% if eth_plot %}
+                    <iframe src="{{ url_for('serve_file', filename=eth_plot) }}" 
+                    scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h4>No data</h4>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="dado1 active">
+                {% if spent_plot_6 %}
+                <iframe src="{{ url_for('serve_file', filename=spent_plot_6) }}" 
+                         scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h3>Total spent in last 6 months</h3>
+                    <h4 class="h4-alt">No data</h4>
+                {% endif %}
+            
+            </div>
+            <div class="dado2">
+                {% if spent_plot_all %}
+                    <iframe src="{{ url_for('serve_file', filename=spent_plot_all) }}" 
+                    scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h3>Total spent at all</h3>
+                    <h4 class="h4-alt">No data</h4>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
