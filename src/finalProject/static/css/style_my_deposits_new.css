@@ -56,7 +56,7 @@ th{
 }
 
 th:hover{
-    transition: transform 0.5s ease;
+    transition: transform 0.2s ease;
     transform: scale(1.07);
 }
 
@@ -64,8 +64,8 @@ thead{
     position: sticky;  /* Mantém o cabeçalho fixo */
     top: 0;  /* Fixa o cabeçalho no topo */
     z-index: 1;  /* Coloca o cabeçalho acima das linhas da tabela ao rolar */
-    border-bottom: 1px solid var(--main2-color);
     background-color: var(--primary-color) !important;
+    box-shadow: 0 5px 5px -5px var(--main2-color); /* Cria um efeito de separação */
 
 
 }
@@ -75,7 +75,13 @@ th, td {
 }
 td {
     font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease;
     font-size: 16px;
+    cursor: pointer;
+}
+
+table tr:hover td {
+    background-color: var(--alt2-color); /* Cor de fundo para a linha */
 }
 
 /* botoes de filtro */
