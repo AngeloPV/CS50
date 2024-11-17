@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'comprar': '/buy/index',
         'vender': '/sell/index',
         'gerenciar': '/caminho/para/pagina/gerenciar',
+        'trocar': '/caminho/para/pagina/trocar',
         'meus-depositos': '/my_deposits/index',
         'depositar-opcao': '/deposit/index',
         'conta': '/account/index',

@@ -21,8 +21,7 @@
 
 
 body {
-    margin: 0;
-    padding: 0;
+    background-color: var(--background-color) !important;
     overflow: hidden; /* Remove a barra de rolagem da página */
 
 }
@@ -37,10 +36,11 @@ img {
 }
 
 .container {
-    width: 90%; /* Ocupar quase toda a tela */
-    max-width: 90%; /* Limitar a largura máxima */
-    height: 90%;
-    margin: 50px auto; /* Centralizar e criar espaçamento vertical */
+    height: 93vh;
+    margin-left: calc(3.5vh + 55px);  
+    margin-top: 3.5vh;  
+    margin-right: 3.5vh;  
+    margin-bottom: 3.5vh; 
     padding: 25px !important; /* Espaçamento interno para não tocar as bordas */
     background-color: var(--primary-color); /* Fundo cinza claro */
     border-radius: 10px;
@@ -198,19 +198,25 @@ nav.types .type {
     color: var(--secondary-color);
     letter-spacing: 0.30em;
     align-items: center;
-    transition: font-size 0.5s ease-in-out, color 0.2s ease-in-out;
+    transition: font-size 0.2s ease-in-out, color 0.4s ease-in-out;
 }
 
 nav.types .type:hover  {
     font-weight: bold;
-    font-size: 19px;
+    font-size: 18.5px;
     color: var(--main2-color);
 }
 
 /* css from the count of each notificaitons type */
+body.dark-theme nav.types .radient {
+    background-color: var(--alt2-color); 
+}
+
+body:not(.dark-theme) nav.types .radient {
+    background-color: var(--main3-color);
+}
 nav.types .radient {
-    background-color: var(--alt1-color); /* Cor de fundo dos números */
-    color: var(--secondary-color);
+    color: var(--main1-color);
     border-radius: 35%;
     padding: 2.5px 3px 2px 6px;
     margin-right: 10px;
@@ -309,6 +315,7 @@ section.notification-item {
     background-color: var(--primary-color) !important;
 
     /* Add space for icons on hover */
+    
     &:hover {
         padding-right: 40px; 
     }
@@ -339,7 +346,7 @@ section.notification-item {
     }
 
     &:hover .content {
-        max-width: calc(100% - 160px) /* Ajuste para dar espaço aos ícones */
+        max-width: calc(100% - 160px); /* Ajuste para dar espaço aos ícones */
     }
  
     /* css from the div where the icons in  */
@@ -376,8 +383,8 @@ section.notification-item {
 
     /* css hover from the icons */
     & .archiveProx:hover, & .readProx:hover, & .favoriteProx:hover, & .deleteButtons:hover, & .notifcationsCSS:hover   {
-        transition: font-size 0.3s ease-in-out, color 0.2s ease-in-out;
-        font-size: 24px;
+        transition: transform 0.3s ease, color 0.2s ease-in-out;
+        transform: scale(1.2);
         cursor: pointer;
     }
 
@@ -404,6 +411,13 @@ section.notification-item {
     }
 }
 
+body.dark-theme section.notification-item:hover{
+    background-color: var(--alt2-color) !important;  /* Cor de fundo para tema escuro */
+}
+
+body:not(.dark-theme) section.notification-item:hover {
+    background-color: var(--main3-color) !important; /* Cor de fundo para tema claro */
+}
 
 section.active_section {
     max-height: 0;       /* Remove o espaço ocupado */
