@@ -98,8 +98,11 @@ class Get_notifications():
     
     
     def update_notifications(self, value_update, values_id):
-
+        print(value_update)
+        if value_update == 0:
+            return True
         if isinstance(value_update, int):
+            print(value_update)
             data = {"sit_notification": value_update}   
         else:
             data = {"type": value_update, "changed": 0}       
@@ -121,7 +124,7 @@ class Get_notifications():
                 data_where['id'][i] = int(data_where['id'][i])
     
             self.update.exe_update(data=data, table_name="user_notification", data_where=data_where, operator=operator_map.get(key_map, ' =, =, =, ='), close_conn=True)
-        elif isinstance(values_id, int):
+        elif isinstance(values_id, int): 
             self.update.exe_update(data=data, table_name="user_notification", data_where=data_where, operator=operator_map.get(key_map, ' =, =, =, ='), close_conn=True)
 
         if self.update.getResult():
