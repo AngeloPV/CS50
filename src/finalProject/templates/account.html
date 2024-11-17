@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="stylesheet" href="../static/css/account.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="{{ url_for('static', filename='js/account.js') }}" defer></script>
+
+</head>
+<body class="{{ session['theme'] }}">
+    {% include 'layouts/sidebar.html' %}
+    <header class="header">
+        <h2 id="title">My profile</h2>
+    </header>
+    <main class="main">
+        <section class="side_card">
+                <p class="nav_btn" id="my_profile">My Profile</p>
+                <p class="nav_btn" id="logout">Logout</p>
+                <p class="nav_btn" id="delete_account">Delete Account</p>
+        </section>
+        <container class="card-container">
+            <div class="card">
+                {% if session.profile_img %}
+                    <img src="{{ url_for('static', filename='images/users/' + session.profile_img) }}" id="profile_photo" alt="Profile Image">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/sidebar/perfil_foto.png') }}" id="profile_photo" alt="Imagem do Perfil">
+                {% endif %}
+                <div class="info_data">
+                    <h3 class="title">{{ first_name }} {{ last_name }}</h3>
+                    <h4 class="subtitle">Maranguape, Ceará, Brasil</h4>
+                </div>
+    
+
+            </div>
+            <div class="card">
+                <div class="top">
+                    <h3 class="title">Personal information</h3>
+                    <button id="alter-phone" class="edit_btn">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </button>
+                </div>
+                <div class="mid">
+                    <div class="first_name editable">
+                        <h4 class="subtitle">First name</h4>
+                        <span class="usertitle" id="first_name_display">{{ first_name }}</span>
+                    </div>
+                    <div class="last_name editable">
+                        <h4 class="subtitle">Last name</h4>
+                        <span class="usertitle" id="last_name_display">{{ last_name }}</span>
+                    </div>
+                    <div class="email_address editable">
+                        <h4 class="subtitle">Email address</h4>
+                        <span class="usertitle" id="email_display">{{ email }}</span>
+                    </div>
+                    <div class="phone editable">
+                        <h4 class="subtitle">Phone</h4>
+                        <span class="usertitle" id="phone_display">{{ phone }}</span>
+                    </div>
+                    <div class="password editable">
+                        <h4 class="subtitle">Password</h4>
+                        <span class="usertitle" id="password_display">********</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="top">
+                    <h3 class="title">Preferences</h3>
+                    <button id="alter-phone" class="edit_btn">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </button>
+                </div>
+
+                <div class="mid">
+                    <div class="language editable">
+                        <h3 class="subtitle">Language</h3>
+                        <span class="usertitle" id="language_display">{{ session['language'].capitalize() }}</span>
+                    </div>
+                    <div class="theme editable">
+                        <h3 class="subtitle editable">Theme</h3>
+                        <span class="usertitle" id="theme_display">{{ session['theme'].split('-')[0].capitalize() }}</span>
+                    </div>
+                    <div class="postal_code editable">
+                        <h3 class="subtitle">Postal code</h3>
+                        <span class="usertitle" id="postal_code_display">12345678<span>
+                    </div> 
+                </div>
+            </div>
+        </container>
+    </main>
+    
+
+
+    <script>
+        window.onload = function() {
+        const body = document.body;
+        const editBtn = document.querySelectorAll('.edit_btn');
+        
+        // Verifica se o tema é light ou dark e aplica as cores correspondentes aos botões
+        editBtn.forEach(btn => {
+            if (body.classList.contains('light-theme')) {
+                btn.style.backgroundColor = 'var(--alt1-color)';
+                btn.style.color = 'var(--alt2-color)';
+                btn.style.border = '1px solid var(--alt2-color)';
+            } else if (body.classList.contains('dark-theme')) {
+                btn.style.backgroundColor = 'var(--alt2-color)';
+                btn.style.color = 'var(--alt1-color)';
+                btn.style.border = '1px solid var(--alt1-color)';
+            }
+        });
+};
+
+    </script>
+</body>
+
+</html>

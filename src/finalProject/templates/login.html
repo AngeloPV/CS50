@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+
+</head>
+<body class="dark-theme">
+    
+    {% extends "layouts/form.html" %}
+
+    {% set title = "Login" %}    
+    <!-- Mensagem de erro, se houver -->
+    {% if error_message %}
+        {% set error = error_message | safe %}    
+    {% endif %}
+
+    <!-- Todos os inputs com os labels -->
+    {% block form_inputs %}
+        <label for="username" class="input-label" >Usuário:</label>
+        <input id="username" class="input-field" autocomplete="off" autofocus name="user" 
+               placeholder="Digite seu Email ou seu Nome" type="text" value="{{ user if user else '' }}">
+
+        <label for="password" class="input-label" >Senha:</label>
+        <input id="password" class="input-field" autocomplete="off" autofocus name="password" 
+               placeholder="Digite sua Senha" type="password" value="{{ password if password else '' }}">
+    
+        <input name="SendLogin" id="submitButton" class="submit-btn" type="submit" value="Acessar">
+
+
+        {% set authorize = authorize | default(none) %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Override the history state to avoid form resubmission
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+        
+                const isAuthorized = {{ authorize | tojson }}; // Just ignore this error
+
+                // Check if the account is authorized
+                if (isAuthorized) {
+                    showCustomAlert(
+                        'Account Verified Successfully',
+                        '<p>Your account has been successfully verified!</p>',
+                        'success',
+                        'Continue',
+                        ["custom-title_sucess", "custom-succes-button"]
+                    );
+                } else if ( isAuthorized === false ) {
+
+                    showCustomAlert(
+                        'An error occurred',
+                        `<p>Unable to verify your account via email.
+                        {% set user_email = TODO %}
+                        <a href="{{ url_for('main_routes.route_method', route_name='Resend_authentication_email', method='index') }}" 
+                        style="color: #ff6f3c; text-decoration: underline;">Click here</a> to restart the verification process.</p>`,
+                        'error',
+                        'Continue',
+                        ["custom-title_error", "custom-error-button"]
+                    );
+                }
+        
+                // Call function to check password strength
+                passwordStrength();
+            });
+        </script>
+    {% endblock %}
+
+    <!-- Links para recuperação de senha e cadastro -->
+    {% set num_links = 2 %}
+    {% block links_container %}
+        <a href='{{ url_for("main_routes.route_method", route_name="Recover_password", method="index") }}' class="link">Esqueceu a senha?</a>
+        <a href='{{ url_for("main_routes.route_method", route_name="Register", method="index") }}' class="link">Cadastrar-se</a>
+    {% endblock %}
+</body> 
+</html>

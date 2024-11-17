@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update data</title>
+</head>
+<body class="{{ session['theme'] }}">
+    {% include 'layouts/sidebar.html' %}    
+    {% extends "layouts/form.html" %}
+
+    {% if msg %}
+        {% set error = msg %}    
+    {% endif %}
+
+    {% set title = "Update data" %}    
+
+    <!-- Quando o usuario entra na pagina pela primeira vez, vai pedir para digitar a senha -->
+    <!-- Depois de digitar a senha o usuario vai pra pagina de confirmação onde vai pedir o código
+    de verificação enviado pro email-->
+    <!-- Se o codigo estiver correto, ele retorna pra essa pagina como verificado, e agora vai pedir
+    os dados a serem alterados, após isso o usuário retorna pra pagina Account-->
+    {% block form_inline %}
+        {% if verified %}
+            <form class="form" name="form_update_data" method="post" action="/account/{{ to_update }}">
+                <input autocomplete="off" autofocus class="input-field" type="text" placeholder="{{ to_update|capitalize }}" name="{{ to_update }}">
+                <input autocomplete="off" class="input-field" type="text" placeholder="Confirm your {{ to_update }}" name="confirm_{{ to_update }}">
+                <input class="submit-btn" type="submit" value="Send" name="update_send_button">
+            </form>
+        {% else %}
+            <form class="form" name="form_password" method="post">
+                <input autocomplete="off" autofocus class="input-field" type="password" placeholder="Password" name="password">
+                <input class="submit-btn" type="submit" value="Send" name="send_button">
+            </form>
+        {% endif %}
+    {% endblock %}
+
+
+</body>
+</html>

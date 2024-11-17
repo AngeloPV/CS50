@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_verify.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email verify</title>
+</head>
+<body class="{{ session['theme'] if session['theme'] else 'dark-theme' }}">
+    {% if not register_email %} 
+        {% include 'layouts/sidebar.html' %}
+    {% endif %}
+ 
+    {% extends "layouts/form.html" %}
+
+    {% if msg %}
+        {% set error = msg %}    
+    {% endif %}
+
+    {% set title = "Verify code" %}   
+
+    {% block form_inline %}
+        <form class="form" id="code-verify-form" method="post" action="/Verify_code/verify" name="code-verify-form">
+            <label class="input-label">Enter the code sent to your email</label>
+
+            {% if register_email %} 
+                <input type="hidden" name="login" value="True">
+            {% endif %}
+
+            <div class="pin-container">
+                <input autofocus autocomplete="off" type="text" maxlength="1" class="pin-input" id="digit-1" name="digit-1" oninput="moveToNext(this, 'digit-2')" onkeydown="moveToPrev(event, this, 'digit-1')" style="text-transform:uppercase;" />
+                <input autocomplete="off" type="text" maxlength="1" class="pin-input" id="digit-2" name="digit-2" oninput="moveToNext(this, 'digit-3')" onkeydown="moveToPrev(event, this, 'digit-1')" style="text-transform:uppercase;" />
+                <input autocomplete="off" type="text" maxlength="1" class="pin-input" id="digit-3" name="digit-3" oninput="moveToNext(this, 'digit-4')" onkeydown="moveToPrev(event, this, 'digit-2')" style="text-transform:uppercase;" />
+                <input autocomplete="off" type="text" maxlength="1" class="pin-input" id="digit-4" name="digit-4" oninput="moveToNext(this, 'digit-5')" onkeydown="moveToPrev(event, this, 'digit-3')" style="text-transform:uppercase;" />
+                <input autocomplete="off" type="text" maxlength="1" class="pin-input" id="digit-5" name="digit-5" oninput="moveToNext(this, 'digit-6')" onkeydown="moveToPrev(event, this, 'digit-4')" style="text-transform:uppercase;" />
+                <input autocomplete="off" type="text" maxlength="1" class="pin-input" id="digit-6" name="digit-6" oninput="moveToNext(this, null)" onkeydown="moveToPrev(event, this, 'digit-5')" style="text-transform:uppercase;" />
+            </div><br>
+            <input class="submit-btn" type="submit" value="Send" name="send_button">
+        </form>
+
+        <script>
+            // Passa o cursor pro proximo quadrado 
+            function moveToNext(current, nextFieldID) {
+                if (current.value.length === 1 && nextFieldID) {
+                    document.getElementById(nextFieldID).focus();
+                }
+            }
+            
+            // Se o campo tiver vazio e apertar backspace, apaga o q vem antes e move o cursor para o mesmo
+            function moveToPrev(event, current, prevFieldID) {
+                if (event.key === "Backspace" && current.value === "" && prevFieldID) {
+                    document.getElementById(prevFieldID).focus();
+                }
+            }
+        </script>   
+    {% endblock %}
+</body>
+</html>

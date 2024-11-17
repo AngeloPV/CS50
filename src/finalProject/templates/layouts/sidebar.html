@@ -1,0 +1,62 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_sidebar.css') }}">
+<script src="{{ url_for('static', filename='js/script_sidebar.js') }}" defer></script>
+{% include 'layouts/layout.html' %}
+<button class="menu-toggle" id="menu-toggle"></button>
+
+<div id="sidebar" class="sidebar">
+    <header id="logo">
+        <img src="{{ url_for('static', filename='images/sidebar/logo.png') }}" id="img_logo" style="cursor: pointer;">
+        <span class="tooltip">Início</span>
+    </header> 
+    <hr>  
+    <div class="menu-item" id="carteira">
+        <img src="{{ url_for('static', filename='images/sidebar/icons/carteira.png') }}" id="icons">
+        <span class="text">Carteira</span>
+    </div>
+    <div class="submenu" id="carteira-submenu">
+        <div class="sub_menu-item" id="comprar">
+            <span class="text">Comprar</span>
+        </div>  
+        <div class="sub_menu-item" id="vender">
+            <span class="text">Vender</span>
+        </div>
+        <div class="sub_menu-item" id="gerenciar">
+            <span class="text">Gerenciar</span>
+        </div>
+    </div>
+    <hr>
+    <div class="menu-item" id="depositar">
+        <img src="{{ url_for('static', filename='images/sidebar/icons/depositar.png') }}" id="icons">
+        <span class="text">Depositar</span>
+    </div>
+    <div class="submenu" id="depositar-submenu">
+        <div class="sub_menu-item" id="depositar-opcao">
+            <span class="text">Depositar</span>
+        </div>
+        <div class="sub_menu-item" id="meus-depositos">
+            <span class="text">Meus depósitos</span>
+        </div>
+    </div>
+    <hr>
+    <div class="menu-item" id="conta">
+        <img src="{{ url_for('static', filename='images/sidebar/icons/config.png') }}" id="icons">
+        <span class="text">Conta</span>
+    </div>
+   
+    <hr>
+    <div class="menu-item" id="notificacao">
+        <img src="{{ url_for('static', filename='images/sidebar/icons/notificacoes.png') }}" id="icons">
+        <span class="text">Notificações</span>
+        <span class="notification-badge">{{ count_notifications }}</span> <!-- Badge de notificações -->
+    </div>
+    <hr>
+    <div id="perfil">
+        {% if session.profile_img %}
+            <img src="{{ url_for('static', filename='images/users/' + session.profile_img) }}" id="perfil_foto" alt="Profile Image">
+        {% else %}
+            <img src="{{ url_for('static', filename='images/sidebar/perfil_foto.png') }}" id="perfil_foto" alt="Imagem do Perfil">
+        {% endif %}
+        <span class="text">Perfil</span>
+        <span class="tooltip">Alterar foto de perfil</span>
+    </div>
+</div>

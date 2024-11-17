@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_my_deposits.css') }}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My deposits</title>
+</head>
+<body class="{{ session['theme'] }}">
+    {% include 'layouts/sidebar.html' %}
+    <h2>Deposits</h2>
+    <main class="main">
+        <table>
+            <thead>
+                <tr>
+                    <th>Value</th>
+                    <th>Currency</th>
+                    <th>Datetime</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set data = ['12/1/22', '1', 'deposit'] %}
+                {% for row in data %}
+                <tr>
+                    <td><b>{{ row[0] }}</b></td>
+                    <td><b>{{ row[1] }}</b></td>
+                    <td><b>{{ row[2] }}</b></td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

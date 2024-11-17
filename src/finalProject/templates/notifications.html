@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/notifications.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='images/sidebar/logo.png') }}" type="image/png">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+    <script src="{{ url_for('static', filename='js/notifications/selected_actions.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications/all_notifications.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications/prox_notifications.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications/select_checkboxes.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications/change_camp.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications/change_type.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications/delete_notifications.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications/notifications_chekbox.js') }}"></script>
+
+</head>
+<body class="{{ session['theme'] }}">
+    {% include 'layouts/layout.html' %}
+    {% include 'layouts/sidebar.html' %}
+
+    <main class="container">
+        <div class="header">
+            <input type="hidden" id="myHiddenInput" value="{{ type }}">
+            <h1 id="count_all">{{ count_notifcations['all'] }} Notifications</h1>
+
+            <div class="dropdown">
+                <div class="select-button">
+                    <input type="checkbox" id="selectedCheckbox" class='checkboxAll'> 
+                </div>
+                <div class="dropdown-content">
+                    <button id="selectAll">Select All</button>
+                    <button id='deleteAll'>Delete All</button>
+                    <button id='readAll'>Read all</button>
+                    <button id="moveNotification"></button>
+                    <button id="archiveAll">Archive All</button>
+                    <button id="favoriteAll">Favorite All</button>
+                </div>
+            </div>
+
+            <div class="actionsSelected">
+                <i class="fas fa-star" id="favorite_selected" title="Favorite Selected"></i>
+                <i class="fas fa-archive" id="archive_selected" title="Archive Selected"></i>
+                <i class="fas fa-envelope-open-text" id="read_selected" title="Read Selected"></i>
+                <i class="fas fa-trash" id="delete_selected" title="Deletar"></i>
+            </div>
+        </div>
+
+
+        <script>
+            const select_button = document.querySelector('.select-button')
+            const dropdown_content = document.querySelector('.dropdown-content')
+    
+            select_button.addEventListener('click', () => {
+                dropdown_content.style.display = dropdown_content.style.display === 'block' ? 'none' : 'block';
+            })
+    
+            window.addEventListener('click', function(e) {
+                if (!e.target.closest('.dropdown')) {
+                    dropdown_content.style.display = 'none';
+                }
+            });
+        </script>
+
+
+        <nav class="types">
+            <span class="type active" id="standardArchive">
+                <span class="radient active">{{ count_notifcations['standard'] }}</span><b>Standard</b>
+            </span>
+            <span class="type" id="changeArchive">
+                <span class="radient">{{ count_notifcations['archive'] }}</span><b>Archive</b>
+            </span>
+            <span class="type" id="changeFavorite">
+                <span class="radient">{{ count_notifcations['favorite'] }}</span><b>Favorite</b>
+            </span>
+        </nav>
+        
+
+        <div class="notifications">
+            {% if data %}
+            {% for row in data %}
+                {% if row[5] == 0 %} 
+                        <section class="notification-item" style="background-color: #f8f9fae9;">
+                            <input type="checkbox" class='checkbox' value="{{ row[4] }}">
+                            <div class="content">{{ row[1] }}</div>
+                            <div class="time">{{ row[6] }}</div>
+                            <div class="actions">
+                                <i class="fas fa-star favoriteProx" title="Favoritar"></i>
+                                <i class="fas fa-archive archiveProx" title="Arquivar"></i>
+                                <i class="fas fa-envelope-open-text readProx" title="Ler"></i>
+                                <i class="fas fa-trash deleteButtons" title="Deletar"></i>
+                            </div>
+                        </section>
+                {% else %}
+                    <section class="notification-item" style="background-color: #f8f9fae9;">
+                        <input type="checkbox" class='checkbox' value="{{ row[4] }}">
+                        <div class="content"><b>{{ row[1] }}</b></div>
+                        <div class="time">{{ row[6] }}</div>
+                        <div class="actions">
+                            <i class="fas fa-star favoriteProx" title="Favoritar"></i>
+                            <i class="fas fa-archive archiveProx" title="Arquivar"></i>
+                            <i class="fas fa-envelope-open-text readProx" title="Ler"></i>
+                            <i class="fas fa-trash deleteButtons" title="Deletar"></i>
+                        </div>
+                    </section>
+                {% endif %}
+            {% endfor %}   
+            {% endif %} 
+        </div>
+
+        <script>
+            document.addEventListener('keydown', function(event) {
+                var notifications = document.querySelector('.notifications')
+
+                var step = 40
+
+                if(event.key === 'ArrowDown') {
+                    notifications.scrollTop += step
+                } else if(event.key === 'ArrowUp') {
+                    notifications.scrollTop -= step
+                }
+            })
+        </script>
+    </main>
+</body>
+</html>

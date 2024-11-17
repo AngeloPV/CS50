@@ -1,0 +1,73 @@
+/* Estilo para os campos de entrada */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.input-half {
+    flex: 1;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box; 
+}
+
+input::placeholder {
+    color: var(--alt1-color); /* Define a cor que você deseja */
+    opacity: 1; /* Garante que a opacidade não afete a cor */
+}
+
+/* Quando o campo está em foco */
+input:focus {
+    outline: none;
+    border: 2px solid var(--main2-color);
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+
+    /* .input-group {
+        max-width: 400px;
+    } */
+
+
+    .input-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .input-half {
+        flex: 1;
+    }
+
+    /* Definir inputs maiores */
+    .input-full {
+        width: 100%;
+    }
+
+    input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .submit-btn {
+        font-size: 16px;
+        padding: 12px;
+    }
+}

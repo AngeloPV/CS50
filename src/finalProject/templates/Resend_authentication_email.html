@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resend Email</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/sidebar/logo.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recover_password.css') }}">
+</head>
+<body class="dark-theme">
+
+    {% extends "layouts/form.html" %}
+
+    {% set title = "Resend Authentication" %}    
+
+    {% block form_inputs %}
+        <label for="email" class="input-label">Seu email:</label>
+        <input id="email" class="input-field" autocomplete="off" autofocus name="email" 
+               placeholder="Digite seu Email" type="text" value="{{ session['user_email'] if session['user_email'] else '' }}">
+
+        <input name="ResendAuthorize" class="submit-btn" type="submit" value="Send">
+    {% endblock %}
+
+
+    {% block links_container %}
+        <a href='{{ url_for("main_routes.route_method", route_name="Login", method="index") }}' class="link">Página Login</a>
+    {% endblock %}
+
+</body>
+</html>

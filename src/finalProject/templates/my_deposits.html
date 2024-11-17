@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_my_deposits_new.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My deposits</title>
+</head>
+<body class="{{ session['theme'] }}">
+    {% include 'layouts/sidebar.html' %}
+    <main class="main">
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Date <button class="sort-btn desc"></button></th>    
+                    <th onclick="sortTable(1)">Deposit ID <button class="sort-btn"></button></th>
+                    <th onclick="sortTable(2)">Type <button class="sort-btn"></button></th>
+                    <th onclick="sortTable(3)">Amount <button class="sort-btn"></button></th>
+                    <th onclick="sortTable(4)">Currency <button class="sort-btn"></button></th>
+                    <th onclick="sortTable(5)">Status <button class="sort-btn"></button></th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td><b>{{ row[0] }}</b></td>
+                    <td><b>{{ row[1] }}</b></td>
+                    <td><b>{{ row[2] }}</b></td>
+                    <td><b>{{ row[3] }}</b></td>
+                    <td><b>{{ row[4] }}</b></td>
+                    <td><b>{{ row[5] }}</b></td>
+                </tr>
+                {% endfor %}
+            </tbody>            
+
+        </table>
+    </main>
+</body>
+
+
+<script>
+let currentSortColumn = null; // Coluna atualmente ordenada
+
+function sortTable(columnIndex) {
+    const table = document.querySelector("table tbody");
+    const rows = Array.from(table.rows);
+
+    // Seleciona o botão da coluna atual
+    const currentBtn = document.querySelectorAll(".sort-btn")[columnIndex];
+
+    // Define a direção inicial
+    let sortOrder = "asc"; // Vamos iniciar com "asc" (para baixo)
+
+    // Ordena as linhas da tabela
+    rows.sort((a, b) => {
+        const cellA = a.cells[columnIndex].textContent.trim();
+        const cellB = b.cells[columnIndex].textContent.trim();
+
+        if (!isNaN(cellA) && !isNaN(cellB)) {
+            // Ordenação numérica
+            return sortOrder === "asc" ? cellA - cellB : cellB - cellA;
+        }
+
+        // Ordenação alfabética
+        return sortOrder === "asc"
+            ? cellA.localeCompare(cellB)
+            : cellB.localeCompare(cellA);
+    });
+
+    // Reanexa as linhas ordenadas na tabela
+    rows.forEach(row => table.appendChild(row));
+
+    // Atualiza o estado das setas
+    document.querySelectorAll(".sort-btn").forEach((btn, index) => {
+        btn.classList.remove("asc", "desc"); // Remove as classes de todas as colunas
+
+        if (index === columnIndex) {
+            // A seta clicada vai para baixo ("desc")
+            btn.classList.add("desc");
+        } else {
+            // As setas das outras colunas vão para cima ("asc")
+            btn.classList.add("asc");
+        }
+    });
+
+    // Atualiza a coluna atual
+    currentSortColumn = columnIndex;
+
+}
+
+</script>
+
+</html>

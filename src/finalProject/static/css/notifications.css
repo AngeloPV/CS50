@@ -1,0 +1,415 @@
+/* :root {
+    --alt1-color:#f8f9fabf;
+    --alt2-color:#888888;
+
+    --main1-color: #1B263B;
+    --main2-color: #ff6f3c;
+    --main3-color: #FFD1C1;
+}
+
+.light-theme {
+    --background-color: #495057;
+    --primary-color:  #f8f9fa;
+    --secondary-color: #24292e;
+}
+
+.dark-theme {
+    --background-color:#24292e;
+    --primary-color:#495057;
+    --secondary-color: #f8f9fa; 
+} */
+
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Remove a barra de rolagem da página */
+
+}
+
+.teste{
+    width: 0px;
+    height: 0px;
+}
+img {
+    width: 25px;
+    height: 25px;
+}
+
+.container {
+    width: 90%; /* Ocupar quase toda a tela */
+    max-width: 90%; /* Limitar a largura máxima */
+    height: 90%;
+    margin: 50px auto; /* Centralizar e criar espaçamento vertical */
+    padding: 25px !important; /* Espaçamento interno para não tocar as bordas */
+    background-color: var(--primary-color); /* Fundo cinza claro */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para destacar a caixa */
+}
+
+
+/* CSS FROM THE HEADER NOTIFICAITON */
+.header {
+    width: 100%; /* Ocupar quase toda a tela */
+    display: flex;
+    justify-content: flex-start;
+    align-items: right;
+    margin-bottom: 20px;
+    margin-left: 5px;
+
+    & h1 {
+        font-size: 22px;    
+        color: var(--secondary-color);
+        margin-right: 20px;
+    }
+
+    /* CSS FROM THE DROPDOWN */
+    & .dropdown {
+        margin-top: 2.5px;
+        align-content: center;
+        display: inline-block;
+        cursor: pointer;
+        width: 60px; /* Largura do dropdown */
+    }
+
+    & .select-button {
+        max-width: 80px;
+        display: flex;
+        align-items: center;
+    }
+
+    & .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: var(--primary-color);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    & .dropdown-content button {
+        color: var(--secondary-color);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+    }
+
+    & .dropdown-content button:hover {
+        background-color: var(--alt2-color);
+        cursor: pointer;
+    }
+
+    & .dropdown-content #moveNotification  {
+        display: none;
+    }
+
+    /* CSS FROM THE ARROW NEXT TO THE BUTTON */
+    & .select-button::after {
+        content: "\f107"; 
+        font-family: "Font Awesome 5 Free"; 
+        font-weight: 900; 
+        margin-left: 1px; 
+        font-size: 15px; 
+        margin-right: 1px; 
+        margin-left: -3px;  
+        color: var(--secondary-color);
+    }
+
+    & #selectedCheckbox {
+        width: 17px;
+        height: 17px;
+        border-radius: 20%;
+        border: 2px var(--alt2-color) solid;
+    }
+
+    & #selectedCheckbox:checked::after {
+        border-color: var(--main2-color);
+        top: -2.4px;
+        left: 2.5px;
+    }
+
+    & #selectedCheckbox:checked {
+        border-color: var(--main2-color);
+    }
+    /* CSS FROM THE DROPDOWN END HERE */
+
+    /* CSS FROM THE DIV OF THE ICONS SELECTEDS */
+    & .actionsSelected {
+        opacity: 0;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        gap: 20px;
+        top: -2px;
+        transition: opacity 0.3s ease-in;
+        color: var(--secondary-color);
+    }
+
+    #favorite_selected, #archive_selected, #read_selected, #delete_selected, .standard_selected {
+        font-size: 20px;
+        /* color: var(--secondary-color); */
+    }
+
+    & #favorite_selected:hover, & #archive_selected:hover, & #read_selected:hover, & .standard_selected:hover, & #delete_selected:hover  {
+        transition: font-size 0.3s ease-in-out, color 0.2s ease-in-out;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* css image unfavorite selected */
+    & .image_selected {
+        margin-right: -4%;
+        width: 32px; /* Ajuste conforme necessário */
+        height: 32px; /* Ajuste conforme necessário */
+        background-image: url("/static/images/notifications/unfavorite2.png");
+        background-size: cover; /* Para cobrir completamente o elemento */
+        background-position: center; /* Para centralizar a imagem */
+        transition: width 0.3s ease-in-out /* Combinar transições em uma única linha */
+    }
+    
+    & .image_selected:hover {
+        width: 40px; /* Ajuste conforme necessário */
+    }
+    /* CSS FROM THE DIV OF THE ICONS SELECTEDS END HERE*/
+}
+
+
+/* CSS FROM THE TYPES OF NOTIFICATIONS */
+nav.types {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    border-bottom: 1px solid  var(--main2-color);
+}
+
+/*  css from the each type */
+nav.types .type {
+    font-size: 17.6px;
+    padding: 10px;
+    margin-left: 7%;
+    margin-right: 7%;
+    cursor: pointer;
+    color: var(--secondary-color);
+    letter-spacing: 0.30em;
+    align-items: center;
+    transition: font-size 0.5s ease-in-out, color 0.2s ease-in-out;
+}
+
+nav.types .type:hover  {
+    font-weight: bold;
+    font-size: 19px;
+    color: var(--main2-color);
+}
+
+/* css from the count of each notificaitons type */
+nav.types .radient {
+    background-color: var(--alt1-color); /* Cor de fundo dos números */
+    color: var(--secondary-color);
+    border-radius: 35%;
+    padding: 2.5px 3px 2px 6px;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* css OF when the notifcations type is clicked, change the type and the number*/
+nav.types span.active {
+    font-weight: bold;
+    color: var(--main2-color);
+}
+/* CSS FROM THE TYPES OF NOTIFICATIONS END HERE */
+
+
+/* CSS CHECKBOX SECTIONS AND HEADER */
+.checkbox, .checkboxAll{
+    margin-top: 0.2%;
+    margin-right: 10px;
+    cursor: pointer;
+    cursor: pointer;
+    appearance: none; /* Remove o estilo padrão do checkbox */
+    background-color: var(--primary-color);
+    border: 2px solid var(--alt2-color);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.checkbox:hover, .checkboxAll:hover {
+    border-color: var(--main2-color);
+}
+
+/* css from checkeds checkboxs */
+.checkbox:checked, .checkboxAll:checked {
+    background-color: var(--main2-color);
+    border-color: var(--main2-color);
+    position: relative;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* checkmark when checking the checkbox */
+.checkbox:checked::after, .checkboxAll:checked::after {
+    content: '\2713'; 
+    font-size: 13px;
+    color: var(--primary-color);
+    position: absolute;
+}
+/* CSS CHECKBOX SECTIONS AND HEADER END HERE */
+
+
+.notifications {
+    width: 100%;
+    height: 75%;
+    overflow-y: auto; /* Ativa a barra de rolagem interna no main */
+    overflow-x: hidden; /* Esconde a rolagem horizontal no main */
+    padding: 10px;
+    box-sizing: border-box; /* Inclui padding no cálculo da altura */
+}
+
+/* Estilo para a barra de rolagem em navegadores baseados em WebKit */
+.notifications::-webkit-scrollbar {
+    width: 14px !important; /* Largura da barra de rolagem */
+}
+  
+/* Fundo da barra de rolagem */
+.notifications::-webkit-scrollbar-track {
+    background: var(--alt2-color) !important; /* Cor do fundo da barra */
+    border-radius: 10px !important; /* Deixa as bordas arredondadas */
+}
+  
+/* A própria barra de rolagem */
+.notifications::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color); /* Cor da barra de rolagem */
+    border-radius: 10px; /* Deixa as bordas aerredondadas */
+    border: 3px solid var(--background-color); /* Cria um espaçamento entre a barra e o track */
+}
+
+/* Estilo quando o mouse está sobre a barra de rolagem */
+.notifications::-webkit-scrollbar-thumb:hover {
+    background-color: var(--main2-color); /* Muda a cor da barra ao passar o mouse */
+}
+
+
+/* CSS FROM SECTIONS NOTIFICAITONS  */
+section.notification-item {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra leve para destacar cada notificação */
+    position: relative; /* Permite o posicionamento absoluto dos ícones */
+    background-color: var(--primary-color) !important;
+
+    /* Add space for icons on hover */
+    &:hover {
+        padding-right: 40px; 
+    }
+
+    /* changes the specific selectors of the section checkboxes */
+    & .checkbox {
+        width: 16px;
+        height: 16px;
+        border-radius: 40%;
+        /* margin-top: -0.5px; */
+        margin-bottom: 3px;
+    }
+
+    & .checkbox:checked::after {
+        top: -3.2px;
+        left: 1px;
+    }
+
+    /* css from the content of sections */
+    & .content {
+        flex-grow: 1;
+        color: var(--secondary-color);
+        white-space: nowrap; /* Não permite quebra de linha */
+        overflow: hidden; /* Oculta o texto que ultrapassa o contêiner */
+        text-overflow: ellipsis; /* Adiciona reticências (...) */
+        max-width: 88%;
+        margin-right: 3%; 
+    }
+
+    &:hover .content {
+        max-width: calc(100% - 160px) /* Ajuste para dar espaço aos ícones */
+    }
+ 
+    /* css from the div where the icons in  */
+    & .actions {
+        display: flex;
+        opacity: 0; /* Inicialmente invisível */
+        transition: opacity 0.5s ease;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        position: absolute; /* Permite que os ícones fiquem sobre a notificação */
+        top: 35%; /* Ajuste a posição vertical conforme necessário */
+        right: 2%; 
+        color: var(--secondary-color);
+
+    }
+
+    /* makes icons visible on mouse hover */
+    &:hover .actions {
+        opacity: 1; 
+    }    
+
+    /* css from the time was created the notificaitons*/
+    & .time {
+        font-weight: bold;
+        color: var(--secondary-color);
+        font-size: 14px;
+        transition: opacity 0.5s ease;
+    }
+
+    &:hover .time {
+        opacity: 0;
+    }
+
+    /* css hover from the icons */
+    & .archiveProx:hover, & .readProx:hover, & .favoriteProx:hover, & .deleteButtons:hover, & .notifcationsCSS:hover   {
+        transition: font-size 0.3s ease-in-out, color 0.2s ease-in-out;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* css image unfavorite */
+    .image_star {
+        margin-right: -4%;
+        width: 24px; /* Ajuste conforme necessário */
+        height: 24px; /* Ajuste conforme necessário */
+        background-image: url("/static/images/notifications/unfavorite2.png");
+        background-size: cover; /* Para cobrir completamente o elemento */
+        background-position: center; /* Para centralizar a imagem */
+        transition: width 0.3s ease-in-out; /* Combinar transições em uma única linha */
+        margin-top: -0.30%;
+    }
+    
+    .tre {
+        /* width: 20px; */
+        height: 18px;
+        margin-top: 80%;
+    }
+
+    .tre .image_star:hover {
+        width: 36px; /* Ajuste conforme necessário */
+    }
+}
+
+
+section.active_section {
+    max-height: 0;       /* Remove o espaço ocupado */
+    opacity: 0;          /* Torna invisível */
+    overflow: hidden;    /* Esconde qualquer conteúdo que ultrapasse */
+    transition: max-height 0.5s ease, opacity 0.5s ease; /* Transições suaves */
+}
+
+/* CSS FROM SECTIONS NOTIFICAITONS END HERE*/

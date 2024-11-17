@@ -1,0 +1,136 @@
+/* Estilo inicial do formulário */
+.form-container {
+    transition: transform 2s ease, opacity 1s ease;
+}
+
+/* Classe para esconder o formulário */
+.hide-form {
+    transform: translateY(-50px);
+    opacity: 0;
+}
+
+/* Classe para mostrar o formulário com animação */
+.show-form {
+    transform: translateY(0); 
+    opacity: 1;
+}
+
+
+/* Cunstom SweetAlert */
+.custom-popup {
+    background: linear-gradient(135deg, var(--alt1-color), var(--alt2-color));
+    border-radius: 15px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.custom-swal-container{
+    position: fixed !important;
+    /* background-color: #d41111 !important; Altere a cor de fundo do container */
+    color: var(--main2-color) !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999 !important; /* Garante que o modal esteja acima de outros elementos */
+    overflow: hidden !important; /* Garante que o modal não cause rolagem na página */
+}
+
+/* Camada de sobreposição com desfoque */
+.custom-swal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px); /* Efeito de desfoque */
+    z-index: 2; /* Deve estar abaixo do modal */
+}
+
+
+/* Sucesse alert */
+.custom-title_succes {
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.custom-succes-button {
+    padding: 14px;
+    border: none;
+    border-radius: 20px;
+    background: var(--main1-color);
+    color: var(--secondary-color);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-top: 5px;
+    width: 190px;
+}
+
+.custom-succes-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    animation: pulse 1.5s ease-in-out;
+}
+
+.custom-succes-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Error alert */
+
+.custom-title_error {
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.custom-error-button {
+    padding: 14px;
+    border: none;
+    border-radius: 20px;
+    background: var(--main2-color);
+    color: var(--secondary-color);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-top: 5px;
+    width: 190px;
+}
+
+.custom-error-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    animation: pulse 1.5s ease-in-out;
+}
+
+.custom-error-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Animação de pulsação */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
