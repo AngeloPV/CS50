@@ -47,8 +47,7 @@ class Upload_photo:
 
                 image.thumbnail((500, 500))
 
-                format=file_extension[1:].upper()
-                image.save(file_path, format=format)  
+                image.save(file_path)  
 
                 # Salva o nome da imagem no banco de dados
                 self.user_data.set_profile_img(img=new_filename, user_id=session.get("user_id"))

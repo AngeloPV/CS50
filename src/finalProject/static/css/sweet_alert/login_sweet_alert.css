@@ -63,8 +63,8 @@
     padding: 14px;
     border: none;
     border-radius: 20px;
-    background: var(--main1-color);
-    color: var(--secondary-color);
+    background: var(--main2-color) !important;
+    color: var(--alt1-color);
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
@@ -100,7 +100,7 @@
     border: none;
     border-radius: 20px;
     background: var(--main2-color);
-    color: var(--secondary-color);
+    color: var(--alt1-color);
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;

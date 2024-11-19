@@ -71,12 +71,15 @@ class Account:
         email = self.user_data.get_user_email(user_id=session.get('user_id'))
         phone = self.user_data.get_user_phone(user_id=session.get('user_id'))
 
-        data = {'first_name': name[0], 
+        data = {'name': name,
+                'first_name': name[0], 
                 'last_name': name[-1],
                 'email': email, 
                 'phone': phone, 
                 }
         return template_render('account.html', **data)
+    
+
     
     #valida as informaçoes e armazena em result, se for false, retorna a pagina com a msg armzenada em result[1]
     #se for true, armazena o dado a ser alterado na sessao e retorna o verify.html
@@ -87,7 +90,7 @@ class Account:
             if request.form.get('update_send_button'):
                 phone = str(request.form.get('phone'))
                 confirm_phone = str(request.form.get('confirm_phone'))
-                print(phone, confirm_phone, '--------------------------------------')
+
                 #tratamento dos dados
                 phone = phone.strip() #tira os espaços
                 confirm_phone = confirm_phone.strip() 
@@ -118,7 +121,8 @@ class Account:
                 
                 #Limpa a session to update
                 session.pop('to_update', None)
-                return redirect(url_for("main_routes.route_method", route_name="account", method="index"))
+                data = {'authorize': 'Telefone atualizado com sucesso!', 'redirect_url': '/account/index'}
+                return template_render("update_data.html", **data)
 
             result = self.validate_data()
             
@@ -156,7 +160,8 @@ class Account:
                 
                 #Limpa a session to update
                 session.pop('to_update', None)
-                return redirect(url_for("main_routes.route_method", route_name="account", method="index"))
+                data = {'authorize': 'Email atualizado com sucesso!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
+                return template_render("update_data.html", **data)
 
             #1°parte
             result = self.validate_data()
@@ -192,7 +197,8 @@ class Account:
                 
                 #Limpa a session to update
                 session.pop('to_update', None)
-                return redirect(url_for("main_routes.route_method", route_name="account", method="index"))
+                data = {'authorize': 'Senha atualizada com sucesso!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
+                return template_render("update_data.html", **data)
         
         #1°parte
             result = self.validate_data()
@@ -205,41 +211,37 @@ class Account:
 
         return template_render('update_data.html')
         
-    # #usuario digita o código
-    # def verify(self):
-    #     if request.method == 'POST':
-    #         #armazena todos os digitos na lista user_code
-    #         user_code = ''
-    #         for c in range(1, 7):
-    #             digit = (request.form.get(f'digit-{c}'))
-    #             user_code += digit
-
-    #         login = request.form.get('login')
-
-    #         # se o codigo estiver correto leva pra update_data com o parametro verified: true
-    #         if session['code'] == user_code.upper():
-
-    #             if login == 'True':
-    #                 if self.authenticate.update_account(session["user_authentication_id"]):
-    #                     del(session["user_authentication_id"])
-
-    #                     session['Authorize'] = True
-    #                     return redirect(url_for("main_routes.route_method", route_name="login", method="index"))
-                    
-    #                     # return template_render('login.html')
-                    
-    #                 session['Authorize'] = False
-    #                 return redirect(url_for("main_routes.route_method", route_name="login", method="index"))
-            
-    #             data = {"verified": True, 
-    #                     "to_update": session.get('to_update')}
+    def name(self):
+        if request.method == 'POST':
+            if request.form.get('update_send_button'):
+                name = str(request.form.get('name'))
+                confirm_name = str(request.form.get('confirm_name'))
                 
-    #             #limpa a sessao do code
-    #             session.pop('code', None)
-    #             return template_render('update_data.html', **data)
-                
-    #         else:
-    #             data = {"msg": "Invalid code"}
-    #             return template_render('verify.html', **data)
+                #verifica se tem algum numero no meio dos nomes
+                if any(char.isdigit() for char in name) or any(char.isdigit() for char in confirm_name):
+                    data = {'msg': 'Digite um nome valido', "verified": True, "to_update": f'{session.get("to_update")}'}
 
-    #     return template_render('verify.html')
+                    return template_render("update_data.html", **data)
+                #verifica se os nomes sao iguais
+                if not name.lower() == confirm_name.lower():
+                    data = {'msg': 'Os campos devem ser iguais', "verified": True, "to_update": f'{session.get("to_update")}'}
+
+                    return template_render("update_data.html", **data)
+                
+                #se tudo der certo
+                self.update.exe_update(data={"name": f"{name.title()}"}, table_name='user_data', 
+                                       data_where={'id': f'{session.get("user_id")}'}, operator='=, =')
+                #Limpa a session to update
+                session.pop('to_update', None)
+                data = {'authorize': 'Nome atualizado com sucesso!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
+                return template_render("update_data.html", **data)
+
+            result = self.validate_data()
+            if not result[0]:
+                data = result[1]
+                return template_render("update_data.html", **data) 
+            #passa oq o usuario vai alterar pela sessao
+            session['to_update'] = 'name'  
+            return template_render('verify.html') 
+
+        return template_render('update_data.html')

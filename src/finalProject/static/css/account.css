@@ -178,20 +178,29 @@ body {
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-areas:
-    "fn ln"
+    "nm nm"
     "ea ph"
     "ps space";
     gap: 15px;
 }
 
-.first_name {
+.name {
+    grid-area: nm;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+    "fn ln";
+    gap: 15px;
+
+}
+
+.name .fn{
     grid-area: fn;
 }
 
-.last_name {
+.name .ln{
     grid-area: ln;
 }
-
 .email {
     grid-area: ea;
 }
@@ -236,3 +245,4 @@ body {
 .postal_code {
     grid-area: pc;
 }
+

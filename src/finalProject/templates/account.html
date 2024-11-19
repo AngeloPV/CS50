@@ -28,7 +28,7 @@
                     <img src="{{ url_for('static', filename='images/sidebar/perfil_foto.png') }}" id="profile_photo" alt="Imagem do Perfil">
                 {% endif %}
                 <div class="info_data">
-                    <h3 class="title">{{ first_name }} {{ last_name }}</h3>
+                    <h3 class="title">{{ name|join(' ') }}</h3>
                     <h4 class="subtitle">Maranguape, Ceará, Brasil</h4>
                 </div>
     
@@ -42,13 +42,15 @@
                     </button>
                 </div>
                 <div class="mid">
-                    <div class="first_name editable">
-                        <h4 class="subtitle">First name</h4>
-                        <span class="usertitle" id="first_name_display">{{ first_name }}</span>
-                    </div>
-                    <div class="last_name editable">
-                        <h4 class="subtitle">Last name</h4>
-                        <span class="usertitle" id="last_name_display">{{ last_name }}</span>
+                    <div class="name editable">
+                        <div class="first_name">
+                            <h4 class="subtitle">First name</h4>
+                            <span class="usertitle" id="first_name_display">{{ first_name }}</span>
+                        </div>
+                            <div class="last_name">
+                            <h4 class="subtitle">Last name</h4>
+                            <span class="usertitle" id="last_name_display">{{ last_name }}</span>
+                        </div>
                     </div>
                     <div class="email_address editable">
                         <h4 class="subtitle">Email address</h4>

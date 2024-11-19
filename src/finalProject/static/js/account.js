@@ -100,9 +100,7 @@ let elementId = event.currentTarget.querySelector('span').id;
 
 // Redireciona com base no dado clicado
 if (elementId === 'first_name_display') {
-    window.location.href = '/edit-first-name';
-} else if (elementId === 'last_name_display') {
-    window.location.href = '/edit-last-name';
+    window.location.href = 'name';
 } else if (elementId === 'email_display') {
     window.location.href = 'email';
 } else if (elementId === 'phone_display') {
