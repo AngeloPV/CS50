@@ -12,10 +12,21 @@ class GetCryptoData:
         self.dashboard = Dashboard_data()
         self.update = CryptoUpdate()
 
-    #pega os dados da api dos ultimos 6 meses
-    def get_cripto_data(crypto_id):
+    #Formata o volume em uma forma legível como '5M', '32k', '6.6B', etc.
+    def format_volume(self, volume):
+        if volume >= 1_000_000_000:
+            return f"{volume / 1_000_000_000:.1f}B"
+        elif volume >= 1_000_000:
+            return f"{volume / 1_000_000:.1f}M"
+        elif volume >= 1_000:
+            return f"{volume / 1_000:.1f}k"
+        else:
+            return str(volume)
 
-        url = f'https://api.coingecko.com/api/v3/coins/{crypto_id}/market_chart'
+    #pega os dados da api dos ultimos 6 meses
+    def get_cripto_data(crypto_name):
+
+        url = f'https://api.coingecko.com/api/v3/coins/{crypto_name}/market_chart'
         params = {
             'vs_currency': 'usd',
             'days': '180',
@@ -59,6 +70,43 @@ class GetCryptoData:
         except requests.RequestException as e:
             return {"error": str(e)}
 
+    #funcao pra pegar o nome, simbolo, preço atual, variação das ultimas 24hrs e volume de transação das ultimas 
+    #24hrs de varias moedas
+    def get_crypto_data_for_buy(self, crypto_names):
+        #url da api com varias moedas
+        api_url = "https://api.coingecko.com/api/v3/coins/markets"
+
+        # converte a lista de moedas em uma string separada por vírgulas
+        crypto_names_str = ','.join(crypto_names)
+        
+        try:
+            #requisita varias moedas ao msm tempo
+            params = {
+                'vs_currency': 'usd',
+                'ids': crypto_names_str  
+            }
+            response = requests.get(api_url, params=params)
+            response.raise_for_status()  
+            data = response.json()
+
+            # organiza os dados para cada moeda
+            result = {}
+            for crypto in data:
+                result[crypto['id']] = {
+                    'name': crypto.get('name', 'N/A'),
+                    'symbol': crypto.get('symbol', 'N/A').upper(),
+                    'current_price': crypto.get('current_price', 'N/A'),
+                    'volume_24h': self.format_volume(crypto.get('total_volume', 0)),#pega o volume formatado
+                    'status': True if crypto['id'] in ['bitcoin', 'ethereum'] else False,
+                    'price_change_percentage_24h': crypto.get('price_change_percentage_24h', 'N/A') 
+
+                }
+
+            return result
+
+        except requests.RequestException as e:
+            return {"error": str(e)}
+                        
     #chama a funcao no valor referente a moeda
     crypto_data = {
         "bitcoin": get_cripto_data('bitcoin'),
