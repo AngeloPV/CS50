@@ -1,0 +1,30 @@
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+
+        <h2 class="modal-title">{{ shop.name }}</h2>
+        <img src="{{ url_for('static', filename='images/cryptocurrencies_icons/' + shop.name|lower + '.png') }}" id="icon">
+    
+        {% if error_message %}
+            {{ error_message }}    
+        {% endif %}
+        <div class="form">
+            <form action="" method="post">
+                <label for="amount" class="input-label" >Amount:</label>
+                <input id="amount" class="input-field" autocomplete="off" autofocus name="user" 
+                    placeholder="Digite a quantidade desejada" type="text" value="">
+
+                <label for="password" class="input-label" >4 digits password:</label>
+                <input id="password" class="input-field" autocomplete="off" name="password" 
+                    placeholder="Digite sua Senha" type="password" value="">
+
+                <input name="SendBuy" id="submitButton" class="submit-btn" type="submit" value="Comprar">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='../static/js/modal_buy.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='../static/css/modal_buy.css') }}">
+

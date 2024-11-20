@@ -9,7 +9,10 @@
     {% if width is not defined %}
         {% set width = 400 %}
     {% endif %}    
-
+    <!-- Define o background com degrade por padrão, mas da pra alterar criando uma variavel bg-->
+    {% if bg is not defined %}
+        {% set bg = 'linear-gradient(to top right, #1B263B 40%, #1b263bdf 90%)' %}
+    {% endif %}
     <!-- Adiciona o background -->
     <div class="form-container {% if error_message or error %}error{% endif %}">
 
@@ -55,7 +58,8 @@
     // Altera a largura do container, padrão é 400
     
     const width = "{{ width }}"; 
-
+    const bg = "{{ bg }}";
     // Atualiza a variável CSS
     document.documentElement.style.setProperty('--container-width', `${width}px`);
+    document.body.style.background = bg;
 </script>

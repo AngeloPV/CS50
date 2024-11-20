@@ -8,8 +8,13 @@
     <title>Buy crypto currencies</title>
 
 </head>
-<body class="{{ session['theme'] }}">
+<body class="{{ session['theme'] }}" class="modal no-background">
     {% include 'layouts/sidebar.html' %}
+
+    
+    {% if modal %}
+        {% include 'modal_buy.html' %}
+    {% endif %}
     <main class="main">
         <table>
             <thead>
@@ -25,7 +30,11 @@
             
             <tbody>
                 {% for crypto_id, row in session['shop'].items() %}
-                <tr>
+                <tr 
+                {% if row.status %}
+                    onclick="window.location.href='/buy/{{ row.name|lower }}';"
+                    class="clickable"
+                {% endif %}>
                     <td><b>{{ row.name }}</b></td>
                     <td><b>{{ row.symbol }}</b></td>
                     <td><b>{{ "%.2f" | format(row.current_price) }}</b></td>
@@ -39,11 +48,12 @@
                 </tr>
                 {% endfor %}
             </tbody>            
-
         </table>
+
     </main>
 </body>
 <script>
+
     function sortTable(columnIndex) {
     const table = document.querySelector("table tbody");
     const rows = Array.from(table.rows);

@@ -1,0 +1,149 @@
+.no-background {
+    background: transparent !important;
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px; 
+    border-radius: 10px; 
+    box-sizing: border-box; 
+    padding-bottom: 10vh;
+}
+
+#icon{
+    width: 15vh; 
+    height: 15vh;
+}
+
+.modal-title{
+    font-size: 30px;
+    font-family: 'Montserrat', sans-serif;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 97%;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+form{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-message {
+    font-size: 16px;
+    color: var(--main2-color);
+    background-color: var(--main3-color);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.input-label{
+    color: var(--background-color);
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: left;
+}
+
+/* Estilo para os campos de entrada */
+.input-field{
+    margin-bottom: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Quando o campo está em foco */
+.input-field:focus {
+    outline: none;
+    border: 2px solid var(--main2-color);
+    background-color: var(--primary-color);
+}
+
+.input-field::placeholder {
+    opacity: 0.7;  
+}
+
+/* Estilo para o botão de enviar */
+.submit-btn {
+    padding: 14px;
+    border: none;
+    border-radius: 20px;
+    background: var(--main2-color);
+    color: var(--alt1-color);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-top: 5px;
+    width: 100%;
+}
+
+/* Efeito de hover para o botão */
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    animation: pulse 1.5s ease-in-out;
+}
+
+/* Efeito de clique (pressionado) */
+.submit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Animação de pulsação */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

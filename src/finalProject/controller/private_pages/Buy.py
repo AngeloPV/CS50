@@ -16,5 +16,19 @@ class Buy:
             ]
 
             session['shop'] = self.data.get_crypto_data_for_buy(cryptos)
-
+        
         return template_render('buy.html')
+    
+    def bitcoin(self):
+        data = {
+            'shop': session['shop']['bitcoin'],
+            'modal': True
+        }
+        return template_render('buy.html', **data)
+    
+    def ethereum(self):
+        data = {
+            'shop': session['shop']['ethereum'],
+            'modal': True
+        }
+        return template_render('buy.html', **data)

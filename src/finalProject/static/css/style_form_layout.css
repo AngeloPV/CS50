@@ -1,3 +1,5 @@
+
+
 /* Estilos básicos para o corpo */
 .content {
     margin: 0;
@@ -13,11 +15,7 @@
     overflow: hidden;
 }
 
-/* Fundo desfocado */
-body{
-    background: linear-gradient(to top right, #1B263B 40%, #1b263bdf 90%);
-    ;
-}
+
 
 /* Estilo para o contêiner de login */
 .form-container {
