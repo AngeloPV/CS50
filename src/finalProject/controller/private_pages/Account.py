@@ -77,6 +77,9 @@ class Account:
                 'email': email, 
                 'phone': phone, 
                 }
+        
+        if 'authorize' in session:
+            del session['authorize']
         return template_render('account.html', **data)
     
 

@@ -1,3 +1,4 @@
+
 // Obtém o modal e o botão de fechar
 const modal = document.getElementById("myModal");
 const span = document.querySelector(".close");

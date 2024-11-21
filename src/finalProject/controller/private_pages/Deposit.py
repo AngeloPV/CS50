@@ -1,5 +1,6 @@
 from flask import request, redirect, session, url_for
 from ...models.Deposit_data import Deposit_data
+from ...models.User import User
 from ...renderer import template_render
 import qrcode # type: ignore
 import io
@@ -11,6 +12,7 @@ USER_ID = session.get('user_id')
 class Deposit:
     def __init__(self):
         self.data = Deposit_data()
+        self.user_data = User()
 
     #cria o qr code q leva pra /confirmation, onde o finaliza o deposito e redirecona pra pagina my_deposits
     def generate_confirmation_code(self):
@@ -104,7 +106,7 @@ class Deposit:
         if request.method == 'POST':
             if request.form.get('button'):
                 self.data.set_deposit(USER_ID, session.get('deposited_value'), session.get('currency'))
-
+                self.user_data.update_cash(sit='+', user_id=USER_ID, cash=session.get('deposited_value'))
                 #Limpa a session deposited_value e currency
                 session.pop('deposited_value', None)
                 session.pop('currency', None)

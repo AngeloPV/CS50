@@ -7,8 +7,24 @@
 
     <title>Buy crypto currencies</title>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+
 </head>
 <body class="{{ session['theme'] }}" class="modal no-background">
+    <script>
+        {% if authorize %}
+            document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: 'Success',
+                text: '{{ authorize}}',
+                icon: 'success',
+                confirmButtonText: 'Continue'
+            });
+        });
+        {% endif %}
+    </script>
     {% include 'layouts/sidebar.html' %}
 
     
@@ -21,9 +37,9 @@
                 <tr>
                     <th onclick="sortTable(0)">Name<button class="sort-btn asc"></button></th>    
                     <th onclick="sortTable(1)">Symbol<button class="sort-btn asc"></button></th>
-                    <th onclick="sortTable(2)">Price(USD)<button class="sort-btn desc"></button></th>
+                    <th onclick="sortTable(2)">Price(USD)<button class="sort-btn"></button></th>
                     <th onclick="sortTable(3)">Var(%)<button class="sort-btn asc"></button></th>
-                    <th onclick="sortTable(4)">Volume(24h) <button class="sort-btn asc"></button></th>
+                    <th onclick="sortTable(4)">Volume(24h) <button class="sort-btn"></button></th>
                     <th onclick="sortTable(5)">Status<button class="sort-btn asc"></button></th>
                 </tr>
             </thead>
@@ -49,6 +65,7 @@
                 {% endfor %}
             </tbody>            
         </table>
+           
 
     </main>
 </body>
@@ -99,8 +116,6 @@
         }
     });
 }
-
-    
     </script>
 
 </html>
