@@ -107,8 +107,12 @@ class Deposit:
             if request.form.get('button'):
                 self.data.set_deposit(USER_ID, session.get('deposited_value'), session.get('currency'))
                 self.user_data.update_cash(sit='+', user_id=USER_ID, cash=session.get('deposited_value'))
+
+                session['balance'] = self.user_data.get_cash(user_id=session.get('user_id'))
+
                 #Limpa a session deposited_value e currency
                 session.pop('deposited_value', None)
                 session.pop('currency', None)
-                return redirect(url_for("main_routes.route_method", route_name="my_deposits", method="index"))
+                data = {'authorize': 'Depósito realizado com sucesso!', 'redirect_url': '/my_deposits/index'}
+                return template_render("deposit_confirm.html", **data)
             

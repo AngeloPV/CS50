@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../static/css/dashboard.css">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
     <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
 
     {% include 'layouts/layout.html' %}
     
 </head>
 <body class="{{ session['theme'] }}">
+    {% include 'layouts/balance_popup.html' %}
+
     {% include 'layouts/sidebar.html' %}
     
     <div id="preloader">

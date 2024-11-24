@@ -8,16 +8,19 @@ const cryptoNameElement = document.getElementById("cryptoName");
 function openModal(cryptoName) {
     cryptoNameElement.textContent = cryptoName; // Define o nome da moeda no modal
     modal.style.display = "block"; // Mostra o modal
+
 }
 
 // Fecha o modal ao clicar no "x"
 span.onclick = function () {
     modal.style.display = "none";
+    window.location.href = "/buy/index";
 };
 
 // Fecha o modal ao clicar fora dele
 window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = "none";
+        window.location.href = "/buy/index";
     }
 };

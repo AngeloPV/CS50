@@ -11,6 +11,8 @@
 
 </head>
 <body class="{{ session['theme'] }}">
+    {% include 'layouts/balance_popup.html' %}
+
     {% extends 'layouts/form.html' %}
     {% include 'layouts/sidebar.html' %}
     {% if qr_code %}

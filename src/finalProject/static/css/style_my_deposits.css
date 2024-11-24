@@ -4,42 +4,95 @@ html{
 
 body{
     background-color: var(--background-color) !important;
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: 30% 70%;
 }
-.main {
+
+/* Estilo da main balance */
+.main-balance {
+    background-color: var(--primary-color); 
+    margin-left: calc(3.5vh + 55px);  
+    margin-top: 3.5vh;  
+    margin-right: 3.5vh;  
+    border-radius: 10px;
+    padding-top: 2vh;
+    padding-left: 10vh;
+    padding-right: 10vh;
+}
+
+.balance-content{
+    display: flex;
+    margin-bottom: 2.5vh;
+}
+
+.main-balance-title {
+    color: var(--secondary-color);
+    font-size: 36px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.main-balance-value {
+    color: var(--secondary-color);
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+.balance-text-mask {
+    display: inline; /* Exibe o texto de máscara */
+}
+
+.real-balance {
+    display: none; /* Inicialmente oculto */
+}
+
+/* Adiciona transição suave */
+.real-balance, .balance-text-mask {
+    transition: opacity 0.3s ease;
+}
+
+.eye-icon {
+    position: fixed;
+    top: 10vh;
+    right: 13vh;
+    cursor: pointer;
+    display: block;
+    width: 6vh;
+    height: 6vh;
+}
+
+.deposit-button{
+    padding: 2vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    width: 30%;
+    margin: 0 auto; /* Centraliza horizontalmente */
+    display: block;
+    border-radius: 20px;
+    background-color: var(--background-color);
+    color: var(--alt1-color);
+    border: 0;
+    transition: transform 0.2s ease, background-color 0.5s ease;
+}
+
+.deposit-button:hover{
+    transform: scale(1.03);
+    background-color: var(--main2-color);
+}
+/*estilo da main table */
+.main-table {
     margin-left: calc(3.5vh + 55px);  
     background-color: var(--primary-color) !important;
     margin-top: 3.5vh;  
     margin-right: 3.5vh;  
     margin-bottom: 3vh;  
     border-radius: 10px;
-    height: 93vh;
-    padding-top: 5px;
     overflow-y: auto;  /* Permite rolagem quando o conteúdo ultrapassar a altura */
 
-}
-
-.main::-webkit-scrollbar {
-    width: 14px !important; /* Largura da barra de rolagem */
-}
-
-/* Fundo da barra de rolagem */
-.main::-webkit-scrollbar-track {
-    background: var(--alt2-color) !important; /* Cor do fundo da barra */
-    border-radius: 10px !important; /* Deixa as bordas arredondadas */
-}
-
-/* A própria barra de rolagem */
-.main::-webkit-scrollbar-thumb {
-    background-color: var(--primary-color); /* Cor da barra de rolagem */
-    border-radius: 10px; /* Deixa as bordas arredondadas */
-    border: 3px solid var(--background-color); /* Cria um espaçamento entre a barra e o track */
-    transition: background-color 0.5s ease; /* Aplica a transição diretamente ao thumb */
-
-}
-
-/* Estilo quando o mouse está sobre a barra de rolagem */
-.main::-webkit-scrollbar-thumb:hover {
-    background-color: var(--main2-color); /* Muda a cor da barra ao passar o mouse */
 }
 
 table {
@@ -65,6 +118,8 @@ thead{
     top: 0;  /* Fixa o cabeçalho no topo */
     z-index: 1;  /* Coloca o cabeçalho acima das linhas da tabela ao rolar */
     background-color: var(--primary-color) !important;
+    height: 100%; /* Faz o cabeçalho ocupar toda a altura disponível */
+
     box-shadow: 0 5px 5px -5px var(--main2-color); /* Cria um efeito de separação */
 
 
@@ -72,6 +127,8 @@ thead{
 th, td {
     padding: 10px;
     text-align: center; /* Alinha o texto à esquerda */
+    border: none; /* Remove bordas para que não haja sobreposição */
+
 }
 td {
     font-family: 'Montserrat', sans-serif;
@@ -106,3 +163,26 @@ table tr:hover td {
     content: "▼"; /* Ícone para ordenação decrescente */
 }
 
+.main-table::-webkit-scrollbar {
+    width: 14px !important; /* Largura da barra de rolagem */
+}
+
+/* Estilo da barra de rolagem */
+.main-table::-webkit-scrollbar-track {
+    background: var(--alt2-color) !important; /* Cor do fundo da barra */
+    border-radius: 10px !important; /* Deixa as bordas arredondadas */
+}
+
+/* A própria barra de rolagem */
+.main-table::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color); /* Cor da barra de rolagem */
+    border-radius: 10px; /* Deixa as bordas arredondadas */
+    border: 3px solid var(--background-color); /* Cria um espaçamento entre a barra e o track */
+    transition: background-color 0.5s ease; /* Aplica a transição diretamente ao thumb */
+
+}
+
+/* Estilo quando o mouse está sobre a barra de rolagem */
+.main-table::-webkit-scrollbar-thumb:hover {
+    background-color: var(--main2-color); /* Muda a cor da barra ao passar o mouse */
+}

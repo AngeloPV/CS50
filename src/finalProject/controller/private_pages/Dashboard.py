@@ -4,6 +4,7 @@ from ..protected_pages.plot_creator import Plot_Creator
 from ..protected_pages.get_crypto_data import GetCryptoData
 from ..protected_pages.user_data import User_data
 from ..protected_pages.Count_notifications import Count_notifications
+from ...models.User import User
 from ...app import processor_add_notifications_processor
 
 session.pop("user_email", None)
@@ -13,6 +14,7 @@ DIGITS = []
 
 class Dashboard:
     def __init__(self):
+        self.user = User()
         self.user_data = User_data() #cria uma instancia da classe responsavel pelos dados do usuário
         self.data = GetCryptoData() #cria uma instancia da classe responsavel pelos dados das moedas
         self.dashboard = Plot_Creator() #cria uma instancia da classe responsavel por gerar os graficos
@@ -44,6 +46,7 @@ class Dashboard:
         session['theme'] = self.user_data.get_theme(USER_ID)
         session['language'] = self.user_data.get_language(USER_ID)
         session['profile_img'] = self.user_data.get_profile_img(USER_ID)
+        session['balance'] = self.user.get_cash(USER_ID)
 
 
         self.data.do_update_database() #atualiza o banco das criptomoedas

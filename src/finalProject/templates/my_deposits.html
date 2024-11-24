@@ -2,13 +2,34 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_my_deposits.css') }}">
+    <script src="{{ url_for('static', filename='js/my_deposits.js') }}" defer></script>
+
+    
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My deposits</title>
 </head>
 <body class="{{ session['theme'] }}">
     {% include 'layouts/sidebar.html' %}
-    <main class="main">
+
+    <main class="main-balance">
+        <div class="balance-content">
+            <div class="balance-text">
+                <h2 class="main-balance-title">Account balance</h2>
+                <h3 class="main-balance-value">
+                    <span class="balance-text-mask">$**</span> <!-- Valor oculto (inicial) -->
+                    <span class="real-balance">${{ session['balance'] }}</span> <!-- Valor real, oculto inicialmente -->
+                </h3>
+            </div>
+            
+            <img class="eye-icon" alt="toggle balance visibility" onclick="toggleBalance()"
+            src="{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}">
+        </div>
+        <button class="deposit-button" onclick="window.location.href='/deposit/index'">Make a new deposit!</button>
+        </main>
+
+    <main class="main-table">
         <table>
             <thead>
                 <tr>
@@ -36,59 +57,29 @@
 
         </table>
     </main>
+
+    <script>
+        function toggleBalance() {
+            const balanceTextMask = document.querySelector('.balance-text-mask');
+            const realBalance = document.querySelector('.real-balance');
+            const eyeIcon = document.querySelector('.eye-icon');
+
+            if (realBalance.style.display === "none") {
+                // Se o valor real está oculto, mostre o valor e altere o ícone para o olho aberto
+                realBalance.style.display = "inline";
+                balanceTextMask.style.display = "none";
+                eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/open_eye_' + session['theme'] + '.png') }}";
+            } else {
+                // Se o valor real está visível, mostre a máscara e altere o ícone para o olho fechado
+                realBalance.style.display = "none";
+                balanceTextMask.style.display = "inline";
+                eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", toggleBalance);
+    </script>
 </body>
 
-
-<script>
-let currentSortColumn = null; // Coluna atualmente ordenada
-
-function sortTable(columnIndex) {
-    const table = document.querySelector("table tbody");
-    const rows = Array.from(table.rows);
-
-    // Seleciona o botão da coluna atual
-    const currentBtn = document.querySelectorAll(".sort-btn")[columnIndex];
-
-    // Define a direção inicial
-    let sortOrder = "asc"; // Vamos iniciar com "asc" (para baixo)
-
-    // Ordena as linhas da tabela
-    rows.sort((a, b) => {
-        const cellA = a.cells[columnIndex].textContent.trim();
-        const cellB = b.cells[columnIndex].textContent.trim();
-
-        if (!isNaN(cellA) && !isNaN(cellB)) {
-            // Ordenação numérica
-            return sortOrder === "asc" ? cellA - cellB : cellB - cellA;
-        }
-
-        // Ordenação alfabética
-        return sortOrder === "asc"
-            ? cellA.localeCompare(cellB)
-            : cellB.localeCompare(cellA);
-    });
-
-    // Reanexa as linhas ordenadas na tabela
-    rows.forEach(row => table.appendChild(row));
-
-    // Atualiza o estado das setas
-    document.querySelectorAll(".sort-btn").forEach((btn, index) => {
-        btn.classList.remove("asc", "desc"); // Remove as classes de todas as colunas
-
-        if (index === columnIndex) {
-            // A seta clicada vai para baixo ("desc")
-            btn.classList.add("desc");
-        } else {
-            // As setas das outras colunas vão para cima ("asc")
-            btn.classList.add("asc");
-        }
-    });
-
-    // Atualiza a coluna atual
-    currentSortColumn = columnIndex;
-
-}
-
-</script>
 
 </html>

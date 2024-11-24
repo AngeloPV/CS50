@@ -1,0 +1,97 @@
+/* Estilo do popup */
+.balance_popup {
+    z-index: 9;
+    position: fixed;
+    top: 25%; /* Centraliza verticalmente */
+    right: 0; /* Posiciona no canto direito */
+    transform: translateY(-50%); /* Ajusta para alinhar no centro */
+    width: 35px; /* Largura inicial */
+    height: 60px; /* Altura do meio círculo */
+    background-color: var(--alt2-color); /* Cor do popup */
+    border-top-left-radius: 40px; /* Faz o meio círculo */
+    border-bottom-left-radius: 40px;
+    transition: width 0.3s ease; /* Transição suave ao expandir */
+    cursor: pointer; /* Muda o cursor para indicar interatividade */
+    display: flex;
+    align-items: center; /* Centraliza os elementos verticalmente */
+    justify-content: flex-start; /* Alinha os elementos à esquerda */
+    padding-left: 10px; /* Espaço interno para os ícones */
+    overflow: hidden; /* Evita elementos fora do contêiner */
+}
+
+/* Quando o mouse passar sobre o popup */
+.balance_popup:hover {
+    width: 200px; /* Expande para mostrar o texto */
+}
+
+/* Estilo para o contêiner das imagens */
+.icon_container {
+    position: relative; /* Permite sobreposição das imagens */
+    width: 24px; /* Tamanho fixo para o ícone */
+    height: 24px;
+}
+
+/* Olho fechado */
+.close_eye, .open_eye {
+    position: absolute; /* Sobrepõe as imagens uma sobre a outra */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupam o mesmo espaço dentro do contêiner */
+    height: 100%;
+    transition: opacity 0.3s ease; /* Suaviza a troca entre imagens */
+}
+
+/* Olho fechado visível por padrão */
+.close_eye {
+    opacity: 1; /* Visível inicialmente */
+    z-index: 2; /* Fica na frente */
+}
+
+/* Olho aberto invisível por padrão */
+.open_eye {
+    opacity: 0; /* Escondido inicialmente */
+    z-index: 1; /* Fica atrás */
+}
+
+/* Troca os olhos quando o mouse passa */
+.balance_popup:hover .close_eye {
+    opacity: 0; /* Esconde o olho fechado */
+    z-index: 1; /* Manda para trás */
+}
+
+.balance_popup:hover .open_eye {
+    opacity: 1; /* Mostra o olho aberto */
+    z-index: 2; /* Traz para frente */
+}
+
+/* Texto do saldo */
+.text_container{
+    display: flex;
+    flex-direction: column;
+    opacity: 0; /* Começa invisível */
+}
+
+.balance_subtext{
+    display: none; /* Esconde por padrão */
+    color: var(--secondary-color);
+    font-size: 12px;
+    margin-left: 10px; /* Espaçamento entre o ícone e o texto */
+}
+
+.balance_text {
+    display: none; /* Esconde por padrão */
+    color: var(--secondary-color);
+    font-size: 18px;
+    margin-left: 10px; /* Espaçamento entre o ícone e o texto */
+}
+
+
+/* Mostra o texto apenas quando expandido */
+.balance_popup:hover .text_container .balance_text, .balance_popup:hover .text_container .balance_subtext {
+    display: inline-block; /* Aparece quando expandido */
+}
+
+.balance_popup:hover .text_container {
+    opacity: 1; /* Torna o texto visível */
+    transition: opacity 0.5s ease; /* Transição suave */
+}

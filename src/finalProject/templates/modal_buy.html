@@ -38,6 +38,7 @@
 
                 <script>
                      document.addEventListener('DOMContentLoaded', function() {
+                        const modal = document.getElementById("myModal");
                         const paymentInput = document.getElementById('payment');
                         const estimatedSpan = document.getElementById('estimated');
                         const currentPrice = {{ current_price | safe }};
@@ -50,6 +51,9 @@
                             const estimatedValue = (paymentValue / currentPrice).toFixed(6); // Calcula a quantidade estimada
                             estimatedSpan.textContent = paymentValue > 0 ? estimatedValue : '0.000000'; // Atualiza o span
                         });
+                    
+                        modal.style.opacity = '1';
+                        modal.style.transform = 'scale(1)';
                     });
                 </script>
             </form>

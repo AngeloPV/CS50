@@ -18,6 +18,11 @@ class Buy:
             ]
 
             session['shop'] = self.data.get_crypto_data_for_buy(cryptos)
+
+        if 'shop_coin' in session:
+            del session['shop_coin']
+        if 'authorize' in session:
+            del session['authorize']
         
 
         return template_render('buy.html')
@@ -72,6 +77,8 @@ class Buy:
         amount = float(payment)/float(criptocurrency[session['shop_coin']]['current_price'])
         
         self.user_data.buy_crypto(user_id=session.get('user_id'), crypto_id=session['shop_coin'], amount=amount, cost=float(payment))
+        
+        session['balance'] = self.user_data.get_cash(user_id=session.get('user_id'))
         data = {'authorize': 'Compra realizada com sucesso!'}
         return template_render('buy.html', **data)
 

@@ -13,6 +13,8 @@
 
 </head>
 <body class="{{ session['theme'] }}" class="modal no-background">
+    {% include 'layouts/balance_popup.html' %}
+
     <script>
         {% if authorize %}
             document.addEventListener("DOMContentLoaded", function() {
@@ -116,6 +118,24 @@
         }
     });
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const modalContent = document.querySelector(".modal-content");
+    
+    // Captura a URL atual
+    const currentUrl = window.location.pathname;
+    
+    // Obtém o último segmento da URL
+    const lastSegment = currentUrl.split("/").pop();
+
+    // Verifica o valor do último segmento
+    if (lastSegment === "bitcoin") {
+        modalContent.style.boxShadow = "0 4px 10px var(--main2-color)";
+    } else if (lastSegment === "ethereum") {
+        modalContent.style.boxShadow = "0 4px 10px rgb(0, 0, 255, 0.5)";
+    }
+});
+
     </script>
 
 </html>

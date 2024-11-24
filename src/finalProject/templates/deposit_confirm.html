@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_deposit_confirm.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+    
     <title>Deposit confirmation</title>
 </head>
 <body class="{{ session['theme'] }}">
+    {% include 'layouts/balance_popup.html' %}
+
     {% extends "layouts/form.html" %}
 
     {% set title = "Deposit confirmation" %}    
@@ -21,6 +28,30 @@
             <br>
             <input class="submit-btn" type="submit" value="Sim, eu desejo" name="button" id="button">
         </form>
+
+        <script>
+             document.addEventListener("DOMContentLoaded", function() {
+                {% if authorize %} //ignorar erro, diz que não reconhece o jinja mas no site reconhece
+                            Swal.fire({
+                            title: 'Success',
+                            text: '{{ authorize}}',
+                            icon: 'success',
+                            confirmButtonText: 'Continue'
+                        });
+    
+                    const interval = setInterval(() => {
+                    const confirmButton = document.querySelector('.swal2-confirm');
+                    if (confirmButton) {
+                        clearInterval(interval); 
+                        confirmButton.addEventListener('click', function () {
+                            {% if redirect_url %}
+                                window.location.href = "{{ redirect_url }}";
+                            {% endif %}
+                            });
+                        }
+                    }, 1)}); 
+                {% endif %}
+        </script>
     {% endblock %}
 </body>
 

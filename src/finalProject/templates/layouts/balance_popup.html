@@ -1,0 +1,14 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/balance_popup.css') }}">
+
+
+<div class="balance_popup">
+    <div class="icon_container">
+        <img class="open_eye" src="{{ url_for('static', filename='images/balance_popup/open_eye_' + session['theme'] + '.png') }}"  alt="open eye">
+        <img class="close_eye" src="{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}" alt="close eye">
+    </div>
+    <div class="text_container">
+        <span class="balance_subtext">Your balance is</span>
+        <span class="balance_text">${{ session['balance']}}</span>
+    </div>
+   
+</div>
