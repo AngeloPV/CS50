@@ -26,6 +26,21 @@
             });
         });
         {% endif %}
+
+        {% if not_authorize %}
+            document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: 'Error',
+                text: '{{ not_authorize }}',
+                icon: 'error',
+                confirmButtonText: 'Continue',
+                didClose: () => {
+                    window.location.href = '/dashboard/index'; 
+                }
+            });
+        });
+        {% endif %}
+
     </script>
     {% include 'layouts/sidebar.html' %}
 
@@ -37,12 +52,12 @@
         <table>
             <thead>
                 <tr>
-                    <th onclick="sortTable(0)">Name<button class="sort-btn asc"></button></th>    
-                    <th onclick="sortTable(1)">Symbol<button class="sort-btn asc"></button></th>
+                    <th onclick="sortTable(0)">Name<button class="sort-btn"></button></th>    
+                    <th onclick="sortTable(1)">Symbol<button class="sort-btn"></button></th>
                     <th onclick="sortTable(2)">Price(USD)<button class="sort-btn"></button></th>
-                    <th onclick="sortTable(3)">Var(%)<button class="sort-btn asc"></button></th>
+                    <th onclick="sortTable(3)">Var(%)<button class="sort-btn"></button></th>
                     <th onclick="sortTable(4)">Volume(24h) <button class="sort-btn"></button></th>
-                    <th onclick="sortTable(5)">Status<button class="sort-btn asc"></button></th>
+                    <th onclick="sortTable(5)">Status<button class="sort-btn"></button></th>
                 </tr>
             </thead>
             
@@ -72,55 +87,68 @@
     </main>
 </body>
 <script>
-
-    function sortTable(columnIndex) {
+function sortTable(columnIndex) {
     const table = document.querySelector("table tbody");
     const rows = Array.from(table.rows);
 
-    // Determina a direção de ordenação inicial com base no índice da coluna
-    let sortOrder = "desc"; // Padrão descendente
-    if ([0, 1, 5].includes(columnIndex)) { // Colunas 1, 2 e 6 (0, 1 e 5 no índice)
+    // Determina a direção de ordenação inicial
+    let sortOrder = "desc";
+    if ([0, 1, 5].includes(columnIndex)) { // Colunas específicas têm ordem inicial ascendente
         sortOrder = "asc";
     }
 
-    // Verifica se a coluna já está ordenada, alterna o estado
     const currentBtn = document.querySelectorAll(".sort-btn")[columnIndex];
-    if (currentBtn.classList.contains("asc")) {
-        sortOrder = "desc";
-    } else if (currentBtn.classList.contains("desc")) {
-        sortOrder = "asc";
+    if (currentBtn) {
+        if (currentBtn.classList.contains("asc")) {
+            sortOrder = "desc";
+        } else if (currentBtn.classList.contains("desc")) {
+            sortOrder = "asc";
+        }
     }
 
-    // Ordena as linhas
     rows.sort((a, b) => {
-        const cellA = a.cells[columnIndex].textContent.trim();
-        const cellB = b.cells[columnIndex].textContent.trim();
+        let cellA = a.cells[columnIndex].textContent.trim();
+        let cellB = b.cells[columnIndex].textContent.trim();
 
-        if (!isNaN(cellA) && !isNaN(cellB)) {
-            // Ordenação numérica
-            return sortOrder === "asc" ? cellA - cellB : cellB - cellA;
+        // Apenas para Volume (24h) na coluna 4
+        if (columnIndex === 4) {
+            cellA = parseVolume(cellA);
+            cellB = parseVolume(cellB);
         }
 
-        // Ordenação alfabética
+        if (!isNaN(cellA) && !isNaN(cellB)) {
+            return sortOrder === "asc" ? cellA - cellB : cellB - cellA;
+        }
         return sortOrder === "asc"
             ? cellA.localeCompare(cellB)
             : cellB.localeCompare(cellA);
     });
 
-    // Reanexa as linhas ordenadas na tabela
     rows.forEach(row => table.appendChild(row));
 
-    // Atualiza os botões de ordenação
     document.querySelectorAll(".sort-btn").forEach((btn, index) => {
-        btn.classList.remove("asc", "desc"); // Remove as classes de todas as colunas
+        btn.classList.remove("asc", "desc");
         if (index === columnIndex) {
-            btn.classList.add(sortOrder); // Adiciona a classe correspondente à direção
+            btn.classList.add(sortOrder);
         }
     });
 }
 
+function parseVolume(value) {
+    sortTable(0);
+    const suffix = value.slice(-1).toUpperCase();
+    const numericValue = parseFloat(value.slice(0, -1));
+
+    if (suffix === "K") return numericValue * 1e3;
+    if (suffix === "M") return numericValue * 1e6;
+    if (suffix === "B") return numericValue * 1e9;
+    return numericValue;
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
     const modalContent = document.querySelector(".modal-content");
+    const inputFields = document.querySelectorAll(".input-field");
     
     // Captura a URL atual
     const currentUrl = window.location.pathname;
@@ -134,6 +162,13 @@ document.addEventListener("DOMContentLoaded", function() {
     } else if (lastSegment === "ethereum") {
         modalContent.style.boxShadow = "0 4px 10px rgb(0, 0, 255, 0.5)";
     }
+    inputFields.forEach(inputField => {
+        if (lastSegment === "bitcoin") {
+            inputField.style.backgroundColor = "var(--main3-color)";
+        } else if (lastSegment === "ethereum") {
+            inputField.style.backgroundColor = "var(--main4-color)";
+        }
+    });
 });
 
     </script>

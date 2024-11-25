@@ -3,10 +3,10 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-
-        <h2 class="modal-title">{{ shop.name }}</h2>
-        <img src="{{ url_for('static', filename='images/cryptocurrencies_icons/' + shop.name|lower + '.png') }}" id="icon">
-
+        <div class="modal-header">
+            <img src="{{ url_for('static', filename='images/cryptocurrencies_icons/' + shop.name|lower + '.png') }}" id="logo-currency-icon">
+            <h2 class="modal-title">{{ shop.name }}</h2>
+        </div>
         {% if request.args.get('msg') %}
             <div class="error-message">
                 {{ request.args.get('msg') }}

@@ -50,7 +50,9 @@
                     <td><b>{{ row[2] }}</b></td>
                     <td><b>{{ row[3] }}</b></td>
                     <td><b>{{ row[4] }}</b></td>
-                    <td><b>{{ row[5] }}</b></td>
+                    <td class="{% if row[5] == 'Confirmed' %}status-confirmed{% endif %}">
+                        <b>{{ row[5] }}</b>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>            

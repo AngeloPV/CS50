@@ -84,16 +84,15 @@ td {
 /* atualiza a cor de acordo comos status */
 td.status {
     font-weight: bold;
-    color: #fff; /* Cor padrão do texto */
     text-align: center;
 }
 
 td.status.available {
-    color: #28a745; /* Verde */
+    color: var(--alt3-color); /* Verde */
 }
 
 td.status.unavailable {
-    color: #dc3545; /* Vermelho */
+    color: var(--alt4-color) /* Vermelho */
 }
 
 /* Variação percentual: Positiva (verde) e negativa (vermelha) */
@@ -103,11 +102,11 @@ td.var-percentage {
 }
 
 td.var-percentage.positive {
-    color: #28a745; /* Verde */
+    color: var(--alt3-color); /* Verde */
 }
 
 td.var-percentage.negative {
-    color: #dc3545; /* Vermelho */
+    color: var(--alt4-color) /* Vermelho */
 }
 
 table tr:hover td {

@@ -2,10 +2,12 @@ from ...renderer import template_render
 from ..protected_pages.get_crypto_data import GetCryptoData
 from ...models.User import User
 from flask import session, request, redirect, url_for
+from ...helper.valitade import Validate
 class Buy:
     def __init__(self):
         self.data = GetCryptoData()
         self.user_data = User()
+        self.valitade = Validate()
     def index(self):
         #session['shop'] é usada para saber se a pagina de compra já foi aberta, caso ja tenha sido aberta,
         #não irá fazer mais requisições a API usada pra pegar o preço das moedas, pois a versão gratuita
@@ -61,8 +63,11 @@ class Buy:
             data = {'msg': "Digite sua senha de 4 digitos"}
             return redirect(url_for("main_routes.route_method", route_name="buy", method=session['shop_coin'], **data))
        
+        if not self.user_data.get_4_digits_pass(user_id=session.get('user_id')):
+            data = {'not_authorize': "Você  não tem uma senha de 4 digitos cadastrada, por favor cadastre uma senha para realizar a compra"}
+            return template_render('buy.html', **data)
         #verifica se a senha esta correta
-        if str(four_digits_password) != str(self.user_data.get_4_digits_pass(user_id=session.get('user_id'))):
+        if not self.valitade.encryption(str(four_digits_password), self.user_data.get_4_digits_pass(session.get('user_id'))):
             data = {'msg': "Senha inválida"}
             return redirect(url_for("main_routes.route_method", route_name="buy", method=session['shop_coin'], **data))
         

@@ -14,7 +14,7 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -36,6 +36,14 @@
     border: 0;
 }
 
+.modal-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2vh;
+    margin-right: 4vh;
+}
 /* Container para o input e o símbolo de dólar */
 .input-container {
     position: relative;
@@ -49,7 +57,7 @@
     left: 10px; 
     top: 10px;
     font-size: 20px;
-    color: var(--alt2-color); /* Cor do símbolo de dólar */
+    color: var(--main1-color) !important; /* Cor do símbolo de dólar */
     pointer-events: none; /* Não permite interação com o símbolo */
 }
 
@@ -60,9 +68,9 @@
 
 
 
-#icon{
-    width: 15vh; 
-    height: 15vh;
+#logo-currency-icon{
+    width: 10vh; 
+    height: 10vh;
 }
 
 .modal-title{
@@ -94,7 +102,7 @@ form{
     justify-content: center;
 }
 
-.estimated-value, .currency-symbol{
+.estimated-value{
     color: var(--secondary-color);
 }
 /* Remover fundo as setinhas do input number */
@@ -139,22 +147,15 @@ input[type="number"]::-ms-clear {
     padding: 13px;
     border: none;
     border-radius: 15px;
-    color: var(--secondary-color);
+    color: var(--main1-color);
     font-size: 16px;
     transition: all 0.3s ease;
     width: 50vh;
 }
 
-body.dark-theme .input-field {
-    background-color: var(--alt2-color);
-}
-
-body.light-theme .input-field {
-    background-color: var(--main3-color);
-}
 
 .input-field::placeholder {
-    color: var(--secondary-color);
+    color: var(--main1-color);
 }
 
 /* Quando o campo está em foco */
@@ -180,7 +181,7 @@ body.light-theme .input-field {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.1s ease;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     width: 100%;
 }
@@ -195,7 +196,7 @@ body.light-theme .input-field {
 /* Efeito de clique (pressionado) */
 .submit-btn:active {
     transform: scale(0.95);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Animação de pulsação */

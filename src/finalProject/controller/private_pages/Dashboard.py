@@ -5,6 +5,7 @@ from ..protected_pages.get_crypto_data import GetCryptoData
 from ..protected_pages.user_data import User_data
 from ..protected_pages.Count_notifications import Count_notifications
 from ...models.User import User
+from ...helper.valitade import Validate
 from ...app import processor_add_notifications_processor
 
 session.pop("user_email", None)
@@ -20,6 +21,7 @@ class Dashboard:
         self.dashboard = Plot_Creator() #cria uma instancia da classe responsavel por gerar os graficos
         self.verificado = self.user_data.get_4_digits_pass(user_id=USER_ID)
         self.count_notifications = Count_notifications().get_count() #diz quantas noticações não lidas o usario possui
+        self.validate = Validate()
 
         # a session view_count, irá ficar sendo usada para verificar se a pagina de notifcations ja foi acessado, caso tenha sido ent todas as notifacations pedentes ja foram vistas
         session['viewd_count'] = False
@@ -41,6 +43,7 @@ class Dashboard:
                 DIGITS.append(tmp_digits)
                 msg = DIGITS
             return msg
+        
     def index(self):
         #Adicionando dados do usuário na sessão para que sejam usados no restante do site
         session['theme'] = self.user_data.get_theme(USER_ID)
@@ -84,7 +87,8 @@ class Dashboard:
                     msg = self.verify_password()
 
                     if DIGITS == msg:
-                        password = ''.join(DIGITS[0])  
+                        password_joined = ''.join(DIGITS[0])  
+                        password = self.validate.encryption(user_password=password_joined)
                         self.user_data.set_4_digits_pass(password, user_id=USER_ID)
                         print(self.count_notifications)
                         return template_render('dashboard.html', **data, stats=True)

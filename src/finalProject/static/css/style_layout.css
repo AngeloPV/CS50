@@ -2,10 +2,13 @@
 :root{
     --alt1-color:#f8f9fabf;
     --alt2-color:#888888;
+    --alt3-color: #28a745;
+    --alt4-color: #dc3545;
 
     --main1-color: #1B263B;
     --main2-color: #ff6f3c;
     --main3-color: #FFD1C1;
+    --main4-color: #7F8FA6;
 }
 
 
