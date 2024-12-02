@@ -1,0 +1,96 @@
+/* Fundo do modal */
+.modal {
+    display: none; /* Ocultar por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6); /* Transparência do fundo */
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background-color: var(--primary-color); /* Cor semelhante ao fundo da página */
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid var(--alt2-color); /* Bordas sutis */
+    border-radius: 8px; /* Bordas arredondadas */
+    width: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: var(--secondary-color); /* Texto branco */
+    font-family: 'Arial', sans-serif;
+}
+
+body.dark-theme .modal-content {
+    background-color: var(--background-color); /* Cor semelhante ao fundo da página */
+}
+
+.modal-main-info {
+    padding-left: 11px;
+}
+/* Fechar botão */
+.close {
+    color: var(--alt4-color); /* Vermelho suave */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--main3-color);
+    text-decoration: none;
+}
+
+/* Título do modal */
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--alt2-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Informações do modal */
+.modal-info {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Destaque para labels */
+body.dark-theme .modal-info strong {
+    color: var(--alt1-color);
+}
+body.light-theme .modal-info strong {
+    color: var(--background-color);
+}
+#modal-type {
+    text-transform: capitalize;
+}
+
+/* Contêineres ocultos */
+#currency-container,
+#currency-sender-container,
+#currency-recipient-container, 
+#form-sell-container{
+    margin-top: 15px;
+    padding: 10px;
+    border: 0;
+    border-radius: 6px;
+    background-color: var(--alt2-color);
+}
+
+body.light-theme #currency-container .modal-info strong,
+body.light-theme #currency-sender-container .modal-info strong,
+body.light-theme #currency-recipient-container .modal-info strong{
+    color: var(--secondary-color);
+}
+
+body.dark-theme #currency-container,
+body.dark-theme #currency-sender-container,
+body.dark-theme #currency-recipient-container{
+    background-color: var(--primary-color);
+}

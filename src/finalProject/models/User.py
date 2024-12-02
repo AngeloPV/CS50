@@ -4,6 +4,7 @@ from ..helper.helper_delete import Delete
 from ..helper.helper_update import Update
 from ..helper.helper_insert import Insert
 from datetime import datetime
+from decimal import Decimal
 class User:
     def __init__(self):
         self.connection = Conn().connect() 
@@ -151,3 +152,105 @@ class User:
             "created": now
         }
         self.insert.exe_insert(table_name='buy', data=data)
+
+    def sell_crypto(self, user_id, crypto_id, amount, value):
+        cursor = self.connection.cursor()
+
+        if crypto_id == 'bitcoin':
+            crypto_id = 1
+            query = """INSERT INTO user_btc
+                VALUES ('',%s, %s, NOW(), NOW())
+                ON DUPLICATE KEY UPDATE 
+                amount = amount - %s,
+                modified = NOW();""" 
+
+        elif crypto_id == 'ethereum':
+            crypto_id = 2 
+            query = """INSERT INTO user_eth
+                VALUES ('',%s, %s, NOW(), NOW())
+                ON DUPLICATE KEY UPDATE 
+                amount = amount - %s,
+                modified = NOW();""" 
+
+        cursor.execute(query, (user_id, amount, amount))
+        self.connection.commit()
+        cursor.close()
+
+        now = datetime.now()
+
+        data = {
+            "id": '',
+            "user_id": user_id,
+            "criptocurrencies_id": crypto_id,
+            "amount": amount,
+            "created": now,
+            "value": value,
+        }
+        self.insert.exe_insert(table_name='buy', data=data)
+
+    def get_bitcoin_balance(self, user_id):
+        self.select.exe_select("SELECT amount FROM user_btc WHERE user_id = %s LIMIT %s", 
+                               f'{{"user_id": "{user_id}", "LIMIT": 1}}', False)
+        cash = self.select.get_result() 
+        if not cash:
+            return 0
+        return cash[0]
+    
+    def get_ethereum_balance(self, user_id):
+        self.select.exe_select("SELECT amount FROM user_eth WHERE user_id = %s LIMIT %s", 
+                               f'{{"user_id": "{user_id}", "LIMIT": 1}}', False)
+        cash = self.select.get_result() 
+        if not cash:
+            return 0
+        return cash[0]
+    
+    def get_buy_data(self, user_id):
+        # Define os nomes das colunas para a tabela "buy"
+        column_names = ['id', 'user_id', 'criptocurrencies_id', 'amount', 'cost', 'created']
+        
+        # Executa a consulta
+        self.select.exe_select("SELECT * FROM buy WHERE user_id = %s", 
+                            f'{{"user_id": "{user_id}"}}', False)
+        
+        # Converte os resultados para uma lista de dicionários
+        buy_data = []
+        for row in self.select.get_result():
+            row_dict = dict(zip(column_names, row))
+            
+            # Converte o valor de 'amount' para Decimal
+            amount_value = Decimal(str(row_dict['amount']))  # Converte para Decimal com precisão exata
+            
+            # Formata o número para exibir exatamente como no banco de dados (preservando casas decimais)
+            row_dict['amount'] = amount_value
+            
+            buy_data.append(row_dict)
+        
+        return buy_data
+
+    def get_sell_data(self, user_id):
+        # Define os nomes das colunas para a tabela "sell"
+        column_names = ['id', 'user_id', 'criptocurrencies_id', 'amount', 'created',  'value']
+        
+        # Executa a consulta
+        self.select.exe_select("SELECT * FROM sell WHERE user_id = %s", 
+                            f'{{"user_id": "{user_id}"}}', False)
+        
+        # Converte os resultados para uma lista de dicionários
+        sell_data = [dict(zip(column_names, row)) for row in self.select.get_result()]
+        return sell_data
+
+    def get_trade_data(self, user_id):
+        # Define os nomes das colunas para a tabela "trades"
+        column_names = [
+            'id', 'cripto_sender_id', 'cripto_recipient_id', 'user_sender_id', 
+            'user_recipient_id', 'reg_trade_id', 'amount_sender', 
+            'amount_recipient', 'created', 'modified', 'rate'
+        ]
+        
+        # Executa a consulta
+        self.select.exe_select("SELECT * FROM trades WHERE user_sender_id = %s OR user_recipient_id = %s", 
+                            f'{{"user_sender_id": "{user_id}", "user_recipient_id": "{user_id}"}}', False)
+        
+        # Converte os resultados para uma lista de dicionários
+        trade_data = [dict(zip(column_names, row)) for row in self.select.get_result()]
+        return trade_data

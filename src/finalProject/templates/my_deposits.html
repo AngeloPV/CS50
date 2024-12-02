@@ -19,7 +19,7 @@
                 <h2 class="main-balance-title">Account balance</h2>
                 <h3 class="main-balance-value">
                     <span class="balance-text-mask">$**</span> <!-- Valor oculto (inicial) -->
-                    <span class="real-balance">${{ session['balance'] }}</span> <!-- Valor real, oculto inicialmente -->
+                    <span class="real-balance">${{ '%.2f' % session['balance'] }}</span>
                 </h3>
             </div>
             

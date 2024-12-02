@@ -1,0 +1,303 @@
+
+body{
+    background-color: var(--background-color) !important;
+    overflow: hidden;
+
+}
+
+#title {
+    color: var(--alt1-color) !important;
+    position: absolute;
+    top: 2.8vh;
+    margin-left: 51vh !important;
+    font-size: 2.5vw;
+    font-family: 'Montserrat', sans-serif;
+}
+.main {
+    margin-left: calc(3.5vh + 55px);  
+    margin-right: 3.5vh;  
+    margin-top: 10vh;
+    border-radius: 3vh;
+    height: 85vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 20% 80%;
+}
+
+/* side bar */
+.side-content{
+    background-color: var(--alt1-color);
+    padding-top: 3vh;
+    border-right: 1px solid var(--main1-color);
+}
+
+body.dark-theme .side-content{
+    background-color: var(--alt2-color);
+}
+.side-nav_btn, .nav_btn {
+    color: var(--main1-color);
+    padding: 7px;
+    margin-left: 2vh;
+    padding-left: 10%;
+    margin-right: 2vh;
+    font-size: 1.5vw;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-radius 0.3s ease, color 0.3s ease;
+}
+
+#history.selected {
+    background-color: var(--main1-color);
+    border-radius: 10px;
+}
+
+
+
+.side-nav_btn:hover, .nav_btn:hover, .nav_btn.selected {
+    background-color: var(--main1-color);  /* Cor de fundo para indicar que o botão está selecionado */
+    border-radius: 10px;  /* Adiciona borda arredondada para um estilo mais agradável */
+}
+
+body.dark-theme .side-nav_btn:hover, body.dark-theme .side-nav_btn.selected, 
+body.dark-theme .nav_btn.selected, body.dark-theme .nav_btn:hover {
+    color: var(--secondary-color);
+}
+
+body.light-theme .side-nav_btn:hover, body.light-theme .side-nav_btn.selected, 
+body.light-theme .nav_btn.selected, body.light-theme .nav_btn:hover {
+    color: var(--primary-color);
+}
+
+
+
+/* main content */
+.main-content{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 30% 70%;
+}
+
+.balance-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.balance-title{
+    display: flex;
+    align-items: center;
+    gap: 1vh;
+}
+.balance-bitcoin-content, .balance-ethereum-content{
+    display: flex;
+    flex-direction: column;
+    padding: 2.5vh;
+    position: relative;
+
+}
+
+.balance-bitcoin-content{
+    background-color: var(--main3-color);
+
+}
+.balance-ethereum-content{
+    background-color: var(--main4-color);
+
+}
+
+.sell-button{
+    margin-left: auto;
+    padding: 1.5vh;
+    font-size: 18px;
+    border-radius: 1vh;
+    border: 0;
+    width: 15vh;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--alt2-color);
+    color: var(--primary-color);
+}
+
+body.dark-theme .sell-button{
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+}
+
+.sell-button:hover, body.dark-theme .sell-button:hover{
+    background-color: var(--main2-color);
+}
+.currency-icon{
+    width: 6vh;
+    height: 6vh;
+}
+
+.currency-balance, .currency-title, .currency-to-dol{
+    font-family: 'Montserrat', sans-serif;
+    color: var(--main1-color);
+}
+.currency-title{
+    font-size: 21px;
+}
+
+.currency-balance{
+    font-size: 26px;
+    margin-left: 1vh;
+}
+.currency-to-dol{
+    margin-left: 1vh;
+}
+body.light-theme .history-content{
+    background-color: var(--alt1-color);
+}
+body.dark-theme .history-content{
+    background-color: var(--alt2-color);
+}
+.history-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+.history-nav .nav_btn{
+    flex: 1;  /* Faz com que cada botão ocupe 1/4 do espaço disponível */
+    padding: 1.5vh 0;  /* Ajusta o padding para melhorar a aparência */
+    text-align: center;
+    border-radius: 0;
+    margin: 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.history-nav .nav_btn:hover{
+    background-color: var(--main1-color);
+}
+
+.history-itens{
+    overflow-y: auto; /* Habilita a rolagem vertical */
+    max-height: 52.6vh;  /* Defina uma altura máxima para a área rolável */
+
+}
+.history-iten{
+    padding-right: 6vh;
+    padding-left: 5vh;
+    padding-top: 1.5vh;
+    padding-bottom: 1.5vh;
+    display: flex;
+    flex-direction: row;
+    gap: 2vh;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 2px;
+}
+
+body.light-theme .history-iten{
+    background-color: var(--alt1-color);
+}
+
+body.dark-theme .history-iten{
+    background-color: var(--primary-color);
+}
+
+.history-iten:hover{
+    padding-top: 2vh;
+    padding-bottom: 2vh;   
+}
+
+body.light-theme .history-iten:hover{
+    background-color: var(--alt2-color); 
+}
+body.dark-theme .history-iten:hover{
+    background-color: var(--background-color); 
+}
+
+.history-iten:hover .content-amount,
+.history-iten:hover .currency {
+    color: var(--alt1-color);
+}
+
+body.light-theme .history-iten:hover .difference-amount,
+body.light-theme .history-iten:hover .content-title {
+    color: var(--primary-color);
+}
+
+body.dark-theme .history-iten:hover .difference-amount,
+body.dark-theme .history-iten:hover .content-title {
+    color: var(--secondary-color);
+}
+
+.square{
+    width: 8vh;
+    height: 8vh;
+    background-color: var(--alt1-color);
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 1vh;
+}
+.history-icon{
+    width: 4vh;
+    height: 4vh;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.content-title{
+    font-size: 22px;
+}
+
+.content-amount, .currency{
+    color: var(--alt2-color);
+}
+
+.difference {
+    margin-left: auto; 
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-end; 
+    gap: 4px; 
+}
+
+.difference-amount{
+    font-size: 20.5px;
+}
+
+body.dark-theme .content-title{
+    color: var(--secondary-color);
+}
+
+.text-lost {
+    color: #dc3545 ;
+}
+
+.text-gain {
+    color: #28a745 ;
+}
+/* Estilos da barra de rolagem */
+.history-itens::-webkit-scrollbar {
+    width: 10px;  /* Largura da barra de rolagem */
+}
+
+.history-itens::-webkit-scrollbar-track {
+    background: var(--alt2-color); /* Cor do fundo da barra */
+    border-radius: 10px; /* Deixa as bordas arredondadas */
+}
+
+.history-itens::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color); /* Cor da barra de rolagem */
+    border-radius: 10px; /* Deixa as bordas arredondadas */
+    border: 2px solid var(--background-color); /* Cria um espaçamento entre a barra e o track */
+    transition: background-color 0.5s ease; /* Aplica a transição diretamente ao thumb */
+}
+
+/* Estilo quando o mouse está sobre a barra de rolagem */
+.history-itens::-webkit-scrollbar-thumb:hover {
+    background-color: var(--main2-color); /* Muda a cor da barra ao passar o mouse */
+}
+

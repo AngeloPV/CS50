@@ -1,0 +1,30 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modal_manage_history.css') }}">
+
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 class="modal-title">Detalhes da Transação</h2>
+        <div class="modal-main-info">
+            <p class="modal-info"><strong>Action:</strong> <span id="modal-type"></span></p>
+            <p class="modal-info"><strong>ID:</strong> <span id="modal-id"></span></p>
+            <p class="modal-info"><strong>Date:</strong> <span id="modal-date"></span></p>
+            <p class="modal-info"><strong>Value:</strong> <span id="modal-value"></span></p>
+        </div>
+        <!-- Para Moeda (buy,sell) -->
+        <div id="currency-container" style="display:none;">
+            <p class="modal-info"><strong>Currency:&nbsp;</strong><span id="modal-currency"></span></p>
+            <p class="modal-info"><strong>Amount:</strong> <span id="modal-amount"></span></p>
+        </div>
+    
+        <!-- Para Moeda Enviada e Recebida (trade)-->
+        <div id="currency-sender-container" style="display:none;">
+            <p class="modal-info"><strong>Currency sent:</strong> <span id="modal-currency-sender"></span></p>
+            <p class="modal-info"><strong>Amount sent:</strong> <span id="modal-amount-sender"></span></p>
+        </div>
+        <div id="currency-recipient-container" style="display:none;">
+            <p class="modal-info"><strong>Currency sent:&nbsp;</strong><span id="modal-currency-recipient"></span></p>
+            <p class="modal-info"><strong>Amount sent:</strong> <span id="modal-amount-recipient"></span></p>
+        </div>
+        
+    </div>
+</div>

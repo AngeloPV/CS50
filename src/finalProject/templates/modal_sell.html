@@ -1,0 +1,37 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modal_sell.css') }}">
+
+
+<div id="sellModal" class="modal" 
+     data-bitcoin-balance="{{ bitcoin_balance }}" 
+     data-ethereum-balance="{{ ethereum_balance }}"
+     data-bitcoin-price="{{ session['currency_data']['bitcoin']['current_price'] }}"
+     data-ethereum-price="{{ session['currency_data']['ethereum']['current_price'] }}">
+    <div class="modal-content">
+        <span class="close" onclick="closeSellModal()">&times;</span>
+        <h2 class="modal-title">Venda de <span class="modal-title" id="sell-modal-title"></span></h2>
+
+        <div class="modal-main-info">
+            <p class="modal-info"><strong>Total:</strong> <span id="sell-modal-total"></span></p>
+            <p class="modal-info"><strong>Valor aproximado:</strong> <span id="sell-modal-value"></span></p>
+        </div>
+
+        <div id="form-sell-container">
+            <form action="/sell/index" method="POST" class="sell-form">
+                <label class="modal-info" for="sell-amount"><strong>Amount to sell:</strong></label><br>
+                <input class="input-field" type="number" id="sell-amount" name="sell-amount" min="0" 
+                step="any" placeholder="Amount to sell"><br>
+                <p class="modal-info"><strong>Valor aproximado:</strong> <br><span id="sell-modal-value-form">$0.00</span></p>
+        
+                <label class="modal-info" for="4_digits_pass"><strong>Four digits pass:</strong></label><br>
+                <input class="input-field" type="password" id="4_digits_pass" name="4_digits_pass" 
+                placeholder="Four digits pass" maxlength="4" pattern="\d{4}"><br>
+            </div>
+                <!-- Campo oculto que passa a moeda que vai ser vendida -->
+                <input type="hidden" id="sell-currency" name="sell-currency" value="">
+
+                <input type="submit" value="Vender" class="sell-button">
+            </form>
+        
+    </div>
+</div>
+

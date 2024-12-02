@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/manage.css') }}">
+    <script src="{{ url_for('static', filename='js/manage.js') }}" defer></script>
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+    <title>Manage</title>
+</head>
+<body class="{{ session['theme'] }}">
+    {% include 'layouts/sidebar.html' %}
+    {% include 'modal_history.html' %}
+    {% include 'modal_sell.html' %}
+    <header class="header">
+        <h2 id="title">Manage</h2>
+    </header>
+    <main class="main">
+        <nav class="side-content">
+            <p class="side-nav_btn" id="history">History</p>
+            <p class="side-nav_btn" id="my_wallet">My wallet</p>
+        </nav>
+
+        
+        <div class="main-content">
+            <div class="balance-content">
+                <div class="balance-bitcoin-content">
+                    <div class="balance-title">
+                        <img src="{{ url_for('static', filename='images/manage/bitcoin_icon.svg') }}" class="currency-icon">
+                        <span class="currency-title">Bitcoin (BTC)</span>
+                    </div>
+                    
+                    <span class="currency-balance">{{ bitcoin_balance }}</span>
+                    <span class="currency-to-dol">{{ bitcoin_to_dol|round(2) }} US$</span>
+                    <button class="sell-button" onclick="openSellModal('bitcoin')">Sell</button>
+                </div>
+                <div class="balance-ethereum-content">
+                    <div class="balance-title">
+                        <img src="{{ url_for('static', filename='images/manage/ethereum_icon.svg') }}" class="currency-icon">
+                        <span class="currency-title">Ethereum (ETH)</span>
+                    </div>
+
+                    <span class="currency-balance">{{ ethereum_balance}}</span>
+                    <span class="currency-to-dol">{{ ethereum_to_dol|round(2) }} US$</span>
+                    <button class="sell-button" onclick="openSellModal('ethereum')">Sell</button>
+                </div>
+            </div>
+            <div class="history-content">
+                <nav class="history-nav">
+                    <p class="nav_btn" id="all">All</p>
+                    <p class="nav_btn" id="buy">Buy</p>
+                    <p class="nav_btn" id="sell">Sell</p>
+                    <p class="nav_btn" id="trade">Trade</p>
+                </nav>
+                <div class="history-itens">
+                    {% for row in history_data %}
+                    <div class="history-iten" onclick="openModal('{{ row.id }}', '{{ row.type }}')">
+                        <div class="square">
+                                {% if row.type == 'buy' %}
+                                    <img src="{{ url_for('static', filename='images/manage/buy.png') }}" class="history-icon">
+                                {% elif row.type == 'sell' %}
+                                    <img src="{{ url_for('static', filename='images/manage/sell.png') }}" class="history-icon">
+                                {% elif row.type == 'trade' %}
+                                    <img src="{{ url_for('static', filename='images/manage/trade.png') }}" class="history-icon">
+                                {% endif %}
+                            </div>
+                            <div class="content">
+                                <span class="content-title">{{ row.type|capitalize  }}</span>
+                                {% if row.type == 'buy' %}
+                                    <span class="content-amount">{{ row.amount }}</span>
+                                {% elif row.type == 'sell' %}
+                                    <span class="content-amount">{{ row.amount }}</span>
+                                {% elif row.type == 'trade' %}
+                                    <span class="content-amount">{{ row.amount_sender }} &rarr; {{ row.amount_recipient }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="difference">
+                                {% if row.type == 'buy' %}
+                                    <span class="difference-amount text-lost">- &nbsp;{{ row.cost }} US$</span>
+                                    {% if row.criptocurrencies_id == 1 %}
+                                        <span class="currency">BTC</span>
+                                    {% elif row.criptocurrencies_id == 2 %}
+                                        <span class="currency">ETH</span>
+                                    {% endif %}
+
+                                {% elif row.type == 'sell' %}
+                                    <span class="difference-amount text-gain">+ {{ row.value }} US$</span>
+                                    {% if row.criptocurrencies_id == 1 %}
+                                        <span class="currency">BTC</span>
+                                    {% elif row.criptocurrencies_id == 2 %}
+                                        <span class="currency">ETH</span>
+                                    {% endif %}
+
+                                {% elif row.type == 'trade' %}
+                                    <span class="difference-amount text-lost">- &nbsp;{{ row.rate }} US$</span>
+                                    {% if row.cripto_sender_id == 1 and row.cripto_recipient_id == 2 %}
+                                        <span class="currency">BTC &rarr; ETH</span>
+                                    {% elif row.cripto_sender_id == 2 and row.cripto_recipient_id == 1 %}
+                                        <span class="currency">ETH &rarr; BTC</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Verifica se tem alguma msg passada pela url, se tiver passa como data pra ser tratada pelo js-->
+    <div id="config" data-has-msg="{{ 'true' if msg else 'false' }}"></div>
+
+<script>
+    // Simula o objeto historyData que você usa no servidor
+    const historyData = {{ history_data|tojson }};
+
+    document.addEventListener("DOMContentLoaded", () => {
+    {% if msg %}
+        openSellModal('{{ currency }}');
+
+        Swal.fire({
+            title: 'Error',
+            text: '{{ msg }}',
+            icon: 'error',
+            confirmButtonText: 'Continue',
+        });
+
+    {% endif %}
+    });
+
+    {% if authorize %}
+            document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: 'Success',
+                text: '{{ authorize}}',
+                icon: 'success',
+                confirmButtonText: 'Continue',
+                didClose: () => {
+                    window.location.href = '/manage/index'; 
+                }
+            });
+        });
+    {% endif %}
+    {% if not_authorize %}
+            document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: 'Error',
+                text: '{{ not_authorize }}',
+                icon: 'error',
+                confirmButtonText: 'Continue',
+                didClose: () => {
+                    window.location.href = '/dashboard/index'; 
+                }
+            });
+        });
+    {% endif %}
+
+
+</script>
+
+
+    
+</body>
+</html>

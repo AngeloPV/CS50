@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const paths = {
         'img_logo': '/dashboard/index',
         'comprar': '/buy/index',
-        'gerenciar': '/caminho/para/pagina/gerenciar',
+        'gerenciar': '/manage/index',
         'trocar': '/caminho/para/pagina/trocar',
         'meus-depositos': '/my_deposits/index',
         'depositar-opcao': '/deposit/index',
