@@ -1,4 +1,4 @@
-from flask import request, session
+from flask import request, session, jsonify
 from ...renderer import template_render
 from ..protected_pages.plot_creator import Plot_Creator
 from ..protected_pages.get_crypto_data import GetCryptoData
@@ -6,8 +6,9 @@ from ..protected_pages.user_data import User_data
 from ..protected_pages.Count_notifications import Count_notifications
 from ...models.User import User
 from ...helper.valitade import Validate
+from ...helper.postal_code import Postal_code
 from ...app import processor_add_notifications_processor
-
+import requests
 session.pop("user_email", None)
 USER_ID = session.get('user_id')
 DIGITS = []
@@ -22,6 +23,7 @@ class Dashboard:
         self.verificado = self.user_data.get_4_digits_pass(user_id=USER_ID)
         self.count_notifications = Count_notifications().get_count() #diz quantas noticações não lidas o usario possui
         self.validate = Validate()
+        self.postal_code = Postal_code()
 
         # a session view_count, irá ficar sendo usada para verificar se a pagina de notifcations ja foi acessado, caso tenha sido ent todas as notifacations pedentes ja foram vistas
         session['viewd_count'] = False
@@ -51,6 +53,12 @@ class Dashboard:
         session['profile_img'] = self.user_data.get_profile_img(USER_ID)
         session['balance'] = self.user.get_cash(USER_ID)
 
+        if not self.user.get_postal_code(USER_ID):
+            cep = self.postal_code.get_coordinates_from_json()
+            self.user.set_postal_code(USER_ID, cep)
+        
+
+        
 
         self.data.do_update_database() #atualiza o banco das criptomoedas
 

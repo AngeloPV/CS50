@@ -11,6 +11,7 @@ class Login:
         self.login = Login_user()  # Exemplo: inicializa um objeto da classe MDRegister
 
     def index(self):
+        
         if request.form.get("SendLogin"):
             form_data = request.form.to_dict() # Cria uma cópia mutável do dicionário
             session["user_email"] = form_data["user"]

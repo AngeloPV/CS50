@@ -88,6 +88,16 @@ class User:
         
         return self.delete.getResult()
     
+    def get_postal_code(self, user_id):
+        self.select.exe_select("SELECT cep FROM user_data WHERE id = %s LIMIT %s", 
+                               f'{{"id": "{user_id}", "LIMIT": 1}}', False)
+        postal_code = self.select.get_result() 
+        return postal_code[0]
+    
+    def set_postal_code(self, user_id, postal_code):
+        self.update.exe_update(data={"cep": postal_code}, table_name="user_data", data_where={"id": user_id}, 
+                            operator=" =, ="  ,close_conn = True)
+        return True
     #parte do dinheiro, usar a sit como + pra ganho e - pra perda
     def update_cash(self, sit, user_id, cash):
         cursor = self.connection.cursor()

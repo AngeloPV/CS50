@@ -29,7 +29,9 @@
                 {% endif %}
                 <div class="info_data">
                     <h3 class="title">{{ name|join(' ') }}</h3>
-                    <h4 class="subtitle">Maranguape, Ceará, Brasil</h4>
+                    {% if city and state and country %}
+                        <h4 class="subtitle">{{ city }}, {{ state }}, {{ country }}</h4>
+                    {% endif %}
                 </div>
     
 
@@ -85,7 +87,11 @@
                     </div>
                     <div class="postal_code editable">
                         <h3 class="subtitle">Postal code</h3>
-                        <span class="usertitle" id="postal_code_display">12345678<span>
+                        {% if postal_code %}
+                            <span class="usertitle" id="postal_code_display">{{ postal_code }}<span>
+                        {% else %}
+                            <span class="usertitle" id="postal_code_display">Não autorizado<span>
+                        {% endif %}
                     </div> 
                 </div>
             </div>

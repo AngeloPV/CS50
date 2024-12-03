@@ -4,9 +4,11 @@ from ...helper.helper_select import Select
 from ...helper.helper_update import Update
 from ...helper.send_email import Send_Email 
 from ...helper.valitade import Validate
+from ...helper.postal_code import Postal_code
 from ..protected_pages.user_data import User_data
 
 from ...models.Authenticate_account_user import Authenticate_account_user
+from ...models.User import User
 
 from datetime import datetime 
 
@@ -18,6 +20,8 @@ class Account:
         self.send_email = Send_Email()
         self.user_data = User_data()
         self.authenticate = Authenticate_account_user()
+        self.postal_code = Postal_code()
+        self.user = User()
 
     def do_email_send(self):
         self.select.exe_select("SELECT id, name, email FROM user_data where id = %s LIMIT %s", f'{{"id": "{session["user_id"]}", "LIMIT": "1"}}') 
@@ -70,12 +74,17 @@ class Account:
         name = self.user_data.get_user_name(user_id=session.get('user_id'))
         email = self.user_data.get_user_email(user_id=session.get('user_id'))
         phone = self.user_data.get_user_phone(user_id=session.get('user_id'))
-
+        user_locate = self.postal_code.get_city_state_country(self.user.get_postal_code(user_id=session.get('user_id')))
+        user_locate['cep'] = self.user.get_postal_code(user_id=session.get('user_id'))
         data = {'name': name,
                 'first_name': name[0], 
                 'last_name': name[-1],
                 'email': email, 
                 'phone': phone, 
+                'city': user_locate.get('cidade'),
+                'state': user_locate.get('estado'),
+                'country': user_locate.get('pais'),
+                'postal_code': user_locate.get('cep')
                 }
         
         if 'authorize' in session:

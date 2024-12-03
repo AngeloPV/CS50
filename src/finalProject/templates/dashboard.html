@@ -11,6 +11,30 @@
     
 </head>
 <body class="{{ session['theme'] }}">
+    <script>
+        function getCoordinates() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+    
+                        // Envia para o backend via fetch
+                        fetch('/dashboard/index', {  // Certifique-se de usar a URL correta
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'  // Define o tipo de conteúdo como JSON
+                            },
+                            body: JSON.stringify({ latitude, longitude }) // Converte os dados para JSON
+                        });
+                    })}}
+                    
+    
+        // Chama a função assim que a página carrega
+        window.onload = getCoordinates;
+    </script>
+    
+
     {% include 'layouts/balance_popup.html' %}
 
     {% include 'layouts/sidebar.html' %}
