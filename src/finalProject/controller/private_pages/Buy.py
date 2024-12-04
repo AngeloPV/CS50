@@ -43,6 +43,25 @@ class Buy:
             data = {'msg': "Digite apenas numeros no campo de pagamento"}
             return redirect(url_for("main_routes.route_method", route_name="buy", method=session['shop_coin'], **data))
         
+        #verifica se o numero tem mais de um ponto ou virgula
+        if ',' in payment or '.' in payment:
+            payment.replace(',', '.')
+
+            if payment.count(".") > 1:
+                data = {'msg': "Digite o pagamento no formato xxx.xx ou xxx,xx"}
+                return redirect(url_for("main_routes.route_method", route_name="buy", method=session['shop_coin'], **data))
+            
+            try:
+                float(payment)
+            except ValueError:
+                data = {'msg': "Digite o pagamento no formato xxx.xx ou xxx,xx"}
+                return redirect(url_for("main_routes.route_method", route_name="buy", method=session['shop_coin'], **data))
+        
+        # remove espaços desnecessarios
+        if ' ' in payment:
+            payment.strip()
+            payment.replace(' ', '')
+
         #se o numero for maior q 9999999
         if float(payment) > 9999999:
             data = {'msg': "Digite um valor menor que $9999999"}
@@ -52,6 +71,7 @@ class Buy:
         if float(payment) <= 1:
             data = {'msg': "Digite um valor maior que $1"}
             return redirect(url_for("main_routes.route_method", route_name="buy", method=session['shop_coin'], **data))
+        
         
         #se o valor é maior doq o valor q o usuario tem na conta
         if float(payment) > user_cash:

@@ -121,16 +121,20 @@ body {
     transition: background-color 0.3s ease, color 0.3 ease;
 }
 
-.editable.edit-mode:hover {
-    background-color: rgba(27, 38, 59, 0.5);
+body.light-theme .editable.edit-mode:hover {
+    background-color: var(--alt2-color);
+}
+
+body.dark-theme .editable.edit-mode:hover {
+    background-color: var(--background-color);
 }
 
 .editable.edit-mode:hover .subtitle {
-    color: var(--primary-color);
+    color: var(--alt1-color);
 }
 
 .editable.edit-mode:hover .usertitle {
-    color: var(--primary-color);
+    color: var(--alt1-color);
 }
 
 .info_data {

@@ -81,7 +81,7 @@
                             </div>
                             <div class="difference">
                                 {% if row.type == 'buy' %}
-                                    <span class="difference-amount text-lost">- &nbsp;{{ row.cost }} US$</span>
+                                    <span class="difference-amount text-lost">- &nbsp;{{ row.cost | round(2) }} US$</span>
                                     {% if row.criptocurrencies_id == 1 %}
                                         <span class="currency">BTC</span>
                                     {% elif row.criptocurrencies_id == 2 %}
@@ -89,7 +89,7 @@
                                     {% endif %}
 
                                 {% elif row.type == 'sell' %}
-                                    <span class="difference-amount text-gain">+ {{ row.value }} US$</span>
+                                    <span class="difference-amount text-gain">+ {{ row.value | round(2) }} US$</span>
                                     {% if row.criptocurrencies_id == 1 %}
                                         <span class="currency">BTC</span>
                                     {% elif row.criptocurrencies_id == 2 %}
@@ -97,7 +97,7 @@
                                     {% endif %}
 
                                 {% elif row.type == 'trade' %}
-                                    <span class="difference-amount text-lost">- &nbsp;{{ row.rate }} US$</span>
+                                    <span class="difference-amount text-lost">- &nbsp;{{ row.rate | round(2) }} US$</span>
                                     {% if row.cripto_sender_id == 1 and row.cripto_recipient_id == 2 %}
                                         <span class="currency">BTC &rarr; ETH</span>
                                     {% elif row.cripto_sender_id == 2 and row.cripto_recipient_id == 1 %}

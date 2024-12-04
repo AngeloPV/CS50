@@ -65,6 +65,7 @@ class Sell:
             if str(currency) == 'ethereum':
                 price = currency_data['ethereum']['current_price']*float(amount)
             #efetiva a venda
+            price = round(price, 2)
             self.user_data.update_cash(sit='+', user_id=session.get('user_id'), cash=float(price))
             self.user_data.sell_crypto(user_id=session.get('user_id'), crypto_id=currency, amount=float(amount), value=price)
             

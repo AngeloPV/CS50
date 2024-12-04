@@ -186,17 +186,16 @@ class User:
         self.connection.commit()
         cursor.close()
 
-        now = datetime.now()
-
         data = {
-            "id": '',
-            "user_id": user_id,
-            "criptocurrencies_id": crypto_id,
-            "amount": amount,
-            "created": now,
-            "value": value,
+            'id': '',
+            'user_id': user_id,
+            'criptocurrencies_id': crypto_id,
+            'amount': amount,
+            'created': datetime.now(),
+            'value': value
         }
-        self.insert.exe_insert(table_name='buy', data=data)
+       
+        self.insert.exe_insert(table_name='sell', data=data)
 
     def get_bitcoin_balance(self, user_id):
         self.select.exe_select("SELECT amount FROM user_btc WHERE user_id = %s LIMIT %s", 
@@ -246,7 +245,18 @@ class User:
                             f'{{"user_id": "{user_id}"}}', False)
         
         # Converte os resultados para uma lista de dicionários
-        sell_data = [dict(zip(column_names, row)) for row in self.select.get_result()]
+        sell_data = []
+        for row in self.select.get_result():
+            row_dict = dict(zip(column_names, row))
+            
+            # Converte o valor de 'amount' para Decimal
+            amount_value = Decimal(str(row_dict['amount']))  # Converte para Decimal com precisão exata
+            
+            # Formata o número para exibir exatamente como no banco de dados (preservando casas decimais)
+            row_dict['amount'] = amount_value
+            
+            sell_data.append(row_dict)
+        
         return sell_data
 
     def get_trade_data(self, user_id):
