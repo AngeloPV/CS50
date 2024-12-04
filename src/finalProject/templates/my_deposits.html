@@ -3,8 +3,6 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_my_deposits.css') }}">
     <script src="{{ url_for('static', filename='js/my_deposits.js') }}" defer></script>
-
-    
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,14 +18,19 @@
                 <h3 class="main-balance-value">
                     <span class="balance-text-mask">$**</span> <!-- Valor oculto (inicial) -->
                     <span class="real-balance">${{ '%.2f' % session['balance'] }}</span>
+                    <img class="eye-icon" alt="toggle balance visibility" onclick="toggleBalance()"
+                    src="{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}">
                 </h3>
+
+                <button class="deposit-button" onclick="window.location.href='/deposit/index'">Make a new deposit!</button>
             </div>
-            
-            <img class="eye-icon" alt="toggle balance visibility" onclick="toggleBalance()"
-            src="{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}">
+            <div class="wallet-content">
+                <h2 class="main-balance-title">Wallet</h2>
+    
+                <button class="wallet-button">Create Wallet</button>
+            </div>
         </div>
-        <button class="deposit-button" onclick="window.location.href='/deposit/index'">Make a new deposit!</button>
-        </main>
+    </main>
 
     <main class="main-table">
         <table>
@@ -60,6 +63,36 @@
         </table>
     </main>
 
+    <!-- Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModalBtn" class="close_modal">&times;</span>
+            <form method="post" class="content_verify">
+                <h2>Create Wallet</h2>
+                <div class="container-input">
+                    <p>Enter your 4-digit password to create ETH and BTC wallets:</p>
+                    <input id="4_digits_password" class="input-field" autocomplete="off" name="4_digits_password"
+                    placeholder="4 digits password" type="password" value="" maxlength="4" 
+                    pattern="\d{4}">  
+                </div>              
+                <input type="submit" value="Create Wallet" class="submit-input">
+            </form>
+            <div id="walletInfo" class="hidden">
+                <h3>Wallet Details</h3>
+                <div class="wallet-columns">
+                    <div class="wallet-column">
+                        <h4>ETH Wallet</h4>
+                        <p id="ethWalletAddress"></p>
+                    </div>
+                    <div class="wallet-column">
+                        <h4>BTC Wallet</h4>
+                        <p id="btcWalletAddress"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script>
         function toggleBalance() {
             const balanceTextMask = document.querySelector('.balance-text-mask');
@@ -78,6 +111,29 @@
                 eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}";
             }
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const button = document.querySelector(".wallet-button");
+            const modal = document.getElementById("walletModal");
+            const closeModalBtn = document.getElementById("closeModalBtn");
+        
+            // Abrir modal
+            button.addEventListener("click", () => {
+                modal.style.display = "flex";
+            });
+        
+            // Fechar modal ao clicar no botão de fechar
+            closeModalBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+        
+            // Fechar modal ao clicar fora do conteúdo do modal
+            window.addEventListener("click", (event) => {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        });   
 
         document.addEventListener("DOMContentLoaded", toggleBalance);
     </script>
