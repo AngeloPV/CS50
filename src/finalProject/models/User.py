@@ -98,6 +98,14 @@ class User:
         self.update.exe_update(data={"cep": postal_code}, table_name="user_data", data_where={"id": user_id}, 
                             operator=" =, ="  ,close_conn = True)
         return True
+    
+    def get_wallet(self, user_id):
+        self.select.exe_select(f'SELECT *  FROM wallets WHERE user_id = %s',  
+                               f'{{"user_id": "{user_id}"}}', False)
+        wallet = self.select.get_result()
+        if wallet:
+            return wallet[0]
+        return False
     #parte do dinheiro, usar a sit como + pra ganho e - pra perda
     def update_cash(self, sit, user_id, cash):
         cursor = self.connection.cursor()

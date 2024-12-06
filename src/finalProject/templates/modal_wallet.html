@@ -1,0 +1,15 @@
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modal_wallet.css') }}">
+
+
+<div id="walletModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeWalletModal()">&times;</span>
+
+        <h2 class="modal-title">Wallet details</h2>
+        <div class="modal-main-info">
+            <p class="modal-info"><strong>Andress:</strong> {{ wallet[2] }}</p>
+            <p class="modal-info"><strong>Private key:</strong> {{ wallet[3] }} </p>
+        </div>
+    </div>
+</div>

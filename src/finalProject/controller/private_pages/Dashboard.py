@@ -8,8 +8,6 @@ from ...models.User import User
 from ...helper.valitade import Validate
 from ...helper.postal_code import Postal_code
 from ...app import processor_add_notifications_processor
-from ..protected_pages.translator import translate
-from ..protected_pages.translator import login
 import requests
 session.pop("user_email", None)
 USER_ID = session.get('user_id')
@@ -18,7 +16,6 @@ DIGITS = []
 
 class Dashboard:
     def __init__(self):
-        login()
         self.user = User()
         self.user_data = User_data() #cria uma instancia da classe responsavel pelos dados do usuário
         self.data = GetCryptoData() #cria uma instancia da classe responsavel pelos dados das moedas
@@ -50,8 +47,6 @@ class Dashboard:
             return msg
         
     def index(self):
-        traducao = translate('ola mundo')
-        print(traducao, '-'*99)
         #Adicionando dados do usuário na sessão para que sejam usados no restante do site
         session['theme'] = self.user_data.get_theme(USER_ID)
         session['language'] = self.user_data.get_language(USER_ID)

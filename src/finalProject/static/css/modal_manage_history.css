@@ -34,6 +34,7 @@ body.dark-theme .modal-content {
     color: var(--alt4-color); /* Vermelho suave */
     float: right;
     font-size: 28px;
+    top: 0;
     font-weight: bold;
     cursor: pointer;
 }

@@ -1,5 +1,5 @@
 html{
-    overflow: hidden;
+    overflow: auto;
 }
 
 body{
@@ -10,16 +10,26 @@ body{
     grid-template-rows: 30% 70%;
 }
 
+/* estilo do main containerr */
+
+.main-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    box-sizing: border-box; /* Inclui padding no cálculo das dimensões */
+
+}
+
 /* Estilo da main balance */
 .main-balance {
     background-color: var(--primary-color); 
     margin-left: calc(3.5vh + 55px);  
     margin-top: 3.5vh;  
-    margin-right: 3.5vh;  
     border-radius: 10px;
     padding-top: 2vh;
-    padding-left: 10vh;
-    padding-right: 10vh;
+    padding-left: 7vh;
+    padding-right: 7vh;
+    width: 91%;
 }
 
 .balance-content{
@@ -27,19 +37,19 @@ body{
     margin-bottom: 2.5vh;
 }
 
-.main-balance-title {
+.main-balance-title, .main-wallet-title {
     color: var(--secondary-color);
-    font-size: 36px;
+    font-size: 30px;
     font-family: 'Montserrat', sans-serif;
 }
 
-.main-balance-value {
+.main-balance-value{
     color: var(--secondary-color);
-    font-size: 26px;
+    font-size: 24px;
     display: flex;
     align-items: center;
     font-family: 'Montserrat', sans-serif;
-
+    margin-bottom: 1vh;
 }
 
 .balance-text-mask {
@@ -58,18 +68,18 @@ body{
 .eye-icon {
     position: fixed;
     top: 10vh;
-    right: 13vh;
+    right: 55%;
     cursor: pointer;
     display: block;
     width: 6vh;
     height: 6vh;
 }
 
-.deposit-button{
+.deposit-button, .wallet-button{
     padding: 2vh;
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
-    width: 30%;
+    width: 70%;
     margin: 0 auto; /* Centraliza horizontalmente */
     display: block;
     border-radius: 20px;
@@ -80,9 +90,27 @@ body{
     cursor: pointer;
 }
 
-.deposit-button:hover{
+.deposit-button:hover, .wallet-button:hover{
     transform: scale(1.03);
     background-color: var(--main2-color);
+}
+/* estilo da main wallet */
+.main-wallet{
+    background-color: var(--primary-color); 
+    margin-top: 3.5vh;  
+    margin-left: 6vh;  
+    margin-right: 3.5vh;  
+    border-radius: 10px;
+    padding-top: 2vh;
+    padding-left: 7vh;
+    padding-right: 7vh;
+}
+.wallet-text-content{
+    font-size: 24px;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-bottom: 3.5vh;
 }
 /*estilo da main table */
 .main-table {

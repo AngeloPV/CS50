@@ -12,5 +12,7 @@ class My_deposits:
     def index(self):
         session['balance'] = self.user.get_cash(user_id=session.get('user_id'))
         #pega todos os depositos e passa pra my_deposits.html
-        data = self.data.get_deposit_history(user_id=USER_ID)
-        return template_render('my_deposits.html', data=data)
+        data = {'deposits': self.data.get_deposit_history(user_id=USER_ID)}
+        if self.user.get_wallet(user_id=session.get('user_id')):
+            data['wallet'] = self.user.get_wallet(user_id=session.get('user_id'))
+        return template_render('my_deposits.html', **data)

@@ -12,24 +12,45 @@
 </head>
 <body class="{{ session['theme'] }}">
     {% include 'layouts/sidebar.html' %}
-
-    <main class="main-balance">
-        <div class="balance-content">
-            <div class="balance-text">
-                <h2 class="main-balance-title">Account balance</h2>
-                <h3 class="main-balance-value">
-                    <span class="balance-text-mask">$**</span> <!-- Valor oculto (inicial) -->
-                    <span class="real-balance">${{ '%.2f' % session['balance'] }}</span>
-                </h3>
+    {% if wallet %}
+        {% include 'modal_wallet.html' %}
+    {% endif %}
+    <main class="main-container">
+        
+        <div class="main-balance">
+            <div class="balance-content">
+                <div class="balance-text">
+                    <h2 class="main-balance-title">Account balance</h2>
+                    <h3 class="main-balance-value">
+                        <span class="balance-text-mask">$**</span> <!-- Valor oculto (inicial) -->
+                        <span class="real-balance">${{ '%.2f' % session['balance'] }}</span>
+                    </h3>
+                </div>
+                
+                <img class="eye-icon" alt="toggle balance visibility" onclick="toggleBalance()"
+                src="{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}">
             </div>
-            
-            <img class="eye-icon" alt="toggle balance visibility" onclick="toggleBalance()"
-            src="{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}">
+            <button class="deposit-button" onclick="window.location.href='/deposit/index'">Make a new deposit!</button>
         </div>
-        <button class="deposit-button" onclick="window.location.href='/deposit/index'">Make a new deposit!</button>
-        </main>
 
-    <main class="main-table">
+        <div class="main-wallet">
+            <div class="wallet-content">
+                <div class="wallet-text">
+                    <h2 class="main-wallet-title">Wallet</h2>
+                    {% if wallet %}
+                        <h3 class="wallet-text-content">You already have a wallet</h3>
+                        <button class="wallet-button" onclick="openWalletModal()">See wallet details</button>
+                    {% else %}
+                        <h3 class="wallet-text-content">You dont have a wallet yet</h3>
+                        <button class="wallet-button">Add a new wallet</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+            
+
+    <div class="main-table">
         <table>
             <thead>
                 <tr>
@@ -43,7 +64,7 @@
             </thead>
             
             <tbody>
-                {% for row in data %}
+                {% for row in deposits %}
                 <tr>
                     <td><b>{{ row[0] }}</b></td>
                     <td><b>{{ row[1] }}</b></td>
@@ -58,7 +79,7 @@
             </tbody>            
 
         </table>
-    </main>
+    </div>
 
     <script>
         function toggleBalance() {
@@ -80,6 +101,18 @@
         }
 
         document.addEventListener("DOMContentLoaded", toggleBalance);
+
+        function openWalletModal() {
+            document.getElementById('walletModal').style.display = "block";
+        }
+        function closeWalletModal() {
+            document.getElementById('walletModal').style.display = "none";
+        }
+        window.onclick = function (event) {        
+            var modal = document.getElementById('walletModal');
+            if (event.target === modal) {
+                document.getElementById('walletModal').style.display = "none";
+            }};
     </script>
 </body>
 
