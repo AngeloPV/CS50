@@ -5,13 +5,20 @@ from ..protected_pages.get_crypto_data import GetCryptoData
 from datetime import datetime
 
 class Manage:
+    """
+    Esta classe gerencia o histórico de transações e os dados financeiros do usuário, como saldos 
+    de criptomoedas e histórico de operações realizadas.
+    """
     def __init__(self):
-        self.data = GetCryptoData()
-        self.user = User()
+        self.data = GetCryptoData() # cria uma instancia da classe responsavel pelos dados das moedas
+        self.user = User() # cria uma instancia da classe responsavel pelos dados do usuário
 
-    from datetime import datetime
 
     def get_history_data(self, user_id):
+        """
+        Processa dados de compras, vendas e trocas realizadas pelo usuário e os organiza em uma única lista, 
+        adicionando informações de tipo e data. A lista final é ordenada por data (mais recente primeiro).
+        """
         # Pega os dados de todas as tabelas
         buy_data = self.user.get_buy_data(user_id)
         sell_data = self.user.get_sell_data(user_id)
@@ -33,7 +40,7 @@ class Manage:
         # Junta todas
         history_data = buy_data + sell_data + trade_data
 
-        # Ordena os dados pelo campo de data, do mais recente ao mais antigo
+        # Função auxiliar para converter strings de data em objetos datetime
         def parse_date(date_str):
             if isinstance(date_str, str) and date_str.replace('.', '', 1).isdigit():  # verifica se é um número
                 # Se for um número não data, trata-o de outra forma ou retorna uma data padrão
@@ -56,7 +63,19 @@ class Manage:
 
 
     def index(self):
-
+        """
+        Renderiza a página de gerenciamento, onde o usuário pode ver seu histórico de transações, ordenar
+        por ações (compra, venda ou troca) e realizar a venda de suas criptomoedas.
+        """
+        #Limpa a sessão com os dados que foram usados para dar retorno ao usuario 
+        if 'msg' in session:
+            del session['msg']
+        if 'currency' in session:
+            del session['currency']
+        if 'authorize' in session:
+            del session['authorize']
+        if 'not_authorize' in session:
+            del session['not_authorize']
         # Verifica se ja existea currency_balance na sessão (a currency balance armazena os saldos das 
         # criptomoedas do usuario), se nao tiver na sessão, é armazenada o saldo de bitcoin na 
         # currency_balance['bitcoin], o mesmo vale pro ethereum. Após definir esses valores, não será mais feita
@@ -73,7 +92,7 @@ class Manage:
 
             session['currency_data'] = self.data.get_crypto_data_for_buy(['bitcoin', 'ethereum'])
 
-
+        #Dados a serem renderizados
         currency_data = session.get('currency_data')
         history_data = self.get_history_data(session.get('user_id'))
         print(self.get_history_data(session.get('user_id')), '-'*50)
@@ -84,13 +103,18 @@ class Manage:
             'ethereum_to_dol': currency_data.get('ethereum', {}).get('current_price') * session['currency_balance']['ethereum'],
             'history_data': history_data
         }
-        msg = request.args.get('msg')
-        currency = request.args.get('currency')
-        authorize = request.args.get('authorize')
+
+        #Retoma esses valores da sessão e passa para o template para serem usados pelo javascript
+        msg = request.args.get('msg') #exibe a msg de erro
+        currency = request.args.get('currency') #exibe a moeda a ser vendida
+        authorize = request.args.get('authorize') #exibe um sweet alert de confirmacao
+        not_authorize = request.args.get('not_authorize') #exibe um sweet alert de erro
         if msg:
             data['msg'] = msg
         if currency:
             data['currency'] = currency
         if authorize:
             data['authorize'] = authorize
+        if not_authorize:
+            data['not_authorize'] = not_authorize
         return template_render('manage.html', **data)

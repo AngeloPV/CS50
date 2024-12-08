@@ -198,3 +198,13 @@
         padding: 8px;
     }
 }
+#password-requirements {
+    color: var(--secondary-color);
+    font-size: 16px;
+    text-align: left;
+}
+
+
+#password-requirements li {
+    list-style-position:inside; /* Faz a bolinha aparecer dentro do texto */
+}

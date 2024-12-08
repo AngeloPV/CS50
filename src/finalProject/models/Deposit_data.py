@@ -3,12 +3,17 @@ from datetime import datetime
 from ..helper.helper_insert import Insert
 
 class Deposit_data:
+    """
+    Classe responsavel por coletar e processar informações relacionadas ao depósito do usuário
+    """
     def __init__(self):
-        self.connection = Conn().connect()
-        self.insert = Insert()
+        self.connection = Conn().connect() #conecta ao banco
+        self.insert = Insert() #cria uma instancia responsavel pra inserir dados no banco
 
-    #deposita o valor 
     def set_deposit(self, user_id, value, currency):
+        """
+        Realiza a inserção no banco do valor depositado
+        """
         now = datetime.now()
 
         data = {
@@ -19,8 +24,10 @@ class Deposit_data:
         }
         self.insert.exe_insert(table_name='deposit', data=data)
 
-    #pega o historico de depositos
     def get_deposit_history(self, user_id):
+        """
+        Pega o historico com todos os depositos feitos pelo usuario
+        """
         cursor = self.connection.cursor()
 
         cursor.execute("SELECT id, value_deposited, currency, created FROM deposit WHERE user_id = %s ORDER BY id DESC", (user_id,))

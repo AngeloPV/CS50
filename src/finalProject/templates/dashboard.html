@@ -12,6 +12,9 @@
 </head>
 <body class="{{ session['theme'] }}">
     <script>
+        // Função responsavel por pedir a localização do usuario, caso ele permita, será gravado a 
+        // latitude e a longitude, que será enviada para o backend do dashboard e lá será convertido em
+        // um cep aproximado da localização do usuario e posteriormente gravado no banco
         function getCoordinates() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -20,7 +23,7 @@
                         const longitude = position.coords.longitude;
     
                         // Envia para o backend via fetch
-                        fetch('/dashboard/index', {  // Certifique-se de usar a URL correta
+                        fetch('/dashboard/index', {  
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'  // Define o tipo de conteúdo como JSON
@@ -30,7 +33,7 @@
                     })}}
                     
     
-        // Chama a função assim que a página carrega
+        // Chama a funcao assim que a página carrega
         window.onload = getCoordinates;
     </script>
     
@@ -64,15 +67,15 @@
     
     <main class="main">
         <div class="card">
-            <h3>Total gasto neste mes</h3>
+            <h3>Total spent this month</h3>
             {% if spent_1_month %}
                 <h4>{{ spent_1_month }}</h4>
             {% else %} 
-                <h4>Sem dados</h4>
+                <h4>No data</h4>
             {% endif %}
         </div>
         <div class="card">
-            <h3 >Ultima troca</h3>
+            <h3 >Last trade</h3>
             {% if last_trade_data %}
                 {% set crypto1 = 'Bitcoin' if last_trade_data[0][0] == 1 else 'Ethereum' %}
                 {% set crypto2 = 'Bitcoin' if last_trade_data[0][1] == 1 else 'Ethereum' %}
@@ -83,7 +86,7 @@
                 <h4 class="last_trade_text">{{ crypto1 }}: {{ amount1 }} → {{ crypto2 }}: {{ amount2 }}</h4>
                 <h4 class="last_trade_text">{{ formatted_date }}</h4>
             {% else %} 
-                <h4>Sem dados</h4>
+                <h4>No data</h4>
             {% endif %}
         </div>
         <div class="card">
@@ -92,7 +95,7 @@
                     <iframe src="{{ url_for('serve_file', filename=btc_history_plot) }}" 
                             scrolling="no" frameborder="0"></iframe>   
                 {% else %}
-                    <h3 >Last buyed Bitcoins</h3>
+                    <h3 >Last purchased Bitcoins</h3>
                     <h4 >No data</h4>
                 {% endif %}         
             </div>
@@ -101,7 +104,7 @@
                     <iframe src="{{ url_for('serve_file', filename=eth_history_plot) }}" 
                     scrolling="no" frameborder="0"></iframe>
                 {% else %}
-                    <h3>Last buyed Ethereums</h3>
+                    <h3>Last purchased Ethereums</h3>
                     <h4 >No data</h4>
                 {% endif %}
             </div>

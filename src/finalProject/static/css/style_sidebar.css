@@ -252,6 +252,7 @@ hr {
     max-height: 50%;
     border-radius: 50%;
     cursor: pointer;
+    margin-bottom: 2vh;
 }
 
 .tooltip {

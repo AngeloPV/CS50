@@ -24,7 +24,7 @@
                 icon: 'success',
                 confirmButtonText: 'Continue'
             });
-        });
+        })
         {% endif %}
 
         {% if not_authorize %}
@@ -37,7 +37,11 @@
                 didClose: () => {
                     window.location.href = '/dashboard/index'; 
                 }
-            });
+            }).then((result) => {
+                    if (result.isDismissed) { // Verifica se o modal foi fechado clicando fora
+                            window.location.href = "/dashboard/index";
+                    }
+                });
         });
         {% endif %}
 

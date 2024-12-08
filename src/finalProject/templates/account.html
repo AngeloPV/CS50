@@ -8,11 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="{{ url_for('static', filename='js/account.js') }}" defer></script>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+
 </head>
 <body class="{{ session['theme'] }}">
     {% include 'layouts/sidebar.html' %}
     <header class="header">
-        <h2 id="title">My profile</h2>
+        <h2 id="title">My Profile</h2>
     </header>
     <main class="main">
         <section class="side_card">
@@ -25,7 +29,7 @@
                 {% if session.profile_img %}
                     <img src="{{ url_for('static', filename='images/users/' + session.profile_img) }}" id="profile_photo" alt="Profile Image">
                 {% else %}
-                    <img src="{{ url_for('static', filename='images/sidebar/perfil_foto.png') }}" id="profile_photo" alt="Imagem do Perfil">
+                    <img src="{{ url_for('static', filename='images/sidebar/perfil_foto.png') }}" id="profile_photo" alt="Profile Image">
                 {% endif %}
                 <div class="info_data">
                     <h3 class="title">{{ name|join(' ') }}</h3>
@@ -38,7 +42,7 @@
             </div>
             <div class="card">
                 <div class="top">
-                    <h3 class="title">Personal information</h3>
+                    <h3 class="title">Personal Information</h3>
                     <button id="alter-phone" class="edit_btn">
                         <i class="fas fa-pencil-alt"></i> Edit
                     </button>
@@ -46,16 +50,16 @@
                 <div class="mid">
                     <div class="name editable">
                         <div class="first_name">
-                            <h4 class="subtitle">First name</h4>
+                            <h4 class="subtitle">First Name</h4>
                             <span class="usertitle" id="first_name_display">{{ first_name }}</span>
                         </div>
                             <div class="last_name">
-                            <h4 class="subtitle">Last name</h4>
+                            <h4 class="subtitle">Last Name</h4>
                             <span class="usertitle" id="last_name_display">{{ last_name }}</span>
                         </div>
                     </div>
                     <div class="email_address editable">
-                        <h4 class="subtitle">Email address</h4>
+                        <h4 class="subtitle">Email Address</h4>
                         <span class="usertitle" id="email_display">{{ email }}</span>
                     </div>
                     <div class="phone editable">
@@ -86,12 +90,16 @@
                         <span class="usertitle" id="theme_display">{{ session['theme'].split('-')[0].capitalize() }}</span>
                     </div>
                     <div class="postal_code editable">
-                        <h3 class="subtitle">Postal code</h3>
+                        <h3 class="subtitle">Postal Code {% if authorize %}oi{% endif %}</h3>
                         {% if postal_code %}
                             <span class="usertitle" id="postal_code_display">{{ postal_code }}<span>
                         {% else %}
-                            <span class="usertitle" id="postal_code_display">Não autorizado<span>
+                            <span class="usertitle" id="postal_code_display">Not Authorized<span>
                         {% endif %}
+                        
+                        
+            
+                        
                     </div> 
                 </div>
             </div>
@@ -100,25 +108,53 @@
     
 
 
-    <script>
-        window.onload = function() {
-        const body = document.body;
-        const editBtn = document.querySelectorAll('.edit_btn');
-        
-        // Verifica se o tema é light ou dark e aplica as cores correspondentes aos botões
-        editBtn.forEach(btn => {
-            if (body.classList.contains('light-theme')) {
-                btn.style.backgroundColor = 'var(--alt1-color)';
-                btn.style.color = 'var(--alt2-color)';
-                btn.style.border = '1px solid var(--alt2-color)';
-            } else if (body.classList.contains('dark-theme')) {
-                btn.style.backgroundColor = 'var(--alt2-color)';
-                btn.style.color = 'var(--alt1-color)';
-                btn.style.border = '1px solid var(--alt1-color)';
-            }
-        });
-};
 
+    <script>
+        window.onload = function() {            
+            {% if authorize %}
+                Swal.fire({
+                    title: 'Success',
+                    text: '{{ authorize}}',
+                    icon: 'success',
+                    confirmButtonText: 'Continue'
+                }).then((result) => {
+                if (result.isDismissed) { // Verifica se o modal foi fechado clicando fora
+                    {% if redirect_url %}
+                        window.location.href = "{{ redirect_url }}";
+                    {% endif %}
+                }
+            });
+            // Espera o botão de confirmação estar disponível para adicionar o evento de clique
+            const confirmButton = document.querySelector('.swal2-confirm');
+            if (confirmButton) {
+                confirmButton.addEventListener('click', function () {
+                    {% if redirect_url %}
+                        // Redireciona para a URL indicada após o clique no botão
+                        window.location.href = "{{ redirect_url }}";
+                    {% endif %}
+                });
+            }
+                
+            {% endif %}
+
+            const body = document.body;
+            const editBtn = document.querySelectorAll('.edit_btn');
+            
+            // Verifica o tema, dependendo do tema troca as cores dos botoes
+            editBtn.forEach(btn => {
+                if (body.classList.contains('light-theme')) {
+                    btn.style.backgroundColor = 'var(--alt1-color)';
+                    btn.style.color = 'var(--alt2-color)';
+                    btn.style.border = '1px solid var(--alt2-color)';
+                } else if (body.classList.contains('dark-theme')) {
+                    btn.style.backgroundColor = 'var(--alt2-color)';
+                    btn.style.color = 'var(--alt1-color)';
+                    btn.style.border = '1px solid var(--alt1-color)';
+                }
+            });
+            };
+
+        
     </script>
 </body>
 

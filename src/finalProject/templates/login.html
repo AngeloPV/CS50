@@ -21,29 +21,31 @@
 
     <!-- Todos os inputs com os labels -->
     {% block form_inputs %}
-        <label for="username" class="input-label" >Usuário:</label>
+        <label for="username" class="input-label">Username:</label>
         <input id="username" class="input-field" autocomplete="off" autofocus name="user" 
-               placeholder="Digite seu Email ou seu Nome" type="text" value="{{ user if user else '' }}">
+            placeholder="Enter your Email or Name" type="text" value="{{ user if user else '' }}">
 
-        <label for="password" class="input-label" >Senha:</label>
+        <label for="password" class="input-label">Password:</label>
         <input id="password" class="input-field" autocomplete="off" autofocus name="password" 
-               placeholder="Digite sua Senha" type="password" value="{{ password if password else '' }}">
-    
-        <input name="SendLogin" id="submitButton" class="submit-btn" type="submit" value="Acessar">
+            placeholder="Enter your Password" type="password" value="{{ password if password else '' }}">
+        
+
+        <input name="SendLogin" id="submitButton" class="submit-btn" type="submit" value="Login">
 
 
         {% set authorize = authorize | default(none) %}
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Override the history state to avoid form resubmission
+                // Substitui o estado do histórico para evitar o reenvio de formulário
                 if (window.history.replaceState) {
                     window.history.replaceState(null, null, window.location.href);
                 }
-        
+                // Pega o valor de autorização, que será um valor booleano, 
+                // e converte para JSON (ou seja, formata-o para que o valor possa ser lido em JavaScript)
                 const isAuthorized = {{ authorize | tojson }}; // Just ignore this error
 
-                // Check if the account is authorized
+                // Verifica se conta foi autorizada, se sim roda sweet alert de sucesso, senao roda de erro
                 if (isAuthorized) {
                     showCustomAlert(
                         'Account Verified Successfully',
@@ -66,17 +68,19 @@
                     );
                 }
         
-                // Call function to check password strength
+                // Checa se a senha é forte
                 passwordStrength();
             });
+
+       
         </script>
     {% endblock %}
 
     <!-- Links para recuperação de senha e cadastro -->
     {% set num_links = 2 %}
     {% block links_container %}
-        <a href='{{ url_for("main_routes.route_method", route_name="Recover_password", method="index") }}' class="link">Esqueceu a senha?</a>
-        <a href='{{ url_for("main_routes.route_method", route_name="Register", method="index") }}' class="link">Cadastrar-se</a>
+        <a href='{{ url_for("main_routes.route_method", route_name="Recover_password", method="index") }}' class="link">Forgot password?</a>
+        <a href='{{ url_for("main_routes.route_method", route_name="Register", method="index") }}' class="link">Register</a>
     {% endblock %}
 </body> 
 </html>

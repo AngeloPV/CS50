@@ -112,7 +112,7 @@ if (elementId === 'first_name_display') {
 } else if (elementId === 'theme_display') {
     window.location.href = '/theme';
 } else if (elementId === 'postal_code_display') {
-    window.location.href = '/edit-postal-code';
+    window.location.href = 'cep';
 }
 }
 

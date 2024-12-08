@@ -5,78 +5,108 @@ from .generate_code import generate_random_code
 from ..config import Config
 
 from flask import session
-from flask_mail import Mail, Message # type: ignore
-from premailer import Premailer # type: ignore
+from flask_mail import Mail, Message  # type: ignore
+from premailer import Premailer  # type: ignore
 
 
 class Send_Email():
     def __init__(self):
+        """
+        Inicializa as instâncias necessárias para o envio de e-mails.
+
+        Atributos:
+            select (Select): Instância da classe Select para consultas ao banco.
+            insert (Insert): Instância da classe Insert para inserções no banco.
+            mail (Mail): Instância do objeto Mail para envio de e-mails.
+            code (str): Código gerado aleatoriamente.
+            email_config (Config): Configurações de e-mail.
+            content_html (str): Conteúdo HTML do e-mail.
+            content_text (str): Conteúdo texto do e-mail.
+            result (bool): Resultado da execução do envio de e-mail.
+        """
         self.select = Select()
         self.insert = Insert()
         self.mail = Mail(app)
-        #Gera o código
-        self.code = generate_random_code(6)
-
-        # configure email provider settings
-        self.email_config = Config()
+        self.code = generate_random_code(6)  # Gera um código aleatório
+        self.email_config = Config()  # Configurações de e-mail
 
         self.content_html = ""
-        self.content_text = ""  
+        self.content_text = ""
         self.result = None
 
     def get_code(self):
+        """
+        Retorna o código gerado.
+
+        Retorna:
+            str: O código gerado.
+        """
         return self.code
     
     def config_email(self, id_email, data, url, type='text'):
+        """
+        Configura o e-mail e envia para o destinatário.
+
+        Parâmetros:
+            id_email (int): ID do e-mail a ser enviado.
+            data (dict): Dados do usuário (como nome, e-mail, etc).
+            url (str): URL a ser inserida no corpo do e-mail.
+            type (str, opcional): Tipo de e-mail ('text' ou 'code'). O padrão é 'text'.
+
+        Retorna:
+            bool: True se o e-mail for enviado com sucesso, False caso contrário.
+        """
         self.id_email = id_email
         self.url = url
         self.data = data
         self.type = type
 
+        # Validação dos dados fornecidos
         if not self.data.get("name"):
             self.data["name"] = "Caro Cliente"
 
         if not self.data.get("verify") or not self.data.get("email"):
-            session["Error_send_email"] = "Precisar passar o campo verify e email"
+            session["Error_send_email"] = "É necessário passar os campos verify e email"
             return False
         
-
-        self.select.exe_select("SELECT content_html, content_text, subject, type FROM email_data WHERE id = %s LIMIT %s", f'{{"id": "{self.id_email}", "LIMIT": "1"}}', False)
-
+        # Recupera os dados do template do e-mail
+        self.select.exe_select("SELECT content_html, content_text, subject, type FROM email_data WHERE id = %s LIMIT %s", 
+                               f'{{"id": "{self.id_email}", "LIMIT": "1"}}', False)
         self.result = self.select.get_result()
 
+        if self.result:
+            self.email_html()  # Prepara o conteúdo HTML do e-mail
+            self.email_text()  # Prepara o conteúdo texto do e-mail
 
-        if(self.result):
-            self.email_html()
-            self.email_text()
-
-            # Chamada da função em um contexto apropriado
             try:
+                # Envia o e-mail
                 with app.app_context():
-                    msg = Message(self.result[2],
+                    msg = Message(self.result[2],  # Assunto do e-mail
                                   sender='noereply@gmail.com',
                                   recipients=[self.data["email"]])
                     msg.body = self.content_text
                     msg.html = self.content_html
                     self.mail.send(msg)
 
-                    print("E-mail enviado com sucesso!")   
-                    if(self.insert_email_sit()): 
+                    print("E-mail enviado com sucesso!")
+                    if self.insert_email_sit():  # Insere a situação do e-mail na tabela
                         return True
-                    
                     return False
             except Exception as e:
-                # Captura e imprime qualquer erro que ocorra
-                print(str(e))
+                print(str(e))  # Imprime o erro
                 session["error_send_email"] = str(e)
                 return False
-        
-        print('dasdasdasdasd')
-        session["error_send_email"] = "Error: não foi possivel relizar o Select"
+
+        session["error_send_email"] = "Erro: não foi possível realizar o Select"
         return False
 
-
     def email_text(self):
+        """
+        Converte o conteúdo do e-mail para o formato de texto simples.
+
+        Retorna:
+            None
+        """
         self.content_text = self.result[1].split('//')
 
         result_text = f"Olá, {self.data['name']}\n\n"
@@ -91,12 +121,18 @@ class Send_Email():
 
         self.content_text = result_text
 
-
     def email_html(self):
+        """
+        Converte o conteúdo do e-mail para o formato HTML, aplicando o estilo adequado.
+
+        Retorna:
+            None
+        """
+        # CSS customizado para os tipos de conteúdo (botão ou código)
         validate_button_css = """
         .validation-button {
             display: inline-block;
-            background-color: #ff6f3c; /* Laranja */
+            background-color: #ff6f3c;
             color: white;
             text-decoration: none;
             padding: 10px 20px; 
@@ -105,15 +141,14 @@ class Send_Email():
             margin: 20px 0;
         }
         .validation-button:hover {
-            background-color: #e55b28; /* Tom mais escuro de laranja para hover */
+            background-color: #e55b28;
         }
         """
 
-        # Define o CSS do código de validação (ajustado para e-mails)
         validate_code_css = """
         .code {
-            padding: 10px; /* Use pixels ao invés de vh */
-            text-align: center; /* Centraliza o conteúdo */
+            padding: 10px;
+            text-align: center;
             margin: 0 auto;
         }
 
@@ -130,14 +165,14 @@ class Send_Email():
         }
         """
 
-        # Define os códigos extra que vão ser adicionados ao CSS padrão
+        # Adiciona o CSS necessário dependendo do tipo do e-mail
         extra_css = ''
         if self.type == 'code':
             extra_css = validate_code_css
         elif self.type == 'button':
             extra_css = validate_button_css
 
-        # Define o CSS padrão do e-mail
+        # CSS padrão para o corpo do e-mail
         css = f"""
         <style>
             body {{
@@ -156,7 +191,7 @@ class Send_Email():
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }}
             .email-header {{
-                background-color: #1b263b; /* Azul escuro */
+                background-color: #1b263b;
                 padding: 20px;
                 text-align: center;
                 color: white;
@@ -168,26 +203,23 @@ class Send_Email():
             }}
             .email-content {{
                 padding: 20px;
-                color: #343a40; /* Cinza escuro */
+                color: #343a40;
                 line-height: 1.6;
             }}
-            .email-content p {{
-                margin: 10px 0;
-            }}
-            {extra_css}
             .email-footer {{
                 text-align: center;
                 font-size: 12px;
-                color: #343a40; /* Cinza escuro */
+                color: #343a40;
                 margin-top: 20px;
             }}
             .email-footer p {{
                 margin: 0;
             }}
+            {extra_css}
         </style>
         """
 
-        # Monta o conteúdo HTML
+        # Monta o conteúdo HTML do e-mail
         result_html = f"""
         <html>
         <head>
@@ -199,19 +231,14 @@ class Send_Email():
                     <h1>Bem Vindo AF Crypto!</h1>
                 </div>
                 <div class="email-content">
+                    <h3>Olá, {self.data['name'].capitalize()}</h3>
         """
 
-        result_html += f"<h3>Olá, {self.data['name'].capitalize()}</h3>"
-
         for value in self.result[0].split('//'):
-            # Verifica se o marcador é CODE ou URL e substitui pelo valor adequado
             if value == "CODE" and self.type == "code":
-                # Cria a div
                 value = '<div class="code">'
-                # Separa cada dígito individualmente
                 for digit in self.code:
                     value += f'<span class="code_digit">{digit}</span>'
-                # Fecha a div
                 value += '</div>'
             if value == "URL" and self.type == "button":
                 value = f'<p><a href="http://127.0.0.1:5000/{self.url}{self.data["verify"]}" class="validation-button">Acessar Link</a></p>'
@@ -222,7 +249,6 @@ class Send_Email():
                 <div class="email-footer">
                     <p>Se você não tiver realizado qualquer ação relacionada à Empresa AF, por favor, desconsidere este e-mail.</p>
                     <p>Obrigado por escolher a Empresa AF!</p>
-                    <p>Estamos à disposição em nosso local de contato.</p>
                 </div>
             </div>
         </body>
@@ -233,27 +259,22 @@ class Send_Email():
         inlined_html = premailer.transform()
         self.content_html = inlined_html
 
-
     def insert_email_sit(self):
+        """
+        Insere a situação do envio de e-mail na tabela email_sit.
+
+        Retorna:
+            bool: True se a inserção for bem-sucedida, False caso contrário.
+        """
         self.select.exe_select("""SELECT id FROM email_sit WHERE email_id = %s AND user_id = %s AND email_sit = %s
                                 LIMIT %s""", f'{{"email_id": "{self.id_email}", "user_id": "{self.data["id"]}", "email_sit": "1", "LIMIT": "1"}}', True)
 
         if self.select.get_result():
-            print('s')
             return True
 
-        if not self.data.get("id"):
-            data = {"email_id": self.id_email, "user_id": self.data["verify"], "email_sit": 1}
-        elif self.data.get("id"):
-            data = {"email_id": self.id_email, "user_id": self.data["id"],  "email_sit": 1}
+        data = {"email_id": self.id_email, "user_id": self.data["verify"], "email_sit": 1} if not self.data.get("id") else {"email_id": self.id_email, "user_id": self.data["id"],  "email_sit": 1}
         
         self.insert.exe_insert(data, "email_sit", close_conn=True)
-        
         result_insert = self.insert.getResult()
 
-        if(result_insert):
-            return True
-        else:
-            session["error_send_email"] = "Error: não foi possivel relizar o Insert"
-            return False
-        
+        return result_insert if result_insert else False

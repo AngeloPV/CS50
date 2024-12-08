@@ -16,7 +16,7 @@
     {% block form_inputs %}
         <label for="email" class="input-label">Seu email:</label>
         <input id="email" class="input-field" autocomplete="off" autofocus name="email" 
-               placeholder="Digite seu Email" type="text" value="{{ session['user_email'] if session['user_email'] else '' }}">
+               placeholder="Enter your email" type="text" value="{{ session['user_email'] if session['user_email'] else '' }}">
 
         <input name="ResendAuthorize" class="submit-btn" type="submit" value="Send">
     {% endblock %}

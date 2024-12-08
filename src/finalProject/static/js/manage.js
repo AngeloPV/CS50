@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
+// Funcao para abrir o modal com o tipo do historico (buy, sell ou trade)
 function openModal(id, type) {
     // Filtrar o item correto de historyData com base no ID e no tipo
     const row = historyData.find(item => item.id == id && item.type == type);
@@ -161,7 +161,7 @@ function openModal(id, type) {
     // Exibir o modal
     document.getElementById('historyModal').style.display = "block";
 }
-
+// fecha o modal no x
 function closeModal() {
     const hasMsg = document.getElementById('config').dataset.hasMsg === 'true'
 
@@ -172,6 +172,7 @@ function closeModal() {
     }
 }
 
+// fecha o modal qnd clicar fora
 window.onclick = function (event) {
     const hasMsg = document.getElementById('config').dataset.hasMsg === 'true'
     
@@ -193,7 +194,7 @@ window.onclick = function (event) {
 
 };
 
-
+// abre o modal d venda
 function openSellModal(currency) {
     document.getElementById('sell-modal-title').textContent = currency
     
@@ -227,6 +228,7 @@ function openSellModal(currency) {
     document.getElementById('sellModal').style.display = "block";
 }
 
+// fecha o modal de venda no x
 function closeSellModal() {
     // Ocultar o modal
     const hasMsg = document.getElementById('config').dataset.hasMsg === 'true'

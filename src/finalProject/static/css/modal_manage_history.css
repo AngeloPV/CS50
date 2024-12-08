@@ -84,6 +84,10 @@ body.light-theme .modal-info strong {
     background-color: var(--alt2-color);
 }
 
+body.dark-theme #form-sell-container{
+    background-color: var(--primary-color);
+}
+
 body.light-theme #currency-container .modal-info strong,
 body.light-theme #currency-sender-container .modal-info strong,
 body.light-theme #currency-recipient-container .modal-info strong{
@@ -95,3 +99,4 @@ body.dark-theme #currency-sender-container,
 body.dark-theme #currency-recipient-container{
     background-color: var(--primary-color);
 }
+

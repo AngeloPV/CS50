@@ -8,11 +8,11 @@
     data-ethereum-price="{{ session['currency_data']['ethereum']['current_price'] }}">
     <div class="modal-content">
         <span class="close" onclick="closeSellModal()">&times;</span>
-        <h2 class="modal-title">Venda de <span class="modal-title" id="sell-modal-title"></span></h2>
+        <h2 class="modal-title">Sell <span class="modal-title" id="sell-modal-title"></span></h2>
 
         <div class="modal-main-info">
             <p class="modal-info"><strong>Total:</strong> <span id="sell-modal-total"></span></p>
-            <p class="modal-info"><strong>Valor aproximado:</strong> <span id="sell-modal-value"></span></p>
+            <p class="modal-info"><strong>Value estimated in account:</strong> <span id="sell-modal-value"></span></p>
         </div>
 
         <div id="form-sell-container">
@@ -20,7 +20,7 @@
                 <label class="modal-info" for="sell-amount"><strong>Amount to sell:</strong></label><br>
                 <input class="input-field" type="number" id="sell-amount" name="sell-amount" min="0" 
                 step="any" placeholder="Amount to sell"><br>
-                <p class="modal-info"><strong>Valor aproximado:</strong> <br><span id="sell-modal-value-form">$0.00</span></p>
+                <p class="modal-info"><strong>Value estimated:</strong> <br><span id="sell-modal-value-form">$0.00</span></p>
         
                 <label class="modal-info" for="4_digits_pass"><strong>Four digits pass:</strong></label><br>
                 <input class="input-field" type="password" id="4_digits_pass" name="4_digits_pass" 

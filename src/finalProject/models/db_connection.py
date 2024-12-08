@@ -2,6 +2,9 @@
 import pymysql
 
 class Conn:
+    """
+    Classe responsável por estabelecer a conexão e com o banco de dados
+    """
     def __init__(self):
         self.db_config = {
             'host': 'localhost',
@@ -11,4 +14,7 @@ class Conn:
         }
 
     def connect(self):
+        """
+        Realiza a conexão com o banco de dados
+        """
         return pymysql.connect(**self.db_config)

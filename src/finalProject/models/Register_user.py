@@ -11,20 +11,36 @@ import bcrypt # type: ignore
 
 
 class Register_user():
+    """
+    Classe responsável pelo processo de registro de um novo usuário.
+    Inclui a validação de campos, inserção de dados no banco de dados,
+    e envio de e-mail de confirmação.
+    """ 
     def __init__(self):
-        self.insert = Insert()
-        self.select = Select()
-        self.send_email = Send_Email()
-        self.validate = Validate()
-        self.data = None
+        self.insert = Insert() #cria uma instancia responsavel pra inserir dados no banco
+        self.select = Select() #cria uma instancia responsavel pra resgatar dados do banco
+        self.send_email = Send_Email() #cria uma instancia responsavel pra enviar emails
+        self.validate = Validate() #cria uma instancia responsavel pela validação 
+        self.data = None # Armazena os dados do usuário fornecidos no registro
 
     def addUser(self, data):
+        """
+        Adiciona um novo usuário ao sistema. Realiza a criação da tabela caso não exista,
+        valida os campos do formulário, criptografa a senha e o código de confirmação de e-mail,
+        e insere os dados do usuário no banco de dados.
+
+        Parâmetros:
+        - data (dict): Dicionário contendo as informações do usuário (nome, e-mail, CPF, etc.)
+
+        Retorno:
+        - bool: Retorna True se o registro for bem-sucedido e o e-mail de confirmação for enviado, False caso contrário.
+        """
         self.data = data
         
-
+        #cria a tabela caso n exista
         create = ("""
             CREATE TABLE IF NOT EXISTS user_data (
-                id int(11) NOT NULL,
+                id int(11) PRIMARY KEY NOT NULL,
                 name text NOT NULL,
                 email varchar(220) NOT NULL,
                 cpf varchar(14) NOT NULL,
@@ -34,17 +50,25 @@ class Register_user():
                 img_name text DEFAULT NULL,
                 conf_email varchar(220) NULL,
                 created datetime DEFAULT current_timestamp(),
-                modified datetime DEFAULT NULL
+                modified datetime DEFAULT NULL,
+                language varchar(50),
+                theme varchar(50),
+                cep varchar(9) DEFAULT NULL,
+
             )
         """)
 
+        #valida os campos
         if(self.validate_camps()):
             data['password'] = self.validate.encryption(data['password'])
 
             data['conf_email'] = self.validate.encryption(str(datetime.now().date()))
 
+            #define valores padrão
             data['theme'] = 'light-theme'
+            data['language'] = 'english'
 
+            #Insere os dados do novo usuario no banco
             self.insert.exe_insert(self.data, "user_data", create, True)
             result = self.insert.getResult()
 
@@ -60,7 +84,9 @@ class Register_user():
 
 
     def validate_camps(self):
-
+        """
+        Função responsável pela validação dos campos do formulário de registro de usuário.
+        """
         if (self.validate.valitdate_email(self.data['email'], False) and self.validate.valitdate_cpf(self.data['cpf']) 
             and self.validate.valitdate_phone(self.data['phone']) and self.validate.valitdate_password(self.data['password'])):
             return True
@@ -69,6 +95,9 @@ class Register_user():
 
 
     def email(self):
+        """
+        Envia o e-mail de confirmação para o usuário.
+        """
         self.select.exe_select("SELECT id, name, email, conf_email FROM user_data WHERE cpf = %s LIMIT %s", f'{{"cpf": "{self.data["cpf"]}", "LIMIT": "1"}}', True)
         email_data = self.select.get_result()
 

@@ -1,4 +1,5 @@
 from flask import request, session, redirect, url_for
+import re
 from ...renderer import template_render
 from ...helper.helper_select import Select
 from ...helper.helper_update import Update
@@ -13,17 +14,24 @@ from ...models.User import User
 from datetime import datetime 
 
 class Account:
+    """
+    Classe responsavel pelo gerenciamente das informações do usuario e suas preferencias
+    """
     def __init__(self):
-        self.valitade = Validate()
-        self.select = Select()
-        self.update = Update()
-        self.send_email = Send_Email()
-        self.user_data = User_data()
-        self.authenticate = Authenticate_account_user()
-        self.postal_code = Postal_code()
-        self.user = User()
+        self.valitade = Validate() #cria uma instancia responsavel pela validação
+        self.select = Select() #cria uma instancia responsavel pra resgatar dados do banco
+        self.update = Update() #cria uma instancia responsavel pra atualizar dados do banco
+        self.send_email = Send_Email() #cria uma instancia responsavel pra enviar emails
+        self.user_data = User_data() #cria uma instancia da classe responsavel pelos dados do usuário
+        self.authenticate = Authenticate_account_user() #cria uma instancia responsavel por autenticar o usuário
+        self.postal_code = Postal_code() #cria uma instancia responsavel por pegar a localização do usuário
+        self.user = User() #cria uma instancia responsavel por pegar as informações do usuário
 
     def do_email_send(self):
+        """
+        Função responsavel por enviar um email para o usuario, pegando os dados necessários do banco e
+        trazendo para a função que send_email(config_email) para criar o email com as informações do usuario
+        """
         self.select.exe_select("SELECT id, name, email FROM user_data where id = %s LIMIT %s", f'{{"id": "{session["user_id"]}", "LIMIT": "1"}}') 
         email_data = self.select.get_result()
 
@@ -46,8 +54,12 @@ class Account:
         return False,data
                 
     def validate_data(self):
+         """
+         Realiza a validação da senha inserida pelo usuario após selecionar pra alterar os dados,
+         caso a senha seja valida, retorna a funcao do_email_send
+         """
          if request.method == 'POST':
-            #pga a senha
+            #pega a senha
             user_password = request.form.get('password')
 
             #verifica se a senha está no padrão adequado
@@ -71,32 +83,61 @@ class Account:
             return self.do_email_send()
               
     def index(self):
+        """
+        Renderiza a página com todas as informações do usuário e suas preferencias para que possam 
+        posteriormente serem alteradas pelo mesmo
+        """
         name = self.user_data.get_user_name(user_id=session.get('user_id'))
         email = self.user_data.get_user_email(user_id=session.get('user_id'))
         phone = self.user_data.get_user_phone(user_id=session.get('user_id'))
+        #user locate returna {'city': 'cidade', 'state': 'estado', 'country': 'pais'}
         user_locate = self.postal_code.get_city_state_country(self.user.get_postal_code(user_id=session.get('user_id')))
-        user_locate['cep'] = self.user.get_postal_code(user_id=session.get('user_id'))
-        data = {'name': name,
-                'first_name': name[0], 
-                'last_name': name[-1],
-                'email': email, 
-                'phone': phone, 
+        if user_locate:
+            user_locate['cep'] = self.user.get_postal_code(user_id=session.get('user_id'))
+       
+        #data padrao
+        data = {
+            'name': name,
+            'first_name': name[0],
+            'last_name': name[-1],
+            'email': email,
+            'phone': phone
+        }
+
+        # adiciona os campos de localização apenas se user_locate for válido
+        if user_locate:
+            data.update({
                 'city': user_locate.get('cidade'),
                 'state': user_locate.get('estado'),
                 'country': user_locate.get('pais'),
                 'postal_code': user_locate.get('cep')
-                }
+            })
+
+
         
-        if 'authorize' in session:
-            del session['authorize']
+        #valor passado na sessão para verificar se o dado foi alterado com sucesso, caso seja,
+        #retorna para a pagina Account com o valor authorize na sessao para que seja exibido o sweet alert
+        #em resposta a alteração feita pelo usuario, após isso apaga o valor da sessao
+
+
+       # Pega os dados ad url
+        authorize = request.args.get('authorize') #exibe um sweet alert de confirmacao
+        redirect_url = request.args.get('redirect_url') #url para o Account
+        if authorize:
+            data['authorize'] = authorize
+        if redirect_url:
+            data['redirect_url'] = redirect_url
         return template_render('account.html', **data)
     
 
     
-    #valida as informaçoes e armazena em result, se for false, retorna a pagina com a msg armzenada em result[1]
-    #se for true, armazena o dado a ser alterado na sessao e retorna o verify.html
     def phone(self):
+        """
+        A lógica de todas as funções responsaveis por alterar os dados do usuario seguem a mesma desta 
+        funcao
+        """
         if request.method == 'POST':
+            #2° Parte
             #apos digitar o codigo corretamente a pagina vai atualizar e vai pedir o dado a ser alterado
             #e a confirmação do mesmo, se estiver tudo correto, altera os dados, senao, retorna erro
             if request.form.get('update_send_button'):
@@ -113,36 +154,42 @@ class Account:
 
                 #verifica se ambos estao no modelo: (12)123456789
                 if not self.valitade.valitdate_phone(phone) or not self.valitade.valitdate_phone(confirm_phone):
-                    data = {'msg': 'Digite um telefone válido', "verified": True, "to_update": f'{session.get("to_update")}'}
+                    data = {'msg': 'Invalid phone number', "verified": True, "to_update": f'{session.get("to_update")}'}
                     # print(phone, confirm_phone)
                     return template_render("update_data.html", **data)
                 
-                #adiciona os paranteses
+                #adiciona os paranteses novamente
                 phone = f"({phone[:2]}){phone[2:]}"
                 confirm_phone = f"({confirm_phone[:2]}){confirm_phone[2:]}"
 
                 #verifica se ambos sao iguais
                 if not phone == confirm_phone:
-                    data = {'msg': 'Os campos devem ser iguais', "verified": True, "to_update": f'{session.get("to_update")}'}
+                    data = {'msg': 'Fields must be the same', "verified": True, "to_update": f'{session.get("to_update")}'}
 
                     return template_render("update_data.html", **data)
                 
-                #atualiza a tabela e devolve pro dashboard
+                #Após tudo verificado, será feito a atualização dos dados
                 self.update.exe_update(data={"phone": f"{phone}"}, table_name='user_data', 
                                        data_where={'id': f'{session.get("user_id")}'}, operator='=, =')
                 
-                #Limpa a session to update
+                #Limpa a session to update e retorna o authorize na sessão para exibir o sweet alert
                 session.pop('to_update', None)
-                data = {'authorize': 'Telefone atualizado com sucesso!', 'redirect_url': '/account/index'}
-                return template_render("update_data.html", **data)
+                data = {'authorize': 'Phone updated successfully!', 'redirect_url': '/account/index'}
+                return redirect(url_for("main_routes.route_method", route_name="account", method='index', **data))
 
+
+            #1°parte
+            #Valida a senha digitada
             result = self.validate_data()
-            
 
+            #caso a validação falhe, retorna a pagina com a msg armazenada em result[1]
             if not result[0]:
                 data = result[1]
                 return template_render("update_data.html", **data) 
-            #passa oq o usuario vai alterar pela sessao
+            
+            #passa oq o usuario vai alterar pela sessao e leva para a pagina Verify onde será requirido
+            #um codigo de confirmação enviado pelo email, caso digite corretamente, vai para a 
+            #2° parte(linha 121)
             session['to_update'] = 'phone'  
             return template_render('verify.html') 
             
@@ -157,13 +204,13 @@ class Account:
 
                 #verifica se o email é valido
                 if not self.valitade.valitdate_email(email, False) or not self.valitade.valitdate_email(confirm_email, False):
-                    data = {'msg': 'email invalido', "verified": True, "to_update": f'{session.get("to_update")}'}
+                    data = {'msg': 'invalid email', "verified": True, "to_update": f'{session.get("to_update")}'}
 
                     return template_render("update_data.html", **data)
             
                 #verifica se ambos sao iguais
                 if not email == confirm_email:
-                    data = {'msg': 'Os campos devem ser iguais', "verified": True, "to_update": f'{session.get("to_update")}'}
+                    data = {'msg': 'Fields must be the same', "verified": True, "to_update": f'{session.get("to_update")}'}
 
                     return template_render("update_data.html", **data)
 
@@ -172,8 +219,8 @@ class Account:
                 
                 #Limpa a session to update
                 session.pop('to_update', None)
-                data = {'authorize': 'Email atualizado com sucesso!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
-                return template_render("update_data.html", **data)
+                data = {'authorize': 'Email updated successfully!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
+                return redirect(url_for("main_routes.route_method", route_name="account", method='index', **data))
 
             #1°parte
             result = self.validate_data()
@@ -193,24 +240,27 @@ class Account:
                 password = str(request.form.get('password'))
                 confirm_password = str(request.form.get('confirm_password')) 
 
+                #valida a senha para ver se esta no formato adequado
                 if not self.valitade.valitdate_password(password) or not self.valitade.valitdate_password(confirm_password):
-                    data = {'msg': 'senha invalida', "verified": True, "to_update": f'{session.get("to_update")}'}
+                    data = {'msg': 'Invalid password', "verified": True, "to_update": f'{session.get("to_update")}'}
 
                     return template_render("update_data.html", **data)
                 
+                #verifica se ambos sao iguais
                 if not password == confirm_password:
-                    data = {'msg': 'Os campos devem ser iguais', "verified": True, "to_update": f'{session.get("to_update")}'}
+                    data = {'msg': 'Fields must be the same', "verified": True, "to_update": f'{session.get("to_update")}'}
 
                     return template_render("update_data.html", **data)
                 
+                #verifica se a senha digitada é coerente com a do banco
                 encrypted_password = self.valitade.encryption(password)
                 self.update.exe_update(data={"password": f"{encrypted_password}"}, table_name='user_data', 
                                        data_where={'id': f'{session.get("user_id")}'}, operator='=, =')
                 
                 #Limpa a session to update
                 session.pop('to_update', None)
-                data = {'authorize': 'Senha atualizada com sucesso!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
-                return template_render("update_data.html", **data)
+                data = {'authorize': 'Password updated successfully!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
+                return redirect(url_for("main_routes.route_method", route_name="account", method='index', **data))
         
         #1°parte
             result = self.validate_data()
@@ -231,22 +281,22 @@ class Account:
                 
                 #verifica se tem algum numero no meio dos nomes
                 if any(char.isdigit() for char in name) or any(char.isdigit() for char in confirm_name):
-                    data = {'msg': 'Digite um nome valido', "verified": True, "to_update": f'{session.get("to_update")}'}
+                    data = {'msg': 'Enter a valid name', "verified": True, "to_update": f'{session.get("to_update")}'}
 
                     return template_render("update_data.html", **data)
                 #verifica se os nomes sao iguais
                 if not name.lower() == confirm_name.lower():
-                    data = {'msg': 'Os campos devem ser iguais', "verified": True, "to_update": f'{session.get("to_update")}'}
+                    data = {'msg': 'Fields must be equal', "verified": True, "to_update": f'{session.get("to_update")}'}
 
                     return template_render("update_data.html", **data)
                 
-                #se tudo der certo
+                #se tudo der certo atualiza os dados
                 self.update.exe_update(data={"name": f"{name.title()}"}, table_name='user_data', 
                                        data_where={'id': f'{session.get("user_id")}'}, operator='=, =')
                 #Limpa a session to update
                 session.pop('to_update', None)
-                data = {'authorize': 'Nome atualizado com sucesso!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
-                return template_render("update_data.html", **data)
+                data = {'authorize': 'Name updated successfully!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
+                return redirect(url_for("main_routes.route_method", route_name="account", method='index', **data))
 
             result = self.validate_data()
             if not result[0]:
@@ -254,6 +304,54 @@ class Account:
                 return template_render("update_data.html", **data) 
             #passa oq o usuario vai alterar pela sessao
             session['to_update'] = 'name'  
+            return template_render('verify.html') 
+
+        return template_render('update_data.html')
+    
+    def cep(self):
+        if request.method == 'POST':
+            if request.form.get('update_send_button'):
+                cep = str(request.form.get('cep'))
+                confirm_cep = str(request.form.get('confirm_cep'))
+
+                if not cep or not confirm_cep:
+                    data = {'msg': 'All fields must be filled out', "verified": True, "to_update": f'{session.get("to_update")}'}
+
+                    return template_render("update_data.html", **data)
+                
+                #verifica se tem algum numero no meio dos nomes
+                if not self.postal_code.is_valid_zip_code(cep):
+                    data = {'msg': 'Enter a valid postal code', "verified": True, "to_update": f'{session.get("to_update")}'}
+
+                    return template_render("update_data.html", **data)
+                #verifica se os nomes sao iguais
+                if not cep == confirm_cep:
+                    data = {'msg': 'Fields must be the same', "verified": True, "to_update": f'{session.get("to_update")}'}
+
+                    return template_render("update_data.html", **data)
+                
+               
+                #formata o CEP removendo qualquer caractere que não seja número
+                cep = re.sub(r"\D", "", cep) 
+
+                #formata o cep novamente pra ficar no modelo 00000-000
+                if not '-' in cep:
+                    cep = f"{cep[:5]}-{cep[5:]}"
+
+                #se tudo der certo atualiza os dados
+                self.update.exe_update(data={"cep": f"{cep}"}, table_name='user_data', 
+                                       data_where={'id': f'{session.get("user_id")}'}, operator='=, =')
+                #Limpa a session to update
+                session.pop('to_update', None)
+                data = {'authorize': 'Postal code updated successfully!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
+                return redirect(url_for("main_routes.route_method", route_name="account", method='index', **data))
+
+            result = self.validate_data()
+            if not result[0]:
+                data = result[1]
+                return template_render("update_data.html", **data) 
+            #passa oq o usuario vai alterar pela sessao
+            session['to_update'] = 'cep'  
             return template_render('verify.html') 
 
         return template_render('update_data.html')

@@ -23,7 +23,7 @@
     <main class="main">
         <nav class="side-content">
             <p class="side-nav_btn" id="history">History</p>
-            <p class="side-nav_btn" id="my_wallet">My wallet</p>
+            <p class="side-nav_btn" id="my_wallet" onclick="window.location.href='/my_deposits/index'">My wallet</p>
         </nav>
 
         
@@ -117,9 +117,10 @@
     <div id="config" data-has-msg="{{ 'true' if msg else 'false' }}"></div>
 
 <script>
-    // Simula o objeto historyData que você usa no servidor
+    // Transforma o history data em json
     const historyData = {{ history_data|tojson }};
 
+    // Verifica se veio a msg pela session, se vir ja abre  o modal e exibe o erro
     document.addEventListener("DOMContentLoaded", () => {
     {% if msg %}
         openSellModal('{{ currency }}');
@@ -134,6 +135,7 @@
     {% endif %}
     });
 
+    // Caso a venda da moeda seja realizada, exibe sweet alert de sucesso
     {% if authorize %}
             document.addEventListener("DOMContentLoaded", function() {
             Swal.fire({
@@ -144,9 +146,14 @@
                 didClose: () => {
                     window.location.href = '/manage/index'; 
                 }
+            }).then((result) => {
+                if (result.isDismissed) { // Verifica se o modal foi fechado clicando fora
+                        window.location.href = "/manage/index";
+                }
             });
         });
     {% endif %}
+    // Caso o usuario nao tenha a senha de 4 digitos, exibe sweet alert de erro e redireciona para dashboard
     {% if not_authorize %}
             document.addEventListener("DOMContentLoaded", function() {
             Swal.fire({
@@ -156,6 +163,10 @@
                 confirmButtonText: 'Continue',
                 didClose: () => {
                     window.location.href = '/dashboard/index'; 
+                }
+            }).then((result) => {
+                if (result.isDismissed) { // Verifica se o modal foi fechado clicando fora
+                        window.location.href = "/dashboard/index";
                 }
             });
         });

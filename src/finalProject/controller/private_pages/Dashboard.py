@@ -8,30 +8,45 @@ from ...models.User import User
 from ...helper.valitade import Validate
 from ...helper.postal_code import Postal_code
 from ...app import processor_add_notifications_processor
-import requests
+import time
+
 session.pop("user_email", None)
 USER_ID = session.get('user_id')
 DIGITS = []
 
 
 class Dashboard:
+    """
+    Classe responsável por gerenciar as operações da página de dashboard do usuário.
+    Contém funcionalidades para exibir gráficos, validar senhas e carregar informações do usuário.
+    """
     def __init__(self):
-        self.user = User()
+        """
+        Inicializa a classe Dashboard com dependências como dados do usuário,
+        informações de criptomoedas e notificações.
+        """
+        self.user = User() #cria uma instancia responsavel por pegar as informações do usuário
         self.user_data = User_data() #cria uma instancia da classe responsavel pelos dados do usuário
         self.data = GetCryptoData() #cria uma instancia da classe responsavel pelos dados das moedas
         self.dashboard = Plot_Creator() #cria uma instancia da classe responsavel por gerar os graficos
         self.verificado = self.user_data.get_4_digits_pass(user_id=USER_ID)
         self.count_notifications = Count_notifications().get_count() #diz quantas noticações não lidas o usario possui
-        self.validate = Validate()
-        self.postal_code = Postal_code()
+        self.validate = Validate() #cria uma instancia responsavel pela validação
+        self.postal_code = Postal_code() #cria uma instancia responsavel por pegar a localização do usuário
 
         # a session view_count, irá ficar sendo usada para verificar se a pagina de notifcations ja foi acessado, caso tenha sido ent todas as notifacations pedentes ja foram vistas
         session['viewd_count'] = False
 
+        # Verifica se a session contém a chave 'last_update_time', caso contrário define como 0
+        if 'last_update_time' not in session:
+            session['last_update_time'] = 0
+
 
     def verify_password(self):
-        #Verifica se a senha é de 4 digitos e se ela tem algum valor que nao seja numerico
-        #Se um valor nao for numerico n é adicionado na tmp_digits, no final verifica se a tmp_digits tem os 4 digitos
+        """
+        Verifica a senha de 4 dígitos enviada pelo usuário, valida a senha e 
+        retorna mensagem de erro ou armazena a senha válida.
+        """
         form_sent = request.form.get('submit_4_digits_form')
         tmp_digits = []
         for c in range(1, 5):
@@ -40,13 +55,18 @@ class Dashboard:
                 tmp_digits.append(digit)
         if form_sent:
             if len(tmp_digits) < 4:
-                msg = 'Senha inválida, digite apenas valores numéricos de 0-9'
+                msg = 'Invalid password, enter only numeric values from 0-9'
             else:
                 DIGITS.append(tmp_digits)
                 msg = DIGITS
             return msg
         
     def index(self):
+        """
+        Renderiza a página principal do dashboard com gráficos e informações personalizadas.
+        Também gerencia o carregamento de temas e idiomas do usuário.
+        """
+        current_time = time.time()
         #Adicionando dados do usuário na sessão para que sejam usados no restante do site
         session['theme'] = self.user_data.get_theme(USER_ID)
         session['language'] = self.user_data.get_language(USER_ID)
@@ -57,33 +77,43 @@ class Dashboard:
             cep = self.postal_code.get_coordinates_from_json()
             self.user.set_postal_code(USER_ID, cep)
         
-
+        # Verifica se passaram mais de 30 segundos desde a última atualização
+        # Essa verificação serve para saber se o usuario recarregou a pagina nos ultimos 30 segundos,
+        # onde as informacoes so serao atualizadas de 30 em 30 segundos pois os plots pegam dados de
+        # API, e para nao sobrecarregar as requisições é necessário um tempo entre cada atualizacao
         
+        if current_time - session.get('last_update_time', 0) > 30:
+            # Atualiza os dados e salva o timestamp da atualização
+            session['last_update_time'] = current_time
 
-        self.data.do_update_database() #atualiza o banco das criptomoedas
+            self.data.do_update_database() #atualiza o banco das criptomoedas
 
-        #pega todas as informações do dashboard, coloca no dict(data) e renderiza o dashboard.html
-        btc_plot = self.dashboard.create_plot_range_value('bitcoin')
-        eth_plot = self.dashboard.create_plot_range_value('ethereum')
-        btc_history_plot = self.dashboard.create_plot_history('bitcoin', USER_ID)
-        eth_history_plot = self.dashboard.create_plot_history('ethereum', USER_ID)
-        spent_plot_6 = self.dashboard.create_plot_spent(user_id=USER_ID, time='6')
-        spent_plot_all = self.dashboard.create_plot_spent(user_id=USER_ID, time='all')
+            #pega todas as informações do dashboard, coloca no dict(data) e renderiza o dashboard.html
+            session['btc_plot'] = self.dashboard.create_plot_range_value('bitcoin')
+            session['eth_plot'] = self.dashboard.create_plot_range_value('ethereum')
+            session['btc_history_plot'] = self.dashboard.create_plot_history('bitcoin', USER_ID)
+            session['eth_history_plot'] = self.dashboard.create_plot_history('ethereum', USER_ID)
+            session['spent_plot_6'] = self.dashboard.create_plot_spent(user_id=USER_ID, time='6')
+            session['spent_plot_all'] = self.dashboard.create_plot_spent(user_id=USER_ID, time='all')
+            print(session['spent_plot_6'], 'session', '-'*55)
 
         data = {
-            'btc_plot': btc_plot,
-            'eth_plot': eth_plot,
-            'btc_history_plot': btc_history_plot,
-            'eth_history_plot': eth_history_plot,
-            'spent_plot_6': spent_plot_6[0] if spent_plot_6 else None,
-            'spent_plot_all': spent_plot_all[0] if spent_plot_all else None,
-            #verifica se existe algo no indice onde era pra estar o total gasto no mes, caso nao retorna none
-            'spent_1_month': f'${spent_plot_6[1][0][1]:.2f}' if (spent_plot_6 and len(spent_plot_6) 
-                            > 1 and len(spent_plot_6[1]) > 0 and len(spent_plot_6[1][0]) > 1) else None,
+            'btc_plot': session.get('btc_plot'),
+            'eth_plot': session.get('eth_plot'),
+            'btc_history_plot': session.get('btc_history_plot'),
+            'eth_history_plot': session.get('eth_history_plot'),
+            'spent_plot_6': session.get('spent_plot_6')[0] if session.get('spent_plot_6') else None,
+            'spent_plot_all': session.get('spent_plot_all')[0] if session.get('spent_plot_all') else None,
+
+            # Verifica se existe algo no índice onde era pra estar o total gasto no mês, caso não, 
+            # retorna None
+            'spent_1_month': f'${session.get("spent_plot_6")[1]:.2f}' if session.get('spent_plot_6') 
+                            else None,
+
             'title': "Bitcoin",
             'last_buy_date': self.data.get_last_buy_date(USER_ID),
             'last_trade_data': self.data.get_last_trade_data(USER_ID),
-            'verificado': self.verificado #verifica se o usuario tem a senha de 4 digitos
+            'verificado': self.verificado  # Verifica se o usuário tem a senha de 4 dígitos
         }
 
         #verifica se o usuario tem a senha de 4 digitos, se n tiver exibe o modal e vai pedir a 
@@ -102,3 +132,7 @@ class Dashboard:
                         return template_render('dashboard.html', **data, stats=True)
   
         return template_render('dashboard.html', **data)
+    
+    def clear_session():
+        session.clear()
+        return '', 200 

@@ -8,19 +8,38 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from .get_crypto_data import GetCryptoData
 
 
-#Classe que cria os graficos do dashboard
 class Plot_Creator:
+    """
+    Classe responsável por gerar os gráficos do dashboard
+    """
     def __init__(self):
-        self.data = GetCryptoData()
+        self.data = GetCryptoData() #cria uma instancia responsavel pra pegar os dados das criptomoedas
 
     def clean_data(self, df):
-        # Remove linhas com valores NaN(not a number) ou inf(numero infinito)
+        """
+        Limpa o DataFrame removendo valores NaN e infinitos.
+
+        Parâmetros:
+        df (pd.DataFrame): DataFrame contendo os dados a serem limpos.
+
+        Retorna:
+        pd.DataFrame: DataFrame limpo, sem valores NaN ou infinitos.
+        """
         df = df.replace([np.inf, -np.inf], np.nan)  
         df = df.dropna()  
         return df
 
-    #salva os plots na pasta static/images/dashboard
     def save_plot(self, filename, fig):
+        """
+        Salva o gráfico como um arquivo HTML dinâmico na pasta 'static/images/dashboard'.
+
+        Parâmetros:
+        filename (str): Nome do arquivo onde o gráfico será salvo.
+        fig (go.Figure): Figura do gráfico a ser salva.
+
+        Retorna:
+        str: Nome do arquivo salvo.
+        """
         # salva o gráfico como um arquivo HTML dinâmico
         current_dir = os.path.dirname(__file__)
         save_dir = os.path.join(current_dir, '..', '..', 'static', 'images', 'dashboard')
@@ -38,6 +57,15 @@ class Plot_Creator:
 
     #Cria o gráfico do valor da cripto moeda ao longo dos 6 meses
     def create_plot_range_value(self, crypto_name):
+        """
+        Cria um gráfico de dispersão mostrando o valor da criptomoeda ao longo dos últimos 6 meses.
+
+        Parâmetros:
+        crypto_name (str): Nome da criptomoeda para a qual o gráfico será gerado.
+
+        Retorna:
+        str: Nome do arquivo HTML do gráfico salvo, ou None em caso de erro.
+        """
         try:
             def format_price(value):
                 return f"{int(value):,}".replace(",", " ") + f"{value:.2f}"[-3:]
@@ -61,7 +89,7 @@ class Plot_Creator:
             # cria o dataframe
             df = pd.DataFrame(data)
             df['Formatted Price'] = df['Price'].apply(format_price)  # Adiciona uma coluna com os preços formatados
-
+            
             # cria o grafico com plotly
             fig = go.Figure()
 
@@ -95,7 +123,7 @@ class Plot_Creator:
                 line=dict(color=color_hex, width=3, shape='spline'),  # cria a linha
                 fill='tozeroy', # cria o preenchimento
                 fillcolor=f'rgba({color}, 0.2)',
-                hovertemplate='$%{text}<extra></extra>', 
+                hovertemplate='<b>%{x} ago</b><br>$%{text}<extra></extra>', 
                 #<extra></extra> remove qualquer informação extra que aparece abaixo dos dados no hover
                 name='',  # Remove o nome da série do hover
             ))
@@ -122,26 +150,36 @@ class Plot_Creator:
                 hovermode='x unified',  # efeito de hover
                 margin=dict(l=0, r=0, t=40, b=10),  # margem
                 title=dict(
-                    text=f"<b>Preço do {crypto_name.capitalize()} ao longo do tempo</b>", 
+                    text=f"<b>Price of {crypto_name.capitalize()} over time</b>", # título do gráfico
                     font=dict(family="Montserrat", size=16, color=text_color),  # aplica a cor do texto aqui
                     x=0.5
-                ),  # título do gráfico
+                ),  
                 hoverlabel=dict(
                 bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente para o hover
                 font=dict(color=text_color)  # Cor do texto do hover
             )
             )
 
+            # salva o grafico se tudo correr bem
             return self.save_plot(filename=f"{crypto_name}_plot.html", fig=fig)
         except:
             return None
 
 
-    #Cria o gráfico com o historico de compra da moeda
     def create_plot_history(self, crypto_name, user_id):
+        """
+        Cria um gráfico de barras horizontais com as moedas compradas nos ultimos 3 meses
+
+        Parametros:
+            crypto_name (str): Nome da criptomoeda
+            user_id (int): Id do usuário
+
+        Retorna:
+            str: Nome do arquivo HTML do gráfico salvo, ou None em caso de erro
+        """
         try:
             color = ''
-
+            # Define o id da criptomoeda
             crypto_id = 1 if crypto_name == 'bitcoin' else 2
             data = self.data.get_crypto_buy(crypto_id, user_id)
 
@@ -187,7 +225,7 @@ class Plot_Creator:
                 color_bg = 'rgba(27, 38, 59, 0.1)'  # Opacidade 70%
                 color = '#1B263B'
 
-            # Adiciona a barra normal
+            # Se só tiver 1 dado, gerá um gráfico diferente
             if len(df_grouped) == 1:
                     fig.add_trace(go.Bar(
                     y=df_grouped['month'],
@@ -196,11 +234,12 @@ class Plot_Creator:
                     marker=dict(color=color, line=dict(width=0)),
                     width=0.4,
                     zorder=2,
-                    hovertemplate='<b>Mês:</b> %{y}<br><b>Qntd. comprada:</b> %{x}<extra></extra>',  # Formatação do hover
+                    hovertemplate='<b>Month:</b> %{y}<br><b>Amnt. purchased:</b> %{x:.10f}<extra></extra>',  # Formatação do hover
                     hoverlabel=dict(bgcolor=color_bg) 
             
                    
                 ))
+            #Se tiver mais de 1 dado gera o gráfico padrão
             else:
                 fig.add_trace(go.Bar(
                     y=df_grouped['month'],
@@ -208,7 +247,7 @@ class Plot_Creator:
                     orientation='h',
                     marker=dict(color=color, line=dict(width=0)),
                     zorder=2,
-                    hovertemplate='<b>Mês:</b> %{y}<br><b>Qntd. comprada:</b> %{x}<extra></extra>',  # Formatação do hover
+                    hovertemplate='<b>Month:</b> %{y}<br><b>Amnt. purchased:</b> %{x:.10f}<extra></extra>',  # Formatação do hover
                     hoverlabel=dict(bgcolor=color_bg)  # Fundo transparente para o hover,
 
             
@@ -233,13 +272,10 @@ class Plot_Creator:
                 margin=dict(l=0, r=0, t=30, b=0),
                 #height=150,  # Define uma altura para o gráfico
                 #width=380,
-                title=dict(text=f"<b>Ultimos {crypto_name.capitalize()}s comprados<b>", 
+                title=dict(text=f"<b>Last {crypto_name.capitalize()} purchased<b>", 
                         font=dict(family="Montserrat", size=16, color=text_color), x=0.5) ,
-                
-              
-            )
-           # Atualiza a cor para mais escura ao passar o mouse
-           
+            
+            )           
 
             return self.save_plot(filename=f"crypto_history_{user_id}_{crypto_id}.html", fig=fig)
         except:
@@ -248,10 +284,22 @@ class Plot_Creator:
 
     #Cria o gráfico do total gasto e quanto foi gasto em cada moeda
     def create_plot_spent(self, time, user_id):
+        """
+        Cria um gráfico de pizza do total gasto e quanto foi gasto em cada moeda
+
+        Parâmetros:
+            time (str): Tempo para o gráfico (6 ou 1 mês)
+            user_id (int): Id do User
+
+        Retorno:
+            str: Nome do arquivo salvo ou None caso não seja possivel criar o gráfico
+        """
         try:
+            #começa com 0 por padrão
             total_bitcoin = 0
             total_ethereum = 0
 
+            #pega o tanto que o usuario gastou
             data, data_1_month = self.data.get_total_spent(user_id, time)
 
             if data == False:
@@ -272,6 +320,7 @@ class Plot_Creator:
             
             fig = go.Figure()
 
+            #define as cores com base no tema
             if session.get('theme') == 'dark-theme':
                 text_color = '#f8f9fa'
                 grid_color = 'rgba(255, 255, 255, 0.1)'
@@ -280,21 +329,22 @@ class Plot_Creator:
                 text_color = '#24292e'  # Cor do texto para o tema claro
                 grid_color = '#f8f9fa'
 
+            #define as cores com base no tempo, 6 meses ou ao todo
             if time == '6':
                 color_bg = 'rgba(255, 111, 60, 0.1)'  
-                texto = 'Moedas compradas nos últimos 6 meses'
+                texto = 'Currencies purchased in the last 6 months'
             elif time == 'all':
                 color_bg = 'rgba(27, 38, 59, 0.1)'  
-                texto = 'Moedas compradas ao todo'
+                texto = 'Currencies purchased in total'
                 
-            # Gráfico de pizza
+            # Gera o gráfico de pizza
             fig.add_trace(go.Pie(
                 labels=labels,  # Rótulos
                 values=values,                   # Valores
                 pull=[0.1, 0],                  # "explode" o primeiro setor (Bitcoin)
                 marker=dict(colors=['#ff7f0e', '#1f77b4'],),  # Laranja para Bitcoin, Azul para Ethereum
                 textinfo='label',  # Mostra rótulo, valor e porcentagem no gráfico
-                hovertemplate='<b>Moeda:</b> %{label}<br><b>Total gasto:</b> $%{value:.2f} <br><b>Porcentagem:</b> %{percent:.1%}<extra></extra>',  # Formatação do hove
+                hovertemplate='<b>Currency:</b> %{label}<br><b>Total spent:</b> $%{value:.2f} <br><b>Percentage:</b> %{percent:.1%}<extra></extra>',  # Formatação do hove
                 hoverlabel=dict(bgcolor=color_bg),  # Fundo transparente para o hover,
                 textfont=dict(color=text_color)))
 

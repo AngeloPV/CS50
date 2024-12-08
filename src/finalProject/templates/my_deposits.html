@@ -82,38 +82,54 @@
     </div>
 
     <script>
+        // Função para alternar a exibição do saldo (mostrar ou ocultar)
         function toggleBalance() {
-            const balanceTextMask = document.querySelector('.balance-text-mask');
-            const realBalance = document.querySelector('.real-balance');
-            const eyeIcon = document.querySelector('.eye-icon');
-
+            // Seleciona os elementos necessários do DOM
+            const balanceTextMask = document.querySelector('.balance-text-mask'); // Máscara que oculta o saldo
+            const realBalance = document.querySelector('.real-balance'); // Elemento que exibe o valor real do saldo
+            const eyeIcon = document.querySelector('.eye-icon'); // Ícone de olho para indicar se o saldo está visível ou oculto
+    
+            // Verifica se o saldo real está oculto (display === "none")
             if (realBalance.style.display === "none") {
-                // Se o valor real está oculto, mostre o valor e altere o ícone para o olho aberto
-                realBalance.style.display = "inline";
-                balanceTextMask.style.display = "none";
-                eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/open_eye_' + session['theme'] + '.png') }}";
+                // Se o saldo real está oculto, mostra o valor real e altera o ícone do olho para o aberto
+                realBalance.style.display = "inline"; // Torna o saldo real visível
+                balanceTextMask.style.display = "none"; // Oculta a máscara que cobre o saldo
+                eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/open_eye_' + session['theme'] + '.png') }}"; // Altera o ícone para o olho aberto com base no tema
             } else {
-                // Se o valor real está visível, mostre a máscara e altere o ícone para o olho fechado
-                realBalance.style.display = "none";
-                balanceTextMask.style.display = "inline";
-                eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}";
+                // Se o saldo real está visível, oculta o valor real e mostra a máscara
+                realBalance.style.display = "none"; // Torna o saldo real invisível
+                balanceTextMask.style.display = "inline"; // Exibe a máscara que cobre o saldo
+                eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}"; // Altera o ícone para o olho fechado com base no tema
             }
         }
-
+    
+        // Adiciona um ouvinte de evento para chamar a função toggleBalance assim que o conteúdo da página for carregado
         document.addEventListener("DOMContentLoaded", toggleBalance);
-
+    
+        // Função para abrir o modal da carteira (wallet modal)
         function openWalletModal() {
+            // Exibe o modal da carteira (tornando-o visível)
             document.getElementById('walletModal').style.display = "block";
         }
+    
+        // Função para fechar o modal da carteira
         function closeWalletModal() {
+            // Oculta o modal da carteira (tornando-o invisível)
             document.getElementById('walletModal').style.display = "none";
         }
-        window.onclick = function (event) {        
+    
+        // Adiciona um ouvinte de evento para fechar o modal ao clicar fora dele
+        window.onclick = function (event) {
+            // Obtém o modal da carteira
             var modal = document.getElementById('walletModal');
+            
+            // Se o usuário clicar fora do modal, o modal será fechado
             if (event.target === modal) {
                 document.getElementById('walletModal').style.display = "none";
-            }};
+            }
+        };
     </script>
+    
 </body>
 
 

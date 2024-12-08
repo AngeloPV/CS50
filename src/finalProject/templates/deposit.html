@@ -50,9 +50,10 @@
         document.addEventListener('DOMContentLoaded', function() {
     
             if (window.history.replaceState) {
+                // Substitui o estado atual do histórico 
+                // sem adicionar uma nova entrada ao histórico do navegador
                 window.history.replaceState(null, null, window.location.href)
             }
-        
             passwordStrength();
         });
     </script>

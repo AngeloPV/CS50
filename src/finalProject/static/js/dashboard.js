@@ -1,4 +1,4 @@
-//Alterna entre os dados
+//Alterna entre os dados de bitcoin e ethereum
 function handleFlip(card) {
     card.classList.toggle('flipped');
     
@@ -70,8 +70,8 @@ window.addEventListener('load', function() {
         setTimeout(() => {
             preloader.style.display = 'none'; // Remove o preloader do fluxo do DOM
             content.classList.add('visible'); //Mostra o conteúdo da página
-        }, 600); // Tempo da transição de saída 
-    }, 0); // Tempo de exibição do preloader (tempo da animacao, apenas)
+        }, 600); 
+    }, 0); // Tira o temp ode animacao
 });
 
 //Esconde a barra de rolagem nos primeiros 2 segundos de quando carrega a pagina
@@ -83,3 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = ''; //Restaura a barra de rolagem
     }, 2000);
 });
+
+window.onbeforeunload = function() {
+    fetch('/clear_session', {
+        method: 'POST'
+    });
+};

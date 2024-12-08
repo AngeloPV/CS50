@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
     <script src="{{ url_for('static', filename='js/register/mask.js') }}" defer></script>
 
+  
+
     <body class="dark-theme">
         {% set width = 470 %}
         
@@ -57,17 +59,45 @@
                 {% endif %}
                 
                 <div class="input-row">
-                    <input class="input-half" autocomplete="off" name="password" placeholder="Enter your Password" type="password" value="{{ password if password else '' }}">
-                    <input class="input-half" autocomplete="off" name="ConfirmPass" placeholder="Confirm your password" type="password" value="{{ ConfirmPass if ConfirmPass else '' }}">
+                    <input class="input-half" autocomplete="off" id="password"  name="password" placeholder="Enter your Password" type="password" value="{{ password if password else '' }}">
+                    <input class="input-half" autocomplete="off" id="password-confirm" name="ConfirmPass" placeholder="Confirm your password" type="password" value="{{ ConfirmPass if ConfirmPass else '' }}">
+                    
                 </div>
-            </div><br>
-            <input class="submit-btn" name="SendRegister" type="submit" value="Cadastrar-se" id="a">
-        {% endblock %}
 
+                <ul id="password-requirements" style="display: none;">
+                    <li>Password must be at least 8 characters long.</li>
+                    <li>It must contain at least one special character.</li>
+                    <li>It must include at least one uppercase letter.</li>
+                </ul> 
+                <script>
+                    // Mostra a lista de requisitos quando o campo de senha é clicado
+                    document.getElementById('password').addEventListener('focus', function() {
+                        document.getElementById('password-requirements').style.display = 'block';
+                    });
+            
+                    // Esconde a lista de requisitos quando o campo de senha perde o foco
+                    document.getElementById('password').addEventListener('blur', function() {
+                        document.getElementById('password-requirements').style.display = 'none';
+                    });
+            
+                    // Mostra a lista de requisitos quando o campo de confirmação de senha é clicado
+                    document.getElementById('password-confirm').addEventListener('focus', function() {
+                        document.getElementById('password-requirements').style.display = 'block';
+                    });
+            
+                    // Esconde a lista de requisitos quando o campo de confirmação de senha perde o foco
+                    document.getElementById('password-confirm').addEventListener('blur', function() {
+                        document.getElementById('password-requirements').style.display = 'none';
+                    });
+                </script>
+            </div><br>
+            <input class="submit-btn" name="SendRegister" type="submit" value="Register" id="a">
+        {% endblock %}
+            
         {% set num_links = 1 %}
         {% block links_container %}
-            <a href='{{ url_for("main_routes.route_method", route_name="Login", method="index") }}' class="link">Já possui uma conta?</a>
+            <a href='{{ url_for("main_routes.route_method", route_name="Login", method="index") }}' class="link">Already have an account?</a>
         {% endblock %}
-
+        
     </body>
     </html>

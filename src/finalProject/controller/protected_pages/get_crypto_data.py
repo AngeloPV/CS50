@@ -8,12 +8,18 @@ from ...models.dashboard_data import Dashboard_data
 from ...models.update_criptocurrencies import CryptoUpdate
 
 class GetCryptoData:
+    """
+    Classe responsavel por pegar os dados relacionados as criptomoedas e atualizar o banco de dados das
+    mesmas
+    """
     def __init__(self):
-        self.dashboard = Dashboard_data()
-        self.update = CryptoUpdate()
+        self.dashboard = Dashboard_data() #cria uma instancia responsavel pra inserir dados no banco
+        self.update = CryptoUpdate() #cria uma instancia responsavel pra atualizar dados do banco
 
-    #Formata o volume em uma forma legível como '5M', '32k', '6.6B', etc.
     def format_volume(self, volume):
+        """
+        Função responsavel por formata o volume em uma forma legível como '5M', '32k', '6.6B', etc.
+        """
         if volume >= 1_000_000_000:
             return f"{volume / 1_000_000_000:.1f}B"
         elif volume >= 1_000_000:
@@ -25,6 +31,16 @@ class GetCryptoData:
 
     #pega os dados da api dos ultimos 6 meses
     def get_cripto_data(crypto_name):
+        """
+        Pega os dados das criptomoedas nos ultimos 6 meses por meio da API Coingecko,
+        para serem exibidos no dashboard
+
+        Parametros:
+            crypto_name (str): Nome da criptomoeda
+
+        Retorno:
+            dict: Dicionario com os dados das criptomoedas
+        """
 
         url = f'https://api.coingecko.com/api/v3/coins/{crypto_name}/market_chart'
         params = {
@@ -70,9 +86,13 @@ class GetCryptoData:
         except requests.RequestException as e:
             return {"error": str(e)}
 
-    #funcao pra pegar o nome, simbolo, preço atual, variação das ultimas 24hrs e volume de transação das ultimas 
-    #24hrs de varias moedas
+
     def get_crypto_data_for_buy(self, crypto_names):
+        """
+        Função responsavel por pegar os dados das criptomoedas por meio da API Coingecko para serem utilizados
+        na página de compra, a diferença dessa para a get_cripto_data é que essa pega os dados de várias moedas
+        simultaneamente
+        """
         #url da api com varias moedas
         api_url = "https://api.coingecko.com/api/v3/coins/markets"
 
@@ -115,22 +135,33 @@ class GetCryptoData:
 
     #atualiza o banco com o valor atual das moedas
     def do_update_database(self):
+        """
+        Atualiza o banco com o valor atual das moedas
+        """
         self.update.update_database(self.crypto_data)  
 
-    #pega os dados de compra do usuario (amount, created )
     def get_crypto_buy(self, crypto_id, user_id):
+        """
+        Pega os dados de compra do usuário
+        """
         return self.dashboard.get_crypto_buy(crypto_id=crypto_id, user_id=user_id)
 
-    #pega o total gasto pelo usuario (criptocurrencies_id, SUM(cost))
     def get_total_spent(self, user_id, time): 
+        """
+        Pega o total gasto pelo usuário
+        """
         return self.dashboard.get_total_spent(time=time, user_id=user_id)
 
-    #pega a data da ultima compra (created)
     def get_last_buy_date(self, user_id):
+        """
+        Pega a data da ultima compra
+        """
         return self.dashboard.get_last_buy_date(user_id=user_id)
 
-    #pega as informações da ultima trade (cripto_sender_id, cripto_recipient_id, amount_sender, amount_recipient, created)
     def get_last_trade_data(self, user_id):
+        """
+        Recupera as informações da ultima troca realizada pelo usuario
+        """
         return self.dashboard.get_last_trade(user_id=user_id)
     
     

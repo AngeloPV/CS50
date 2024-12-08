@@ -18,7 +18,7 @@ body.light-theme #form-sell-container .modal-info strong
 }
 
 body.dark-theme #form-sell-container .modal-info strong{
-    color: var(--primary-color);
+    color: var(--alt1-color);
 }
 
 #form-sell-container{
@@ -47,6 +47,9 @@ body.dark-theme #form-sell-container .modal-info strong{
     outline: none;
     border: 2px solid var(--secondary-color);
     background-color: var(--primary-color);
+}
+body.dark-theme .input-field:focus{
+    background-color: var(--alt2-color);
 }
 
 #sell-modal-value-form{

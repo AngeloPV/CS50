@@ -6,14 +6,19 @@ from ..helper.helper_select import Select
 from ..models.db_connection import Conn
 
 class CryptoUpdate:
+    """
+    Classe responsável por atualizar o banco de dados com os valores das criptomoedas
+    """
     def __init__(self):
-        self.connection = Conn().connect()
-        self.insert = Insert()
-        self.update = Update()
-        self.select = Select()
+        self.connection = Conn().connect() #conecta ao banco
+        self.insert = Insert() #cria uma instancia responsavel pra inserir dados no banco
+        self.update = Update() #cria uma instancia responsavel pra atualizar dados do banco
+        self.select = Select() #cria uma instancia responsavel pra resgatar dados do banco
     
-    # Atualiza o banco com os valores atuais das criptomoedas
     def update_database(self, crypto_data):
+        """
+        Realiza a atualização do banco de dados com os valores atuais das criptomoedas.
+        """
         cursor = self.connection.cursor()
 
         #cria a tabela uma única vez se ela não existir
@@ -47,6 +52,7 @@ class CryptoUpdate:
             self.select.exe_select(f"SELECT * FROM criptocurrencies WHERE cripto_name = '{crypto_name}';")
             already_exists = self.select.get_result()
 
+            #gera a data
             data = {
                 "cripto_name": crypto_name,
                 "actual_value": crypto_data[crypto_key]["current_price"],
@@ -54,11 +60,12 @@ class CryptoUpdate:
                 "modified": datetime.now(),
             }
 
+            #se não existir, cria
             if already_exists is None:
                 data["created"] = datetime.now()
                 self.insert.exe_insert(data=data, table_name='criptocurrencies')
+            #atualiza os dados se já existir
             else:
-                #atualiza os dados se já existir
                 data_where = {"cripto_name": crypto_name}
                 operator = ' =, =, =, =, ='
                 self.update.exe_update(data=data, table_name='criptocurrencies', data_where=data_where, operator=operator)
