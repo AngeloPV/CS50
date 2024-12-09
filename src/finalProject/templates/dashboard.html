@@ -6,8 +6,10 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
     <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
-
-    {% include 'layouts/layout.html' %}
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
     
 </head>
 <body class="{{ session['theme'] }}">
@@ -35,6 +37,7 @@
     
         // Chama a funcao assim que a página carrega
         window.onload = getCoordinates;
+
     </script>
     
 
@@ -150,6 +153,20 @@
             </div>
         </div>
     </main>
-
+    <script>
+         // Exibe sweet alert de confimaçao quando o usuario digitar a senha de 4 digitos
+         {% if authorize %}
+            window.onload = function() {
+            Swal.fire({
+                title: 'Success',
+                text: '{{ authorize}}',
+                icon: 'success',
+                confirmButtonText: 'Continue'
+            });
+        }
+        {% endif %}
+        
+        
+    </script>
 </body>
 </html>

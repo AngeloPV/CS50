@@ -3,8 +3,7 @@ from ...renderer import template_render
 from ...helper.helper_select import Select
 from ...helper.helper_update import Update
 
-from ..protected_pages.user_data import User_data
-
+from ...models.User import User
 
 class Theme:
     """
@@ -13,8 +12,7 @@ class Theme:
     def __init__(self):
         self.select = Select() #cria uma instancia responsavel pra resgatar dados do banco
         self.update = Update() #cria uma instancia responsavel pra atualizar dados do banco
-        self.user_data = User_data() #cria uma instancia da classe responsavel pelos dados do usuário
-
+        self.user = User() #cria uma instancia da classe responsavel por pegar as informações do usuário
 
     def index(self):
         """
@@ -43,8 +41,8 @@ class Theme:
                 return template_render('theme.html', **data)
             
             #atualiza o tema e armazena na sessao
-            self.user_data.set_theme(user_id=session.get('user_id'), theme=theme)
-            session['theme'] = self.user_data.get_theme(user_id=session.get('user_id'))
+            self.user.set_theme(user_id=session.get('user_id'), theme=theme)
+            session['theme'] = self.user.get_theme(user_id=session.get('user_id'))
     
             data = {'authorize': 'Theme successfully updated!', 'redirect_url': url_for("main_routes.route_method", route_name="account", method="index")}
             return redirect(url_for("main_routes.route_method", route_name="account", method='index', **data))

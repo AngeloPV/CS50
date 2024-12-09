@@ -2,7 +2,7 @@ from flask import request, session, redirect, url_for
 from ...renderer import template_render
 from werkzeug.utils import secure_filename
 from PIL import Image  # Pillow para manipulação de imagens
-from ..protected_pages.user_data import User_data
+from ...models.User import User
 import os
 
 
@@ -11,7 +11,7 @@ class Upload_photo:
     Classe responsavel por mudar a foto de perfil do usuario
     """
     def __init__(self):
-        self.user_data = User_data() #cria uma instancia da classe responsavel pelos dados do usuário
+        self.user = User() #cria uma instancia da classe responsavel por pegar os dados do usuario
 
     def index(self):
         """
@@ -60,7 +60,7 @@ class Upload_photo:
                 image.save(file_path)  
 
                 # Salva o nome da imagem no banco de dados
-                self.user_data.set_profile_img(img=new_filename, user_id=session.get("user_id"))
+                self.user.set_profile_image(img=new_filename, user_id=session.get("user_id"))
 
                 return redirect(url_for("main_routes.route_method", route_name="dashboard", method="index"))
 

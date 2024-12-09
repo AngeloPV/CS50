@@ -25,12 +25,10 @@ class User:
         - password (str): A senha de 4 dígitos a ser definida.
         - user_id (int): O identificador único do usuário.
         """
-        cursor = self.connection.cursor()
-
-        query = """UPDATE user_data SET pass_4_digit = %s WHERE id = %s"""
-        cursor.execute(query, (password, user_id))
-        self.connection.commit()
-        cursor.close()
+        
+        self.update.exe_update(data={"pass_4_digit": password}, table_name="user_data", data_where={"id": user_id}, 
+                            operator=" =, ="  ,close_conn = True)
+        return True
 
     def get_4_digits_pass(self, user_id):
         """
@@ -58,12 +56,10 @@ class User:
         - img (str): Nome da imagem de perfil a ser atribuída ao usuário.
         - user_id (int): O identificador único do usuário.
         """
-        cursor = self.connection.cursor()
-
-        query = """UPDATE user_data SET img_name = %s WHERE id = %s"""
-        cursor.execute(query, (img, user_id))
-        self.connection.commit()
-        cursor.close()
+        self.update.exe_update(data={"img_name": img}, table_name="user_data", data_where={"id": user_id}, 
+                            operator=" =, ="  ,close_conn = True)
+        
+        return True
     
     def get_profile_image(self, user_id):
         """

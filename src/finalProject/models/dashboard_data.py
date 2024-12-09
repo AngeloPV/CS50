@@ -273,37 +273,9 @@ class Dashboard_data:
         if not spent_total_data:
             return False
         
-        print('spent_total_data',spent_total_data)
-        print('spent_month_total',spent_month_total)
+
         # Se tiver retorna os dados do mes atual e o total ou os 6 ultimos meses
         return spent_total_data, spent_month_total
-    
-    def get_last_buy_date(self, user_id):
-        """
-        Pega a data da ultima compra do usuario
-
-        Parametros:
-            user_id (int): ID do usuário
-
-        Retorno:
-            str: Data da ultima compra
-        """
-        cursor = self.connection.cursor()
-
-        query = """SELECT created FROM buy WHERE user_id = %s ORDER BY id DESC LIMIT 1;"""
-        cursor.execute(query, (user_id,))
-        
-        last_buy_date_row = cursor.fetchone()
-        cursor.close()
-
-        #formata a data pra ficar no modelo y/m/d
-        if last_buy_date_row:
-            last_buy_date = last_buy_date_row[0]
-            formatted_date = last_buy_date.strftime('%Y-%m-%d')
-        else:
-            formatted_date = ''
-
-        return formatted_date
     
         
     def get_last_trade(self, user_id):
@@ -318,18 +290,12 @@ class Dashboard_data:
             tuple: Dados da ultima troca
 
         """
-        cursor = self.connection.cursor()
 
-        query = """SELECT cripto_sender_id, cripto_recipient_id, amount_sender, amount_recipient, created 
-                FROM trades 
-                WHERE user_sender_id = %s OR user_recipient_id = %s 
-                ORDER BY id DESC 
-                LIMIT 1;"""
-        cursor.execute(query, (user_id, user_id))
+        self.select.exe_select("SELECT cripto_sender_id, cripto_recipient_id, amount_sender, amount_recipient, created FROM trades WHERE user_sender_id = %s OR user_recipient_id = %s ORDER BY id DESC LIMIT %s",
+                               f'{{"user_sender_id": "{user_id}", "user_recipient_id": "{user_id}", "LIMIT": 1}}', False)
         
-        data = cursor.fetchall()
-        cursor.close()
-
+        data = self.select.get_result()
+        data = (data,)
         return data
 
    

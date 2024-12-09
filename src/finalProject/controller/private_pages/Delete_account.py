@@ -1,9 +1,9 @@
 from flask import session, request, redirect, url_for
-from ..protected_pages.user_data import User_data
+from ...models.User import User
 from ...renderer import template_render
 class Delete_account:
     def __init__(self):
-        self.user_data = User_data()
+        self.user_data = User()
     def index(self):
         if request.method == 'POST':
             confirmation = request.form.get('confirmation')

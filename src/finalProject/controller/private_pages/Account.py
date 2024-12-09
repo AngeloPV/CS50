@@ -6,7 +6,6 @@ from ...helper.helper_update import Update
 from ...helper.send_email import Send_Email 
 from ...helper.valitade import Validate
 from ...helper.postal_code import Postal_code
-from ..protected_pages.user_data import User_data
 
 from ...models.Authenticate_account_user import Authenticate_account_user
 from ...models.User import User
@@ -22,7 +21,6 @@ class Account:
         self.select = Select() #cria uma instancia responsavel pra resgatar dados do banco
         self.update = Update() #cria uma instancia responsavel pra atualizar dados do banco
         self.send_email = Send_Email() #cria uma instancia responsavel pra enviar emails
-        self.user_data = User_data() #cria uma instancia da classe responsavel pelos dados do usuário
         self.authenticate = Authenticate_account_user() #cria uma instancia responsavel por autenticar o usuário
         self.postal_code = Postal_code() #cria uma instancia responsavel por pegar a localização do usuário
         self.user = User() #cria uma instancia responsavel por pegar as informações do usuário
@@ -87,9 +85,9 @@ class Account:
         Renderiza a página com todas as informações do usuário e suas preferencias para que possam 
         posteriormente serem alteradas pelo mesmo
         """
-        name = self.user_data.get_user_name(user_id=session.get('user_id'))
-        email = self.user_data.get_user_email(user_id=session.get('user_id'))
-        phone = self.user_data.get_user_phone(user_id=session.get('user_id'))
+        name = self.user.get_user_name(user_id=session.get('user_id'))
+        email = self.user.get_user_email(user_id=session.get('user_id'))
+        phone = self.user.get_user_phone(user_id=session.get('user_id'))
         #user locate returna {'city': 'cidade', 'state': 'estado', 'country': 'pais'}
         user_locate = self.postal_code.get_city_state_country(self.user.get_postal_code(user_id=session.get('user_id')))
         if user_locate:

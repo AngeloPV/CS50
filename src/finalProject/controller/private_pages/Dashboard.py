@@ -2,7 +2,6 @@ from flask import request, session, jsonify
 from ...renderer import template_render
 from ..protected_pages.plot_creator import Plot_Creator
 from ..protected_pages.get_crypto_data import GetCryptoData
-from ..protected_pages.user_data import User_data
 from ..protected_pages.Count_notifications import Count_notifications
 from ...models.User import User
 from ...helper.valitade import Validate
@@ -26,13 +25,13 @@ class Dashboard:
         informações de criptomoedas e notificações.
         """
         self.user = User() #cria uma instancia responsavel por pegar as informações do usuário
-        self.user_data = User_data() #cria uma instancia da classe responsavel pelos dados do usuário
         self.data = GetCryptoData() #cria uma instancia da classe responsavel pelos dados das moedas
         self.dashboard = Plot_Creator() #cria uma instancia da classe responsavel por gerar os graficos
-        self.verificado = self.user_data.get_4_digits_pass(user_id=USER_ID)
+        self.verificado = self.user.get_4_digits_pass(user_id=USER_ID)
         self.count_notifications = Count_notifications().get_count() #diz quantas noticações não lidas o usario possui
         self.validate = Validate() #cria uma instancia responsavel pela validação
         self.postal_code = Postal_code() #cria uma instancia responsavel por pegar a localização do usuário
+
 
         # a session view_count, irá ficar sendo usada para verificar se a pagina de notifcations ja foi acessado, caso tenha sido ent todas as notifacations pedentes ja foram vistas
         session['viewd_count'] = False
@@ -68,9 +67,9 @@ class Dashboard:
         """
         current_time = time.time()
         #Adicionando dados do usuário na sessão para que sejam usados no restante do site
-        session['theme'] = self.user_data.get_theme(USER_ID)
-        session['language'] = self.user_data.get_language(USER_ID)
-        session['profile_img'] = self.user_data.get_profile_img(USER_ID)
+        session['theme'] = self.user.get_theme(USER_ID)
+        session['language'] = self.user.get_language(USER_ID)
+        session['profile_img'] = self.user.get_profile_image(USER_ID)
         session['balance'] = self.user.get_cash(USER_ID)
 
         if not self.user.get_postal_code(USER_ID):
@@ -111,7 +110,6 @@ class Dashboard:
                             else None,
 
             'title': "Bitcoin",
-            'last_buy_date': self.data.get_last_buy_date(USER_ID),
             'last_trade_data': self.data.get_last_trade_data(USER_ID),
             'verificado': self.verificado  # Verifica se o usuário tem a senha de 4 dígitos
         }
@@ -127,8 +125,9 @@ class Dashboard:
                     if DIGITS == msg:
                         password_joined = ''.join(DIGITS[0])  
                         password = self.validate.encryption(user_password=password_joined)
-                        self.user_data.set_4_digits_pass(password, user_id=USER_ID)
+                        self.user.set_4_digits_pass(password, user_id=USER_ID)
                         print(self.count_notifications)
+                        data['authorize'] = 'Four digits password defined successfully'
                         return template_render('dashboard.html', **data, stats=True)
   
         return template_render('dashboard.html', **data)
