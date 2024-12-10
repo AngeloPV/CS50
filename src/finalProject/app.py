@@ -4,10 +4,12 @@ from .socketio_setup import init_socketio, blueprint_notification, socketio
 import os
 from .context_processor import notifications_processor  
 
+
 # from .controller.private_pages.Notifications import Notifications  # Blueprint de notificações
 from .config import Config
 
 app = Flask(__name__)
+
 
 @app.context_processor # defines a global variable for all templates
 def processor_add_notifications_processor():
@@ -35,8 +37,9 @@ blueprint_notification(app)
 config = Config()
 config.init_app(app)
 
-import logging
-logging.basicConfig(level=logging.DEBUG)
+
+#import logging9
+#ilogging.basicConfig(level=logging.DEBUG)
 
 if __name__ == '__main__':
     socketio.run(app)

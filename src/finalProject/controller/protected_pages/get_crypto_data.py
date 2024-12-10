@@ -152,16 +152,6 @@ class GetCryptoData:
         """
         return self.dashboard.get_total_spent(time=time, user_id=user_id)
 
-    def get_last_buy_date(self, user_id):
-        """
-        Pega a data da ultima compra
-        """
-        return self.dashboard.get_last_buy_date(user_id=user_id)
-
-    def get_last_trade_data(self, user_id):
-        """
-        Recupera as informações da ultima troca realizada pelo usuario
-        """
-        return self.dashboard.get_last_trade(user_id=user_id)
+ 
     
     

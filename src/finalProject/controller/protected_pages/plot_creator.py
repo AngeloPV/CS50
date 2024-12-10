@@ -183,6 +183,9 @@ class Plot_Creator:
             crypto_id = 1 if crypto_name == 'bitcoin' else 2
             data = self.data.get_crypto_buy(crypto_id, user_id)
 
+            #Se nao tiver dado em nenhum dos 3 meses, nao exibe nada
+            if data[0][0] == 0 and data[1][0] == 0 and data[2][0] == 0:
+                return None
             # Extração dos valores e datas
             valores = [item[0] for item in data]
             datas = [item[1] for item in data]  
@@ -302,7 +305,8 @@ class Plot_Creator:
             #pega o tanto que o usuario gastou
             data, data_1_month = self.data.get_total_spent(user_id, time)
 
-            if data == False:
+            #Verifica se não existe nenhum dado nas duas moedas
+            if data[0][1] == 0 or data[1][1] == 0:
                 return None
             
             # Limpa a data fazendo uma list comprehension, verificando se o valor é nulo ou não é um número

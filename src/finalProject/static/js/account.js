@@ -4,25 +4,32 @@ document.getElementById('logout').addEventListener('click', function() {
 });
 //Redireciona o botão de deletar a conta
 document.getElementById('delete_account').addEventListener('click', function() {
-    let confirmation = confirm("Você realmente deseja excluir sua conta? Esta ação não pode ser desfeita.");
+    let confirmation = confirm("Are you sure you want to delete your account? This action cannot be undone.");
 
     if (confirmation) {
         // se o usuário confirmar, cria um formulário dinamicamente para enviar o POST
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = "/delete_account/index"; // Rota do Flask
 
-        // Cria um input para enviar a confirmação
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'confirmation';
-        input.value = 'yes';  // O valor 'yes' será enviado se o usuário confirmar
-        form.appendChild(input);
-
-        // Adiciona o formulário no body e faz o submit do form
-        document.body.appendChild(form);
-        form.submit();}
-});
+        let confirm_again = confirm("I am aware that I will lose all my data with no chance of recovery. I wish to permanently delete my account.");
+        
+        if (confirm_again) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = "/delete_account/index"; // Rota do Flask
+    
+            // Cria um input para enviar a confirmação
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'confirmation';
+            input.value = 'yes';  // O valor 'yes' será enviado se o usuário confirmar
+            form.appendChild(input);
+    
+            // Adiciona o formulário no body e faz o submit do form
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }});
+        
+        
 
 //Faz com que o card seja alterado após clicar no botão edit-btn do respectivo card, onde vai ficar uma
 //borda em volta dos campos para o usuario poder selecionar e ao selecionar ele será redirecionado pra

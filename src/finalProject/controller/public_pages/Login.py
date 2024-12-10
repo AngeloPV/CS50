@@ -41,12 +41,19 @@ class Login:
             # Verifica se as credenciais de login são válidas, caso não retorna uma mensagem de erro
             if condition:
                 if self.login.verify_login(form_data):
-                    return redirect(url_for("main_routes.route_method", route_name="dashboard", method="index"))
+                    if self.login.verify_user_sit():
+                        return redirect(url_for("main_routes.route_method", route_name="dashboard", method="index"))
 
+                    #Caso o usuario esteja com a conta inativada, renderiza a página de login com uma mensagem de erro
+                    form_data["error_message"] = "This account was desactivated!"
+                    return template_render("login.html", **form_data)
+
+                # Caso o login falhe, armazena a mensagem de erro na sessão e redireciona para a página de login
                 form_data["error_message"] = session["error_message"]
                 del(session["error_message"])
                 return template_render("login.html", **form_data)
 
+            #Caso os campos não sejam devidamente preenchidos, renderiza a página de login com uma mensagem de erro
             form_data["error_message"] = "All fields must be filled in!"
             return template_render("login.html", **form_data)
         

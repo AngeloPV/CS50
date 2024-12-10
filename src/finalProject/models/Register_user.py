@@ -54,6 +54,7 @@ class Register_user():
                 language varchar(50),
                 theme varchar(50),
                 cep varchar(9) DEFAULT NULL,
+                status TINYINT(1) DEFAULT 1
 
             )
         """)
@@ -67,6 +68,10 @@ class Register_user():
             #define valores padrão
             data['theme'] = 'light-theme'
             data['language'] = 'english'
+            data['status'] = 1
+
+            #formata o nome
+            data['name'] = data['name'].title()
 
             #Insere os dados do novo usuario no banco
             self.insert.exe_insert(self.data, "user_data", create, True)
@@ -87,8 +92,8 @@ class Register_user():
         """
         Função responsável pela validação dos campos do formulário de registro de usuário.
         """
-        if (self.validate.valitdate_email(self.data['email'], False) and self.validate.valitdate_cpf(self.data['cpf']) 
-            and self.validate.valitdate_phone(self.data['phone']) and self.validate.valitdate_password(self.data['password'])):
+        if (self.validate.validate_email(self.data['email'], False) and self.validate.validate_cpf(self.data['cpf']) 
+            and self.validate.validate_phone(self.data['phone']) and self.validate.validate_password(self.data['password'])):
             return True
         
         return False

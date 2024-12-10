@@ -113,12 +113,21 @@
         window.onload = function() {            
             {% if authorize %}
                 Swal.fire({
-                    title: 'Success',
-                    text: '{{ authorize}}',
-                    icon: 'success',
-                    confirmButtonText: 'Continue'
-                }).then((result) => {
-                if (result.isDismissed) { // Verifica se o modal foi fechado clicando fora
+                title: 'Success',
+                text: '{{ authorize }}',
+                icon: 'success',
+                confirmButtonText: 'Continue',
+                backdrop: 'rgba(0, 0, 0, 0.5)', 
+                heightAuto: false, 
+                
+                didOpen: () => {
+                    document.body.style.overflow = 'hidden'; 
+                },
+                willClose: () => {
+                    document.body.style.overflow = ''; 
+                }
+                }).then((result) => { // Verifica se o modal foi fechado
+                if (result.isDismissed) { 
                     {% if redirect_url %}
                         window.location.href = "{{ redirect_url }}";
                     {% endif %}

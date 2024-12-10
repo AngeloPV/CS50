@@ -4,6 +4,7 @@ from ..protected_pages.plot_creator import Plot_Creator
 from ..protected_pages.get_crypto_data import GetCryptoData
 from ..protected_pages.Count_notifications import Count_notifications
 from ...models.User import User
+from ...models.dashboard_data import Dashboard_data
 from ...helper.valitade import Validate
 from ...helper.postal_code import Postal_code
 from ...app import processor_add_notifications_processor
@@ -26,7 +27,8 @@ class Dashboard:
         """
         self.user = User() #cria uma instancia responsavel por pegar as informações do usuário
         self.data = GetCryptoData() #cria uma instancia da classe responsavel pelos dados das moedas
-        self.dashboard = Plot_Creator() #cria uma instancia da classe responsavel por gerar os graficos
+        self.plot_creator = Plot_Creator() #cria uma instancia da classe responsavel por gerar os graficos
+        self.dashboard_data = Dashboard_data() #cria uma instancia da classe responsavel pelos dados do dashboard
         self.verificado = self.user.get_4_digits_pass(user_id=USER_ID)
         self.count_notifications = Count_notifications().get_count() #diz quantas noticações não lidas o usario possui
         self.validate = Validate() #cria uma instancia responsavel pela validação
@@ -61,6 +63,7 @@ class Dashboard:
             return msg
         
     def index(self):
+        print(session.get('user_id'), USER_ID, '-'*55)
         """
         Renderiza a página principal do dashboard com gráficos e informações personalizadas.
         Também gerencia o carregamento de temas e idiomas do usuário.
@@ -88,13 +91,12 @@ class Dashboard:
             self.data.do_update_database() #atualiza o banco das criptomoedas
 
             #pega todas as informações do dashboard, coloca no dict(data) e renderiza o dashboard.html
-            session['btc_plot'] = self.dashboard.create_plot_range_value('bitcoin')
-            session['eth_plot'] = self.dashboard.create_plot_range_value('ethereum')
-            session['btc_history_plot'] = self.dashboard.create_plot_history('bitcoin', USER_ID)
-            session['eth_history_plot'] = self.dashboard.create_plot_history('ethereum', USER_ID)
-            session['spent_plot_6'] = self.dashboard.create_plot_spent(user_id=USER_ID, time='6')
-            session['spent_plot_all'] = self.dashboard.create_plot_spent(user_id=USER_ID, time='all')
-            print(session['spent_plot_6'], 'session', '-'*55)
+            session['btc_plot'] = self.plot_creator.create_plot_range_value('bitcoin')
+            session['eth_plot'] = self.plot_creator.create_plot_range_value('ethereum')
+            session['btc_history_plot'] = self.plot_creator.create_plot_history('bitcoin', USER_ID)
+            session['eth_history_plot'] = self.plot_creator.create_plot_history('ethereum', USER_ID)
+            session['spent_plot_6'] = self.plot_creator.create_plot_spent(user_id=USER_ID, time='6')
+            session['spent_plot_all'] = self.plot_creator.create_plot_spent(user_id=USER_ID, time='all')
 
         data = {
             'btc_plot': session.get('btc_plot'),
@@ -110,7 +112,7 @@ class Dashboard:
                             else None,
 
             'title': "Bitcoin",
-            'last_trade_data': self.data.get_last_trade_data(USER_ID),
+            'last_trade_data': self.dashboard_data.get_last_trade(USER_ID),
             'verificado': self.verificado  # Verifica se o usuário tem a senha de 4 dígitos
         }
 

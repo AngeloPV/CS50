@@ -79,13 +79,14 @@
         </div>
         <div class="card">
             <h3 >Last trade</h3>
-            {% if last_trade_data %}
+            {% if last_trade_data[0] %}
                 {% set crypto1 = 'Bitcoin' if last_trade_data[0][0] == 1 else 'Ethereum' %}
                 {% set crypto2 = 'Bitcoin' if last_trade_data[0][1] == 1 else 'Ethereum' %}
                 {% set amount1 = last_trade_data[0][2] %}
                 {% set amount2 = last_trade_data[0][3] %}
-                {% set formatted_date = last_trade_data[0][4].strftime('%Y/%m/%d') %}
-            
+                {% if last_trade_data[0][4] %}
+                    {% set formatted_date = last_trade_data[0][4].strftime('%Y/%m/%d') %}
+                {% endif %}
                 <h4 class="last_trade_text">{{ crypto1 }}: {{ amount1 }} → {{ crypto2 }}: {{ amount2 }}</h4>
                 <h4 class="last_trade_text">{{ formatted_date }}</h4>
             {% else %} 
@@ -157,13 +158,20 @@
          // Exibe sweet alert de confimaçao quando o usuario digitar a senha de 4 digitos
          {% if authorize %}
             window.onload = function() {
-            Swal.fire({
+                Swal.fire({
                 title: 'Success',
-                text: '{{ authorize}}',
+                text: '{{ authorize }}',
                 icon: 'success',
-                confirmButtonText: 'Continue'
-            });
-        }
+                confirmButtonText: 'Continue',
+                backdrop: 'rgba(0, 0, 0, 0.5)', 
+                heightAuto: false, 
+                didOpen: () => {
+                    document.body.style.overflow = 'hidden'; 
+                },
+                willClose: () => {
+                    document.body.style.overflow = ''; 
+                }
+        })}
         {% endif %}
         
         

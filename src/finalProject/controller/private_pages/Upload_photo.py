@@ -41,6 +41,12 @@ class Upload_photo:
                 os.makedirs(save_dir, exist_ok=True)
                 file_path = os.path.join(save_dir, new_filename)
 
+                # Remove qualquer imagem existente com o mesmo nome, independentemente da extensão
+                for ext in ['.png', '.jpg', '.jpeg', '.webp']:
+                    existing_file = os.path.join(save_dir, f'profile_image_user_{session.get("user_id")}{ext}')
+                    if os.path.exists(existing_file):
+                        os.remove(existing_file)
+                        
                 # Abre a imagem usando PIL
                 image = Image.open(file)
 

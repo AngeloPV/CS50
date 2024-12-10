@@ -166,7 +166,7 @@ class User:
     
     def delete_account(self, user_id):
         """
-        Deleta a conta do usuário.
+        Desativa a conta do usuário.
 
         Parâmetros:
         - user_id (int): O identificador único do usuário.
@@ -174,10 +174,10 @@ class User:
         Retorno:
         - bool: Resultado da operação de exclusão.
         """
-        self.delete.exe_delete(table_name="user_data", where_sql="id = %s", data=(user_id,), 
-                               close_conn = True)
+        self.update.exe_update(data={"status": '0'}, table_name="user_data", data_where={"id": user_id}, 
+                            operator=" =, ="  ,close_conn = True)
         
-        return self.delete.getResult()
+        return True
     
     def get_postal_code(self, user_id):
         """

@@ -30,7 +30,7 @@ class Login_user():
         """
         self.data = data
 
-        self.select.exe_select("SELECT id, name, password FROM user_data WHERE email = %s OR cpf = %s OR name = %s LIMIT %s", 
+        self.select.exe_select("SELECT id, name, password, status FROM user_data WHERE email = %s OR cpf = %s OR name = %s LIMIT %s", 
                                f'{{"email": "{self.data["user"]}", "cpf": "{self.data["user"]}", "name": "{self.data["user"]}", "LIMIT": 1}}', False)
         self.result = self.select.get_result()
         
@@ -75,4 +75,17 @@ class Login_user():
             return False
         
         return False
-    
+
+    def verify_user_sit(self):
+        """
+        Antes de efetivar o login, verifica se a conta do usuário já foi desativa, se ja tiver sido desativada
+        não permite que o usuario entre novamente, a verificação é feita com base na coluna status da tabela user_data
+        se for 1 o usuário esta liberado para usar o sistema, se for 0 o usuário consta como desativado
+
+        Retorno:
+        - bool: Retorna True se a conta do usuário estiver ativa, False caso contrario
+        """
+
+        if self.result[3] == 1:
+            return True
+        return False
