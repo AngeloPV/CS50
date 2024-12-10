@@ -27,7 +27,7 @@ class User:
         """
         
         self.update.exe_update(data={"pass_4_digit": password}, table_name="user_data", data_where={"id": user_id}, 
-                            operator=" =, ="  ,close_conn = True)
+                            operator=" =, ="  ,close_conn = False)
         return True
 
     def get_4_digits_pass(self, user_id):
@@ -57,7 +57,7 @@ class User:
         - user_id (int): O identificador único do usuário.
         """
         self.update.exe_update(data={"img_name": img}, table_name="user_data", data_where={"id": user_id}, 
-                            operator=" =, ="  ,close_conn = True)
+                            operator=" =, ="  ,close_conn = False)
         
         return True
     
@@ -146,7 +146,7 @@ class User:
         - theme (str): O novo tema a ser atribuído (ex.: "light", "dark").
         """
         self.update.exe_update(data={"theme": theme}, table_name="user_data", data_where={"id": user_id}, 
-                            operator=" =, ="  ,close_conn = True)
+                            operator=" =, ="  ,close_conn = False)
         return True
     
     def get_language(self, user_id):
@@ -175,7 +175,7 @@ class User:
         - bool: Resultado da operação de exclusão.
         """
         self.update.exe_update(data={"status": '0'}, table_name="user_data", data_where={"id": user_id}, 
-                            operator=" =, ="  ,close_conn = True)
+                            operator=" =, ="  ,close_conn = False)
         
         return True
     
@@ -203,7 +203,7 @@ class User:
         - postal_code (str): O novo código postal a ser atribuído ao usuário.
         """
         self.update.exe_update(data={"cep": postal_code}, table_name="user_data", data_where={"id": user_id}, 
-                            operator=" =, ="  ,close_conn = True)
+                            operator=" =, ="  ,close_conn = False)
         return True
     
     def get_wallet(self, user_id):

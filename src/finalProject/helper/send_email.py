@@ -43,7 +43,7 @@ class Send_Email():
         """
         return self.code
     
-    def config_email(self, id_email, data, url, type='text'):
+    def config_email(self, id_email, data, url, type='text', to_update=''):
         """
         Configura o e-mail e envia para o destinatário.
 
@@ -63,10 +63,11 @@ class Send_Email():
 
         # Validação dos dados fornecidos
         if not self.data.get("name"):
-            self.data["name"] = "Caro Cliente"
+            self.data["name"] = "Dear Customer"
 
         if not self.data.get("verify") or not self.data.get("email"):
-            session["Error_send_email"] = "É necessário passar os campos verify e email"
+            session["Error_send_email"] = "The fields 'verify' and 'email' are required"
+
             return False
         
         # Recupera os dados do template do e-mail
@@ -74,6 +75,8 @@ class Send_Email():
                                f'{{"id": "{self.id_email}", "LIMIT": "1"}}', False)
         self.result = self.select.get_result()
 
+        
+       
         if self.result:
             self.email_html()  # Prepara o conteúdo HTML do e-mail
             self.email_text()  # Prepara o conteúdo texto do e-mail
@@ -81,7 +84,7 @@ class Send_Email():
             try:
                 # Envia o e-mail
                 with app.app_context():
-                    msg = Message(self.result[2],  # Assunto do e-mail
+                    msg = Message(self.result[2]+f' {to_update}',# Assunto do e-mail
                                   sender='noereply@gmail.com',
                                   recipients=[self.data["email"]])
                     msg.body = self.content_text
@@ -97,7 +100,8 @@ class Send_Email():
                 session["error_send_email"] = str(e)
                 return False
 
-        session["error_send_email"] = "Erro: não foi possível realizar o Select"
+        session["error_send_email"] = "Error: unable to perform the Select"
+
         return False
 
     def email_text(self):
@@ -109,11 +113,11 @@ class Send_Email():
         """
         self.content_text = self.result[1].split('//')
 
-        result_text = f"Olá, {self.data['name']}\n\n"
+        result_text = f"Hello, {self.data['name']}\n\n"
         for value in self.content_text:
             if value == "URL":
                 value = f'\nhttp://127.0.0.1:5000/{self.url}{self.data["verify"]}"\n'
-            elif value == "Atenciosamente,":
+            elif value == "Sincerely,":
                 result_text += f"{value}\n"
                 continue  
 
@@ -228,10 +232,10 @@ class Send_Email():
         <body>
             <div class="email-container">
                 <div class="email-header">
-                    <h1>Bem Vindo AF Crypto!</h1>
+                    <h1>Welcome to AF Crypto!</h1>
                 </div>
                 <div class="email-content">
-                    <h3>Olá, {self.data['name'].capitalize()}</h3>
+                    <h3>Hello, {self.data['name'].capitalize()}</h3>
         """
 
         for value in self.result[0].split('//'):
@@ -247,8 +251,8 @@ class Send_Email():
         result_html += """
                 </div>
                 <div class="email-footer">
-                    <p>Se você não tiver realizado qualquer ação relacionada à Empresa AF, por favor, desconsidere este e-mail.</p>
-                    <p>Obrigado por escolher a Empresa AF!</p>
+                    <p>If you have not performed any action related to Company AF, please disregard this email.</p>
+                    <p>Thank you for choosing Company AF!</p>
                 </div>
             </div>
         </body>

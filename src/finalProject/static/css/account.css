@@ -175,6 +175,8 @@ body.dark-theme .editable.edit-mode:hover {
 
 .card:nth-child(2) .top {
     display: flex;
+    white-space: nowrap;
+
 }
 
 .card:nth-child(2) .mid {
@@ -228,6 +230,7 @@ body.dark-theme .editable.edit-mode:hover {
 
 .card:nth-child(3) .top {
     display: flex;
+
 }
 
 .card:nth-child(3) .mid {

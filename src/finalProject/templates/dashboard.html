@@ -157,8 +157,8 @@
     <script>
          // Exibe sweet alert de confimaçao quando o usuario digitar a senha de 4 digitos
          {% if authorize %}
-            window.onload = function() {
-                Swal.fire({
+         document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
                 title: 'Success',
                 text: '{{ authorize }}',
                 icon: 'success',
@@ -171,7 +171,7 @@
                 willClose: () => {
                     document.body.style.overflow = ''; 
                 }
-        })}
+        })});
         {% endif %}
         
         
