@@ -4,8 +4,6 @@ class User_data:
     def __init__(self):
         self.user_data = User()
 
-    
-
 
     #pega a senha de 4 digitos
     def get_4_digits_pass(self, user_id):

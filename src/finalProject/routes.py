@@ -138,7 +138,7 @@ class Routes:
         method = method.replace(" ", "")
 
         method = method[0].lower() + method[1:]
-
+        
         return method
 
 

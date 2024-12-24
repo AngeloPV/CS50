@@ -6,9 +6,27 @@ socket.on('connect', function() {
     console.log('Connected to /notifications namespace');
 });
 
+socket.on('disconnect', () => {
+    console.log("WebSocket disconnected");
+    checkSocketConnection(); // Tente reconectar quando desconectar
+});
+
+function checkSocketConnection() {
+    if (!socket.connected) {
+        socket.connect(); // Reconnect if disconnected
+        console.log("Reconnected to WebSocket");
+    }
+}
+
+window.addEventListener('beforeunload', () => {
+    if (socket) {
+        socket.disconnect();
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
-    reassignEventListeners();
+    reassignEventListeners()
+    checkSocketConnection()
 
     // Listeners para os botões de troca de tipo de notificações
     var archive_change = document.getElementById('changeArchive');
@@ -64,6 +82,5 @@ function reassignEventListeners() {
     all_notifcations(hidden)
     prox_notifications(hidden)
     selected_actions(hidden)
-
 
 }

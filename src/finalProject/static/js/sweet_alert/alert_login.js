@@ -1,18 +1,41 @@
 // Exibe um alerta personalizado para dar um feedback ao usuário
-function showCustomAlert(title, htmlContent, icon, confirmButtonText, css) {
-    const formContainer = document.querySelector('.form-container');
-
-    // Inicialmente, o formulário pode estar escondido
-    formContainer.classList.add('hide-form');
-
+function showCustomAlert(classModal, title, htmlContent=null, icon, confirmButtonText, css) {
     // Cria um overlay para cobrir o conteúdo da página
 
     let overlay = document.createElement('div');
     overlay.className = 'custom-swal-overlay';
     document.body.appendChild(overlay);
+    
+    // Exibe o alerta usando a biblioteca SweetAlert2
+    if (classModal == null) {
+        Swal.fire({
+            title: title,
+            html: htmlContent,  
+            icon: icon,  
+            confirmButtonText: confirmButtonText,
+            showCloseButton: true,
+            heightAuto: false,
+            backdrop: 'rgba(0, 0, 0, 0.5)',
+            customClass: {
+                popup: 'custom-swal-popup',
+                container: 'custom-swal-container',
+                title: css[0],
+                confirmButton: css[1]
+            }, 
+            willClose: () => {
+                document.body.removeChild(overlay);
+            }
+        })
+
+        return
+    }
+
+    const formContainer = document.querySelector(classModal);
+
+    // Inicialmente, o formulário pode estar escondido
+    formContainer.classList.add('hide-form');
 
     // Exibe o alerta usando a biblioteca SweetAlert2
-
     Swal.fire({
         title: title,
         html: htmlContent,  // Permite que o conteúdo HTML seja renderizado

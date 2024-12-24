@@ -56,6 +56,11 @@ class Verify_code:
                 return template_render('update_data.html', **data)
                 
             else:
+                if login == 'True':
+                    data = {"msg": "Invalid code"}
+                    return template_render('verify.html', register_email=True, **data)
+
+
                 # Se o código estiver incorreto, exibe uma mensagem de erro
                 data = {"msg": "Invalid code"}
                 return template_render('verify.html', **data)

@@ -114,7 +114,7 @@ class Register_user():
             # set the provider used to send the email
             # self.type.get_type(email_data['email'])
 
-            if(self.send_email.config_email(2, email_data, url, 'code')):
+            if(self.send_email.config_email(2, email_data, url, 'code', 'Authenticate Email')):
                 #pega o código gerado e armazena na sessao
                 session['code'] = self.send_email.get_code()
 

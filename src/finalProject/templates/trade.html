@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/trade/trade.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/trade/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+    <script src="{{ url_for('static', filename='js/trade/trade.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trade/change_html.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trade/view_trade.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trade/your_trades.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trade/formated_inputs.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trade/delete_trades.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trade/show_error.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trade/add_trade.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trade/search_trades.js') }}"></script>
+
+    <title>Document</title>
+</head>
+<body class="{{ session['theme'] }} ">
+    {% include 'layouts/sidebar.html' %}
+
+    {% include 'modal/add_trade.html' %}
+    {% include 'modal/search-trade.html' %}
+    {% include 'modal/view_trade.html' %}
+
+
+    <div class="header-trade">
+        <!-- Sessão para ações -->
+        <div class="actions">
+            <button class='open_modal' data-modal="add-trade"><i class="fa-solid fa-plus"></i> Add Trades</button>
+            <button id='your_trades' value="all_trade" class='orange'><i class="fa-solid fa-eye"></i> Your Trades</button>
+            <button id='delete_trades' class='blue'><i class="fa-solid fa-trash"></i> Delete Trades</button>
+            <button class='open_modal' data-modal="search-trade"><i class="fa-solid fa-magnifying-glass"></i> Search Trades</button>
+        </div>
+    
+        <!-- Título principal da página -->
+        <div class="title-section">
+            <h1>Exchange Cryptocurrencies</h1>
+        </div>
+
+        <div class="btn_deletes">
+            <button id='select_none' class='blue'><i class="fa-solid fa-trash"></i> Deselect all</button>
+            <button id='delected_select' class='blue'><i class="fa-solid fa-trash"></i> Delete selected</button>
+            <button id='delete_all' class='blue'><i class="fa-solid fa-trash"></i> Delete all</button>
+        </div>
+    
+        <!-- Irá aparecer quando o usario clicar na view trades -->
+        <!-- <div class="stats-summary">
+            <div class="stat-item">
+                <span class="stat-number">30</span>
+                <p>Trades em aberto</p>
+            </div>
+        </div>         -->  
+    </div>
+    
+<main class="trade-grid">
+    {% if data %}
+        {% for row in data %}
+            <section class="trade-card {{ row[5] }}">
+                <span class="status">Disponível</span>
+
+                {% if row[3] == "BTC" %}
+                    <h2><i class="fa-brands fa-bitcoin"></i>{{ row[5] }}</h2>
+                {% else %}
+                    <h2><i class="fa-brands fa-ethereum"></i>Ethereum</h2>
+                {% endif %} 
+                <hr>
+    
+                <div class="trade-info">
+                    <p><i class="fas fa-coins"></i><b>Value offered</b> {{ row[6] }} {{ row[3] }}</p>
+                    <p><i class="fa-solid fa-dollar-sign"></i><b>Greater value:</b> {{ row[2] }} {{ row[4] }}</p>
+                    <p><i class="fa-solid fa-dollar-sign"></i><b>Lowest value:</b> {{ row[1] }} {{ row[4] }}</p>
+                </div>
+    
+                <button value="{{  row[8] }}" class="button open_modal" data-modal="trade-details">Ver mais</button>
+            </section>
+        {% endfor %}   
+    {% endif %} 
+</main>
+
+</body>
+</html>

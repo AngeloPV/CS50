@@ -80,12 +80,10 @@ function change_html(data, type) {
         <i class="fas fa-envelope-open-text" id="read_selected" title="Read Selected"></i>
         <i class="fas fa-trash" id="delete_selected" title="Deletar"></i>`
     }
-
     
 
     var div_notifications = document.querySelector('.notifications')
 
-    // div_notifications.classList.add('fade-out');
 
     // Verificar se não há notificações
     if (!Array.isArray(receivedData) || receivedData == null || receivedData.length === 0) {
@@ -148,7 +146,5 @@ function change_html(data, type) {
         div_notifications.innerHTML += newRow
     })
 
-    // div_notifications.classList.remove('fade-out');
-    // div_notifications.classList.add('fade-in');
     reassignEventListeners();  // Reatribuir eventos após a mudança
 }

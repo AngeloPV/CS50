@@ -70,7 +70,7 @@ class Resend_authenticate:
             # Determina o provedor do e-mail para configurar o envio corretamente
             self.type.get_type(email_data['email'])
             
-            if self.send_email.config_email(2, email_data, url, 'code'):
+            if self.send_email.config_email(2, email_data, url, 'code', 'Autenticar Email'):
                 #pega o código gerado e armazena na sessao
                 session['code'] = self.send_email.get_code()
 

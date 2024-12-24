@@ -95,6 +95,18 @@ class NotificationNamespace(Namespace):
         
 
     def custom_serializer(self, obj):
+        """
+        Custom serializer function to handle datetime objects during JSON serialization.
+
+        Parameters:
+        obj (object): The object to be serialized.
+
+        Returns:
+        str or TypeError: If the object is a datetime instance, it returns a string in the format '%Y-%m-%d %H:%M:%S'.
+                          If the object is not a datetime instance, it raises a TypeError with a descriptive message.
+        """
         if isinstance(obj, datetime):
             return obj.strftime('%Y-%m-%d %H:%M:%S')
         raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
+
+    

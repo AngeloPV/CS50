@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'img_logo': '/dashboard/index',
         'comprar': '/buy/index',
         'gerenciar': '/manage/index',
-        'trocar': '/caminho/para/pagina/trocar',
+        'trocar': '/trade/',
         'meus-depositos': '/my_deposits/index',
         'depositar-opcao': '/deposit/index',
         'conta': '/account/index',

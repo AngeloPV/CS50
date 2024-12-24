@@ -263,13 +263,8 @@ class Send_Email():
         inlined_html = premailer.transform()
         self.content_html = inlined_html
 
-    def insert_email_sit(self):
-        """
-        Insere a situação do envio de e-mail na tabela email_sit.
 
-        Retorna:
-            bool: True se a inserção for bem-sucedida, False caso contrário.
-        """
+    def insert_email_sit(self):
         self.select.exe_select("""SELECT id FROM email_sit WHERE email_id = %s AND user_id = %s AND email_sit = %s
                                 LIMIT %s""", f'{{"email_id": "{self.id_email}", "user_id": "{self.data["id"]}", "email_sit": "1", "LIMIT": "1"}}', True)
 

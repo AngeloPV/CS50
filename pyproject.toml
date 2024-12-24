@@ -1,10 +1,10 @@
 # definir a variavel de ambiente flask app $env:FLASK_APP = "src.finalProject.app:app"
 # poetry run flask run
 [tool.poetry]
-name = "finalproject"
+name = "AF Crypto"
 version = "0.1.0"
 description = "A Flask application project"
-authors = ["Your Name <you@example.com>"]
+authors = ["AngeloPV e felipesssoa"]
 
 # Caminho para o README do projeto 
 readme = "README.md"
@@ -15,11 +15,6 @@ packages = [
     { include = "finalProject", from = "src" }
 ]
 
-# Inclui todos os arquivos e subdiretórios dentro do diretório `src`
-# packages = [
-    # { include = "src.controller" },
-    # { include = "src.models" }
-# ]
 
 # poetry lock quando faz mudanças nas versões das dependências no pyproject.toml e precisa atualizar o poetry.lock para refletir essas mudanças.
 # poetry install quando você configurar o projeto pela primeira vez, ou quando o poetry.lock for atualizado e você deseja garantir que todas as dependências estejam instaladas conforme especificado.
@@ -61,6 +56,8 @@ plotly = "^5.24.1"
 eventlet = "^0.37.0"
 flask-socketio = "^5.4.1"
 
+web3 = "6.9.0"
+bit = "^0.8.0"
 
 [tool.poetry.scripts]
 flask-run = "flask run --app src.finalProject.app:app"

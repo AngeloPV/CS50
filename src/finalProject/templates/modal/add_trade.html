@@ -1,0 +1,44 @@
+<div id="add-trade" class="modal">
+    <div class="modal-content teste_trade">
+        <span id="closeModalBtn" class="close_modal">&times;</span>
+        <h3>Add Trade</h3>
+        <div class="form">
+            <div id='container_sender' class="container_cryptocurrencies first-row">
+                <select name="cryptocurrencies_sender" id="sender">
+                    <option value="Select" selected hidden>Cryptocurrency you want to trade</option>
+                    <option value="Bitcoin">Bitcoin</option>
+                    <option value="Ethereum">Ethereum</option>
+                </select>
+                <input type="text" step="0.001" name="cripto_sender" placeholder="Amount you want to trade" id="amount-sender" novalidate>
+                <div id="cripto_sender" class="error-message"></div>
+            </div>
+
+            <div class="container_cryptocurrencies receive">
+                <select name="cryptocurrencies_receive" id="receive">
+                    <option value="Select" selected hidden>Cryptocurrency you want to receive</option>
+                    <option value="Bitcoin">Bitcoin</option>
+                    <option value="Ethereum">Ethereum</option>
+                </select>
+                <div class="inputs-container">
+                    <input type="text" name="cripto_receive" placeholder="Estimated value" disabled id="estimated_value" novalidate>
+                    <input type="text" name="cripto_minimum" placeholder="Minimum trade value" id="minimum_value" novalidate>
+                </div>
+                <div id="cripto_receive" class="error-message"></div>
+            </div>
+            <div class="container_password">
+                <input id="4_digits_password" class="input-field" autocomplete="off" name="4_digits_password"
+                    placeholder="4 digits password" type="password"
+                    pattern="\d{4}">
+                    <!-- <input id="4_digits_password" class="input-field" autocomplete="off" name="4_digits_password"
+                    placeholder="4 digits password" type="password" maxlength="4" 
+                    pattern="\d{4}"> -->
+            </div>
+            <div id="submit" class="error-message"></div>
+            <div class="footer">
+                <input id='add_trade' name="btn_add" type="submit" value="Submit Trade" class="submit-input">
+                <p class="note">* The trade will remain online for 3 days, if there are no exchanges your cryptocurrencies will be refunded</p>
+                <p class="note">* The 3% rate will be applied to each currency</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,6 @@ def notifications_processor():
     if 'viewd_count' in session and session['viewd_count'] == True:
         return dict(count_notifications=count_notif)  # Returns as dictionary
     
-    if "user_id" in session and session.get('viewd_count') == False:
+    if "user_id" in session and session.get('viewd_count') in session and session.get('viewd_count') == False:
         count_notif = Count_notifications().get_count()  
     return dict(count_notifications=count_notif)  # Returns as dictionary

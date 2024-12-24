@@ -48,6 +48,7 @@
                 // Verifica se conta foi autorizada, se sim roda sweet alert de sucesso, senao roda de erro
                 if (isAuthorized) {
                     showCustomAlert(
+                        '.form-container',
                         'Account Verified Successfully',
                         '<p>Your account has been successfully verified!</p>',
                         'success',
@@ -57,6 +58,7 @@
                 } else if ( isAuthorized === false ) {
 
                     showCustomAlert(
+                        '.form-container',
                         'An error occurred',
                         `<p>Unable to verify your account via email.
                         {% set user_email = TODO %}

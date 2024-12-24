@@ -3,6 +3,7 @@ from ..helper.helper_select import Select
 from ..helper.helper_delete import Delete
 from ..helper.helper_update import Update
 from ..helper.helper_insert import Insert
+from ..models.Create_Wallet import Create_Wallet
 from datetime import datetime
 from decimal import Decimal
 class User:
@@ -15,7 +16,9 @@ class User:
         self.delete = Delete() #cria uma instancia responsavel pra deletar dados do banco
         self.update = Update() #cria uma instancia responsavel pra atualizar dados do banco
         self.insert = Insert() #cria uma instancia responsavel pra inserir dados no banco
+        self.new_wallet = Create_Wallet()
         self.result = None #armazena o resultado
+
 
     def set_4_digits_pass(self, password, user_id):
         """
@@ -220,9 +223,17 @@ class User:
                                f'{{"user_id": "{user_id}"}}', False)
         wallet = self.select.get_result()
         if wallet:
-            return wallet[0]
+            return wallet
         return False
-    
+    def add_wallet(self, user_id):
+        wallet_eth = self.new_wallet.create_eth_wallet()
+        wallet_btc = self.new_wallet.create_btc_wallet()
+
+        if wallet_eth and wallet_btc:
+            return True
+        
+        return False
+
     def update_cash(self, sit, user_id, cash):
         """
         Atualiza o saldo de dinheiro do usuário, com base na situação (ganho ou perda).
@@ -442,7 +453,7 @@ class User:
         - list: Uma lista de dicionários contendo os dados de venda do usuário.
         """
         # Define os nomes das colunas para a tabela "sell"
-        column_names = ['id', 'user_id', 'criptocurrencies_id', 'amount', 'created',  'value']
+        column_names = ['id', 'user_id', 'criptocurrencies_id', 'amount', 'value', 'created']
         
         # Executa a consulta
         self.select.exe_select("SELECT * FROM sell WHERE user_id = %s", 

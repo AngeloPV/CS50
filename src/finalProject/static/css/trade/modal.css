@@ -1,0 +1,502 @@
+:root {
+    --alt1-color:#f8f9fabf;
+    --alt2-color:#888888;
+    --alt3-color: #28a745;
+    --alt4-color: #dc3545;
+
+    --main1-color: #1B263B;
+    --main2-color: #ff6f3c;
+    --main3-color: #FFD1C1;
+    --main4-color: #7F8FA6;
+}
+
+.light-theme {
+    --background-color: #495057;
+    --primary-color:  #f8f9fa;
+    --secondary-color: #24292e;  
+}
+
+.dark-theme {
+    --background-color:#24292e;
+    --primary-color:#495057;
+    --secondary-color: #f8f9fa; 
+}
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.7); /* Dim background */
+    justify-content: center;
+    align-items: center;
+}
+
+
+.modal-content {
+    background-color: var(--primary-color);
+    padding: 30px 50px;
+    border-radius: 10px;
+    width: 90%; 
+    max-width: 700px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+    height: 80%;
+    position: absolute;
+}
+
+.modal-content.search-trade {
+    padding: 7vh 50px;
+    max-width: 600px;
+    height: 53%;
+} 
+
+.modal-content.teste_trade  {
+    height: 71% !important;
+}
+
+.modal-content.view_trade {
+    /* max-width: 600px; */
+    height: 77% !important;
+
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+.close_modal {
+    position: relative;
+    top: -1.5vw;
+    left: 2vw;
+    color: var(--background-color);
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_modal.search{
+    top: -3vw;
+    left: 2.3vw;
+}
+
+.close:hover, .close:focus {
+    color: var(--main1-color);
+    text-decoration: none;
+}
+
+
+h3 {
+    text-align: center;
+    color: var(--main1-color);
+    margin-bottom: 30px;
+    font-size: 25px;
+}
+
+
+.error-message {
+    font-size: 14px;
+    color: var(--main2-color);
+    background-color: var(--main3-color);
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 3px;
+    font-weight: bold;
+    display: none;
+    width: 100%; 
+    text-align: center; 
+    overflow-wrap: break-word;
+}
+
+
+
+.checkbox {
+    position: absolute; 
+    /* top: 1vh;  */
+    /* left: -40vh;  */
+    right: 39.5vh;
+    top: 1vh;
+    width: 20px; 
+    height: 20px;
+    margin: 0; 
+    appearance: none; 
+    background-color: var(--primary-color); 
+    border: 2px solid var(--alt2-color); 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: background-color 0.3s, border-color 0.3s; 
+}
+
+/* Hover para destaque */
+.checkbox:hover {
+    border-color: var(--main2-color);
+}
+
+/* Estado marcado */
+.checkbox:checked {
+    background-color: var(--main2-color);
+    border-color: var(--main2-color);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Marca de verificação ao selecionar */
+.checkbox:checked::after {
+    content: '\2713'; /* Caractere de check */
+    font-size: 16px; /* Tamanho do check */
+    color: var(--primary-color);
+    position: absolute;
+    top: 50%; /* Centraliza verticalmente */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta a posição central *//
+}
+
+
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+.container_cryptocurrencies {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.container_cryptocurrencies select,
+.container_cryptocurrencies input, .trade-input input {
+    padding: 13px;
+    border: none;
+    border-radius: 17px;
+    border: 2px solid var(--alt2-color);
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+    font-size: 16px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+
+
+.container_cryptocurrencies select option {
+    background-color: var(--alt2-color); 
+    color: var(--secondary-color);        
+    font-size: 17px;                      
+    padding: 10px;                        
+    border-radius: 10px;                  
+    transition: background-color 0.3s ease; 
+}
+
+.container_cryptocurrencies select option:checked {
+    background-color: var(--main3-color); 
+    color: var(--primary-color);          
+}
+
+.container_cryptocurrencies select option:hover {
+    background-color: var(--main2-color);  
+    color: var(--primary-color);          
+}
+
+
+.container_cryptocurrencies.first-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px; 
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.container_cryptocurrencies.first-row select,
+.container_cryptocurrencies.first-row input {    
+    flex: 1; 
+}
+
+.container_cryptocurrencies .inputs-container {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.container_cryptocurrencies .inputs-container input {
+    flex: 1; 
+}
+
+.container_cryptocurrencies input::placeholder {
+    color: var(--secondary-color);
+}
+
+
+input:focus, select:focus, .container_password input:focus {
+    outline: none;
+    border: 2px solid var(--main2-color);
+    background-color: var(--primary-color);
+}
+
+select {
+    cursor: pointer;
+}
+
+
+.trade-type {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.trade-type label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    white-space: nowrap; /* Impede a quebra de linha dentro do label */
+
+}
+
+.trade-type input[type="radio"] {
+    margin-right: 5px;
+
+}
+
+
+.container_password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container_password input {
+    border: 2px solid var(--alt2-color);
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+    display: flex;
+    width: 60%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Placeholder visível */
+.container_password input::placeholder {
+    color: var(--secondary-color);
+}
+
+/* Footer Styling */
+.footer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--main4-color);
+    text-align: center;
+}
+
+.footer .submit-input {
+    background-color: var(--main2-color);
+    color: var(--secondary-color);
+    padding: 12px 19px; 
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 17px; 
+    width: 80%; 
+    transition: background-color 0.3s ease-in-out;
+    margin-bottom: 13px;
+}
+
+.footer .submit-input:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    animation: pulse 1.5s ease-in-out;
+}
+
+.footer .submit-input:active {
+    transform: scale(0.95); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.footer .note {
+    font-style: italic;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+
+
+
+
+/* Estilo geral da seção Trade Summary */
+.trade-summary {
+    background-color: var(--alt1-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Estilo do campo do endereço público */
+.user-address {
+    background-color: var(--alt1-color);
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.user-address strong {
+    font-size: 16px;
+    color: var(--main2-color);
+}
+
+.user-address p {
+    font-size: 14px;
+    color: var(--main1-color);
+    word-wrap: break-word;
+}
+
+/* Conteúdo do summary */
+.trade-summary-content {
+    font-size: 16px;
+    color: var(--main1-color);
+}
+
+/* Alinhamento das informações lado a lado */
+.trade-summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+/* Estilo das informações individuais */
+.trade-summary-item {
+    width: 48%;
+    padding: 10px;
+    background-color: var(--alt1-color);
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.trade-summary-item strong {
+    color: #ff6f3c;
+}
+
+.trade-summary-item span {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Estilo do campo de input para quantidade */
+.trade-input {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.trade-input label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--secondary-color);
+}
+
+.trade-input input {
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid var(--alt2-color);
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.trade-input input:focus {
+    outline: none;
+    border-color: #ff6f3c;
+}
+
+/* Estilo do botão de envio */
+.trade-submit {
+    text-align: center;
+}
+
+.submit-button {
+    background-color: var(--main2-color);
+    color: var(--primary-color);
+    padding: 12px 19px; 
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 17px; 
+    width: 80%; 
+    transition: background-color 0.3s ease-in-out;
+    margin-bottom: 13px;
+}
+
+.submit-button:active {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    animation: pulse 1.5s ease-in-out;
+}
+
+.submit-button:hover  {
+    transform: scale(0.95); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Responsividade para telas menores */
+@media (max-width: 600px) {
+    .trade-summary {
+        padding: 15px;
+    }
+
+    .trade-summary-title {
+        font-size: 20px;
+    }
+
+    .trade-summary-item {
+        font-size: 14px;
+    }
+
+    .trade-input input {
+        width: 90%;
+    }
+
+    .trade-summary-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .trade-summary-item {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
