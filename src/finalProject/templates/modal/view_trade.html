@@ -1,0 +1,62 @@
+<div id="trade-details" class="modal">
+    <div class="modal-content view_trade">
+        <span id="closeModalBtn" class="close_modal">&times;</span>
+        <h3>Trade Summary</h3>
+   <!-- Endereço público do usuário -->
+        <div class="user-address">
+            <strong>User Sender Address:</strong>
+            <p id="user_address"></p>
+        </div>
+
+        <div class="trade-summary-content">
+        <!-- Informações lado a lado (moedas a serem trocadas) -->
+            <div class="trade-summary-row">
+                <div class="trade-summary-item">
+                    <strong>Currency you will send:</strong>
+                    <span id="coin_sender"></span>
+                </div>
+                <div class="trade-summary-item">
+                    <strong>Currency You Will Receive:</strong>
+                    <span id="coin_receive"></span>
+                </div>
+            </div>
+
+            <!-- Informações lado a lado (valores do trade) -->
+            <div class="trade-summary-row">
+                <div class="trade-summary-item">
+                    <strong>Min Value:</strong>
+                    <span id="min_value"></span>
+                </div>
+                <div class="trade-summary-item">
+                    <strong>Estimated Value:</strong>
+                    <span id="estimated_view">0</span>
+                </div>
+            </div>
+
+            <!-- Informações lado a lado (valores mínimos e máximos) -->
+            <div class="trade-summary-row">
+                <div class="trade-summary-item">
+                    <strong>Max Value:</strong>
+                    <span id="max_value"></span>
+                </div>
+                <div class="trade-summary-item">
+                    <strong>Total quantity:</strong>
+                    <span id="trade_amount"></span>
+                </div>
+            </div>
+
+            <!-- Input para o usuário adicionar quanto deseja trocar -->
+            <div id="sender_view" class="error-message"></div>
+            <div class="trade-input">
+                <label for="amount-to-exchange">Enter the Amount You Want to Exchange:</label>
+                <input type="text" id="amount_exchange" placeholder="Amount" min="0" required>
+            </div>
+
+            <!-- Botão de envio -->
+            <div class="trade-submit">
+                <button id="submit_trade" class="submit-button">Confirm Trade</button>
+                <p class="note">* The 3% rate will be applied to each currency</p>
+            </div>
+        </div>
+    </div>
+</div>

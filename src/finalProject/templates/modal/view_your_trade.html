@@ -1,0 +1,67 @@
+<div id="y_trade-details" class="modal">
+    <div class="modal-content view_your_trade">
+        <span id="closeModalBtn" class="close_modal">&times;</span>
+        
+        <h3>Your Trade Summary</h3>
+        
+        <!-- Endereço público do usuário -->
+        <div class="user-address">
+            <strong>Your Address:</strong>
+            <p id="your_address"></p>
+        </div>
+
+        <div class="trade-summary-content">
+        <!-- Informações lado a lado (moedas a serem trocadas) -->
+            <div class="trade-summary-row">
+                <div class="trade-summary-item">
+                    <strong>Currency you sent:</strong>
+                    <span id="Y_coin_sender"></span>
+                </div>
+                <div class="trade-summary-item">
+                    <strong>Currency you received:</strong>
+                    <span id="Y_coin_receive"></span>
+                </div>
+            </div>
+
+            <!-- Informações lado a lado (valores do trade) -->
+            <div class="trade-summary-row">
+                <div class="trade-summary-item">
+                    <strong>Min Value:</strong>
+                    <span id="Y_min_value"></span>
+                </div>
+                <div class="trade-summary-item">
+                    <strong>Total received:</strong>
+                    <span id="Y_total_received"></span>
+                </div>
+            </div>
+
+            <!-- Informações lado a lado (valores mínimos e máximos) -->
+            <div class="trade-summary-row">
+                <div class="trade-summary-item">
+                    <strong>Max Value:</strong>
+                    <span id="Y_max_value"></span>
+                </div>
+                <div class="trade-summary-item">
+                    <strong>Total quantity</strong>
+                    <span id="Y_trade_amount"></span>
+                </div>
+            </div>
+
+            <div class="trade-summary-row">
+                <div class="trade-summary-item">
+                    <strong>Date Created:</strong>
+                    <span id="Y_date"></span>
+                </div>
+                <div class="trade-summary-item">
+                    <strong>Total number of exchangers:</strong>
+                    <span id="Y_exchangers"></span>
+                </div>
+            </div>
+
+            <!-- Input para o usuário adicionar quanto deseja trocar -->
+            <div class="trade-input">
+                <p class="note">* If you delete the amount of pending cryptocurrency it will be refunded</p>
+            </div>
+        </div>
+    </div>
+</div>

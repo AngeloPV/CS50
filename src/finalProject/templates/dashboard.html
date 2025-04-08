@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+    
+</head>
+<body class="{{ session['theme'] }}">
+    <script>
+        // Função responsavel por pedir a localização do usuario, caso ele permita, será gravado a 
+        // latitude e a longitude, que será enviada para o backend do dashboard e lá será convertido em
+        // um cep aproximado da localização do usuario e posteriormente gravado no banco
+        function getCoordinates() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+    
+                        // Envia para o backend via fetch
+                        fetch('/dashboard/index', {  
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'  // Define o tipo de conteúdo como JSON
+                            },
+                            body: JSON.stringify({ latitude, longitude }) // Converte os dados para JSON
+                        });
+                    })}}
+                    
+    
+        // Chama a funcao assim que a página carrega
+        window.onload = getCoordinates;
+
+    </script>
+    
+
+    {% include 'layouts/balance_popup.html' %}
+
+    {% include 'layouts/sidebar.html' %}
+    
+    <div id="preloader">
+        <div class="loading-text"><h3 id="loading">Loading...</h3></div>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    {% if not verificado and not stats%}
+        {% include 'modal_welcome.html' %}
+    {% endif %}
+    <header class="header">
+        <div class="flip-card" onclick="handleFlip(this)">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h2 class="h2-alt">Bitcoin</h2>
+                </div>
+                <div class="flip-card-back">
+                    <h2 class="h2-alt">Ethereum</h2>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="card">
+            <h3>Total spent this month</h3>
+            {% if spent_1_month %}
+                <h4>{{ spent_1_month }}</h4>
+            {% else %} 
+                <h4>No data</h4>
+            {% endif %}
+        </div>
+        <div class="card">
+            <h3 >Last trade</h3>
+            {% if last_trade_data[0] %}
+                {% set crypto1 = 'Bitcoin' if last_trade_data[0][0] == 1 else 'Ethereum' %}
+                {% set crypto2 = 'Bitcoin' if last_trade_data[0][1] == 1 else 'Ethereum' %}
+                {% set amount1 = last_trade_data[0][2] %}
+                {% set amount2 = last_trade_data[0][3] %}
+                {% if last_trade_data[0][4] %}
+                    {% set formatted_date = last_trade_data[0][4].strftime('%Y/%m/%d') %}
+                {% endif %}
+                <h4 class="last_trade_text">{{ crypto1 }}: {{ amount1 }} → {{ crypto2 }}: {{ amount2 }}</h4>
+                <h4 class="last_trade_text">{{ formatted_date }}</h4>
+            {% else %} 
+                <h4>No data</h4>
+            {% endif %}
+        </div>
+        <div class="card">
+            <div class="dado1 active">
+                {% if btc_history_plot %}
+                    <iframe src="{{ url_for('serve_file', filename=btc_history_plot) }}" 
+                            scrolling="no" frameborder="0"></iframe>   
+                {% else %}
+                    <h3 >Last purchased Bitcoins</h3>
+                    <h4 >No data</h4>
+                {% endif %}         
+            </div>
+            <div class="dado2">
+                {% if eth_history_plot %}
+                    <iframe src="{{ url_for('serve_file', filename=eth_history_plot) }}" 
+                    scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h3>Last purchased Ethereums</h3>
+                    <h4 >No data</h4>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="dado1 active">
+                {% if btc_plot %}
+                    <iframe src="{{ url_for('serve_file', filename=btc_plot) }}" 
+                            scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h4>No data</h4>
+                {% endif %}
+            
+            </div>
+            <div class="dado2">
+                {% if eth_plot %}
+                    <iframe src="{{ url_for('serve_file', filename=eth_plot) }}" 
+                    scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h4>No data</h4>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="dado1 active">
+                {% if spent_plot_6 %}
+                <iframe src="{{ url_for('serve_file', filename=spent_plot_6) }}" 
+                         scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h3>Total spent in last 6 months</h3>
+                    <h4 class="h4-alt">No data</h4>
+                {% endif %}
+            
+            </div>
+            <div class="dado2">
+                {% if spent_plot_all %}
+                    <iframe src="{{ url_for('serve_file', filename=spent_plot_all) }}" 
+                    scrolling="no" frameborder="0"></iframe>
+                {% else %}
+                    <h3>Total spent at all</h3>
+                    <h4 class="h4-alt">No data</h4>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+    <script>
+         // Exibe sweet alert de confimaçao quando o usuario digitar a senha de 4 digitos
+         {% if authorize %}
+         document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                title: 'Success',
+                text: '{{ authorize }}',
+                icon: 'success',
+                confirmButtonText: 'Continue',
+                backdrop: 'rgba(0, 0, 0, 0.5)', 
+                heightAuto: false, 
+                didOpen: () => {
+                    document.body.style.overflow = 'hidden'; 
+                },
+                willClose: () => {
+                    document.body.style.overflow = ''; 
+                }
+        })});
+        {% endif %}
+        
+        
+    </script>
+</body>
+</html>

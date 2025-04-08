@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_deposit.css') }}">
+
+    <title>Language</title>
+
+</head>
+<body class="{{ session['theme'] }}">
+        
+    {% extends "layouts/form.html" %}
+
+    {% set title = "Language" %}    
+    <!-- Mensagem de erro, se houver -->
+    {% if error_message %}
+        {% set error = error_message %}    
+    {% endif %}
+
+    <!-- Todos os inputs com os labels -->
+    {% block form_inputs %}
+    <select name="language"> 
+        <option disabled selected value="">Language</option>
+        {% for language in languages %}
+            <option value="{{ language }}">{{ language.capitalize() }}</option>
+        {% endfor %}
+    </select><br><br>
+
+        <input class="submit-btn" type="submit" value="Send" name="send_button">
+    {% endblock %}
+</body>
+</html>

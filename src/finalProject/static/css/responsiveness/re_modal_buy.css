@@ -1,0 +1,247 @@
+@media (max-width: 1440px) {
+    .modal-content {
+        width: 1200px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .modal-content {
+        width: 65%;
+        max-width: 650px;
+        padding: 10px;
+        /* height: 550px; */
+    }
+
+    .modal-title {
+        font-size: 28px;
+    }
+
+    form {
+        width: 100%;  /* Faz o form ocupar toda a largura do modal */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .currency-symbol {
+        margin-left: 6.5vh;
+    }
+    #payment {
+        margin-left: 6.5vh;
+    }
+    .input-field {
+        width: 45vh;
+        max-width: 75%;
+    }
+
+    .error-message {
+        padding-left: 9vh;
+        padding-right: 9vh;
+    }
+
+    .submit-btn {
+        margin-bottom: 5vh;
+        max-width: 80%;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .modal-content {
+        z-index: 999;
+        /* width: 60%; */
+        margin: 0vh 3vh;
+        width: 600px;
+        padding: 16px;
+    }
+
+    .modal-title {
+        font-size: 26px;
+    }
+
+    #logo-currency-icon {
+        width: 8vh;
+        height: 8vh;
+    }
+
+    .currency-symbol {
+        margin-left: 6vh;
+    }
+    #payment {
+        margin-left: 6vh;
+    }   
+
+    .input-field {
+        width: 40vh;
+    }
+
+    .error-message {
+        padding-left: 7vh;
+        padding-right: 7vh;
+    }
+
+    .submit-btn {
+        font-size: 16px;
+    }
+}
+
+
+@media (max-width: 528px) {
+    .modal-content {
+        width: 450px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .modal-content {
+        max-width: 350px;
+        padding: 12px;
+    }
+
+    .modal-title {
+        font-size: 22px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    #logo-currency-icon {
+        width: 6vh;
+        height: 6vh;
+    }
+
+    .currency-symbol {
+        margin-left: 0.5vh;
+    }
+    #payment {
+        margin-left: 0.5vh;
+    }   
+
+    .input-field {
+        max-width: 25vh;
+        width: 30vh;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .error-message {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .submit-btn {
+        width: 35vh !important;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .close {
+        font-size: 24px;
+        margin-left: 95%;
+    }
+}
+
+
+@media (max-width: 400px) {
+    .modal-content {
+        max-width: 350px;
+        padding: 12px;
+    }
+
+    .modal-title {
+        font-size: 22px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    #logo-currency-icon {
+        width: 6vh;
+        height: 6vh;
+    }
+
+    .currency-symbol {
+        margin-left: 0.5vh;
+    }
+    #payment {
+        margin-left: 0.5vh;
+    }   
+
+    .input-field {
+        max-width: 40vh;
+        width: 45vh;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .error-message {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .submit-btn {
+        width: 55vh !important;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .close {
+        font-size: 24px;
+        margin-left: 95%;
+    }
+}
+
+
+@media (max-width: 345px) {
+    .modal-content {
+        max-width: 300px;
+        padding: 12px;
+    }
+
+    .modal-title {
+        font-size: 22px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    #logo-currency-icon {
+        width: 6vh;
+        height: 6vh;
+    }
+
+    .currency-symbol {
+        margin-left: 0.5vh;
+    }
+    #payment {
+        margin-left: 0.5vh;
+    }   
+
+    .input-field {
+        max-width: 25vh;
+        width: 30vh;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .error-message {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .submit-btn {
+        width: 35vh !important;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .close {
+        font-size: 24px;
+        margin-left: 95%;
+    }
+}

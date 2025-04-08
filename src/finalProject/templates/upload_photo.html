@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/upload_photo.css') }}">
+
+    <title>Upload Photo</title>
+
+
+</head>
+<body class="{{ session['theme'] }}">
+    {% include "layouts/sidebar.html" %}
+    {% extends "layouts/form.html" %}
+
+    {% if msg %}
+        {% set error = msg %}    
+    {% endif %}
+
+    {% set title = "Upload profile photo" %}  
+    
+    {% block form_inline %}
+    <form method="POST" enctype="multipart/form-data" action="">
+        <div class="file-upload">
+            <label class="custom-file-upload" for="profilePic">Upload a profile photo</label>
+            <input class="input-field" type="file" id="profilePic" name="profilePic" accept="image/*"><br>
+        </div>
+        <input class="submit-btn" type="submit" value="Send" name="send_button">
+    </form>
+    {% endblock %}
+
+</body>
+</html>

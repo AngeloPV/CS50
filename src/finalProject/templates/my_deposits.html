@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_my_deposits.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/responsiveness/re_my_deposits.css') }}">
+    <script src="{{ url_for('static', filename='js/my_deposits.js') }}" defer></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My deposits</title>
+</head>
+<body class="{{ session['theme'] }}">
+    {% include 'layouts/sidebar.html' %}
+    {% if wallet %}
+        {% include 'modal_wallet.html' %}
+    {% endif %}
+    <main class="main-container">
+        
+        <div class="main-balance">
+            <div class="balance-content">
+                <div class="balance-text">
+                    <h2 class="main-balance-title">Account balance</h2>
+                    <h3 class="main-balance-value">
+                        <span class="balance-text-mask">$**</span> <!-- Valor oculto (inicial) -->
+                        <span class="real-balance">${{ '%.2f' % session['balance'] }}</span>
+                    </h3>
+                </div>
+                
+                <img class="eye-icon" alt="toggle balance visibility" onclick="toggleBalance()"
+                src="{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}">
+            </div>
+            <button class="deposit-button" onclick="window.location.href='/deposit/index'">Make a new deposit!</button>
+        </div>
+
+        <div class="main-wallet">
+            <div class="wallet-content">
+                <div class="wallet-text">
+                    <h2 class="main-wallet-title">Wallet</h2>
+                    {% if wallet %}
+                        <h3 class="wallet-text-content">You already have a wallet</h3>
+                        <button class="wallet-button wallets" onclick="openWalletModal()">See wallet details</button>
+                    {% else %}
+                        <h3 class="wallet-text-content">You dont have a wallet yet</h3>
+                        <button class="wallet-button add_wallet">Add a new wallet</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+            
+    <script>
+        var btn_wallett = document.querySelector('.add_wallet');
+
+        btn_wallett.addEventListener('click', () => {
+            var overlay = document.createElement('div');
+            overlay.className = 'custom-swal-overlay';
+            document.body.appendChild(overlay);
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to create cryptocurrency wallets?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes!",
+                heightAuto: false,
+                backdrop: 'rgba(0, 0, 0, 0.5)',
+                willClose: () => {
+                    document.body.removeChild(overlay);
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{{ url_for('main_routes.route_method', route_name='my_deposits', method='add_wallet')}}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ user_id: "{{ session['user_id'] }}" })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            document.body.appendChild(overlay);
+
+                            Swal.fire({
+                                title: "Saved!",
+                                text: "Your wallets has been added.",
+                                icon: "success",
+                                heightAuto: false,
+                                backdrop: 'rgba(0, 0, 0, 0.5)',
+                                willClose: () => {
+                                    document.body.removeChild(overlay);
+                                }
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            // Mostra o alerta de erro se algo falhar
+                            document.body.appendChild(overlay);
+
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Could not add the wallet.",
+                                icon: "error",
+                                heightAuto: false,
+                                backdrop: 'rgba(0, 0, 0, 0.5)',
+                                willClose: () => {
+                                    document.body.removeChild(overlay);
+                                }
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: "Error!",
+                            text: "An unexpected error occurred.",
+                            icon: "error",
+                            heightAuto: false,
+                            backdrop: 'rgba(0, 0, 0, 0.5)',
+                            willClose: () => {
+                                document.body.removeChild(overlay);
+                            }
+                        })
+                    });
+                } else if (result.isDenied) {
+                    document.body.appendChild(overlay);
+
+                    Swal.fire({
+                        title: "Wallets not added!",
+                        text: "",
+                        icon: "info",
+                        heightAuto: false,
+                        backdrop: 'rgba(0, 0, 0, 0.5)',
+                        willClose: () => {
+                            document.body.removeChild(overlay);
+                        }
+                    })
+                }
+            });
+        });
+        
+
+    </script>
+    <div class="main-table">
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Date <button class="sort-btn desc"></button></th>    
+                    <th onclick="sortTable(1)">Deposit ID <button class="sort-btn"></button></th>
+                    <th onclick="sortTable(2)">Type <button class="sort-btn"></button></th>
+                    <th onclick="sortTable(3)">Amount <button class="sort-btn"></button></th>
+                    <th onclick="sortTable(4)">Currency <button class="sort-btn"></button></th>
+                    <th onclick="sortTable(5)">Status <button class="sort-btn"></button></th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for row in deposits %}
+                <tr>
+                    <td><b>{{ row[0] }}</b></td>
+                    <td><b>{{ row[1] }}</b></td>
+                    <td><b>{{ row[2] }}</b></td>
+                    <td><b>{{ row[3] }}</b></td>
+                    <td><b>{{ row[4] }}</b></td>
+                    <td class="{% if row[5] == 'Confirmed' %}status-confirmed{% endif %}">
+                        <b>{{ row[5] }}</b>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>            
+
+        </table>
+    </div>
+
+    <script>
+        // Função para alternar a exibição do saldo (mostrar ou ocultar)
+        function toggleBalance() {
+            // Seleciona os elementos necessários do DOM
+            const balanceTextMask = document.querySelector('.balance-text-mask'); // Máscara que oculta o saldo
+            const realBalance = document.querySelector('.real-balance'); // Elemento que exibe o valor real do saldo
+            const eyeIcon = document.querySelector('.eye-icon'); // Ícone de olho para indicar se o saldo está visível ou oculto
+    
+            // Verifica se o saldo real está oculto (display === "none")
+            if (realBalance.style.display === "none") {
+                // Se o saldo real está oculto, mostra o valor real e altera o ícone do olho para o aberto
+                realBalance.style.display = "inline"; // Torna o saldo real visível
+                balanceTextMask.style.display = "none"; // Oculta a máscara que cobre o saldo
+                eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/open_eye_' + session['theme'] + '.png') }}"; // Altera o ícone para o olho aberto com base no tema
+            } else {
+                // Se o saldo real está visível, oculta o valor real e mostra a máscara
+                realBalance.style.display = "none"; // Torna o saldo real invisível
+                balanceTextMask.style.display = "inline"; // Exibe a máscara que cobre o saldo
+                eyeIcon.src = "{{ url_for('static', filename='images/balance_popup/close_eye_' + session['theme'] + '.png') }}"; // Altera o ícone para o olho fechado com base no tema
+            }
+        }
+    
+        // Adiciona um ouvinte de evento para chamar a função toggleBalance assim que o conteúdo da página for carregado
+        document.addEventListener("DOMContentLoaded", toggleBalance);
+    
+        // Função para abrir o modal da carteira (wallet modal)
+        function openWalletModal() {
+            // Exibe o modal da carteira (tornando-o visível)
+            document.getElementById('walletModal').style.display = "block";
+        }
+    
+        // Função para fechar o modal da carteira
+        function closeWalletModal() {
+            // Oculta o modal da carteira (tornando-o invisível)
+            document.getElementById('walletModal').style.display = "none";
+        }
+    
+        // Adiciona um ouvinte de evento para fechar o modal ao clicar fora dele
+        window.onclick = function (event) {
+            // Obtém o modal da carteira
+            var modal = document.getElementById('walletModal');
+            
+            // Se o usuário clicar fora do modal, o modal será fechado
+            if (event.target === modal) {
+                document.getElementById('walletModal').style.display = "none";
+            }
+        };
+    </script>
+    
+</body>
+
+
+</html>

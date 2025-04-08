@@ -1,0 +1,67 @@
+<!-- MODELO PARA FORMULÁRIOS -->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_form_layout.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/responsiveness/re_form_layout.css') }}">
+
+{% include 'layouts/layout.html' %}
+
+<!-- Div principal -->
+<div class="content">
+    <!-- Define 400 de largura pro bloco do formulário como padrão -->
+    {% if width is not defined %}
+        {% set width = 400 %}
+    {% endif %}    
+    <!-- Define o background com degrade por padrão, mas da pra alterar criando uma variavel bg-->
+    {% if bg is not defined %}
+        {% set bg = 'linear-gradient(to top right, #1B263B 40%, #1b263bdf 90%)' %}
+    {% endif %}
+    <!-- Adiciona o background -->
+    <div class="form-container {% if error_message or error %}error{% endif %}">
+
+        <!-- Define o titulo -->
+        <h3 class="title">{{ title }}</h3>
+
+        {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <!-- Formulário em si -->
+        <form class="form" action="" method="post" novalidate>
+        {% block form_inputs  %}
+        <!-- Coloca os inputs dentro do bloco e eles vao ser inseridos aqui -->
+        <!-- Favor, colocar a class="input-field" nos campos pro css funcionar-->
+        <!-- e a class="input-label" nos labels e class="submit-btn" nos botoes -->
+        {% endblock %}
+        </form>
+        <!-- Este bloco é pra colocar o formulario inteiro, desde a chamada do form ate os inputs-->
+        {% block form_inline %}
+        {% endblock %}
+
+        <br>
+        
+
+        <!-- Se quiser criar a aba de links antes precisa definir o numero de links e dps criar o bloco -->
+        {% if num_links %}
+            <hr class="line">
+            <div class="links-container {% if num_links > 1 %}space-between{% else %}center{% endif %}">
+                {% block links_container %}
+                    <!-- Coloca os links dentro do bloco e eles vao ser inseridos aqui -->
+                    <!-- definir a variavel num_links q recebe o numero de links-->
+                {% endblock %}
+            </div>
+        {% endif %}
+    
+    </div>
+</div>
+
+<script>
+    // Altera a largura do container, padrão é 400
+    const width = "{{ width }}"; 
+    // Altera o background, padrão é  linear-gradient(to top right, #1B263B 40%, #1b263bdf 90%)
+    const bg = "{{ bg }}";
+    // Atualiza a variável CSS
+    document.documentElement.style.setProperty('--container-width', `${width}px`);
+    document.body.style.background = bg;
+</script>

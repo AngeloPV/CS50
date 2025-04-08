@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_deposit_confirm.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+    
+    <title>Deposit confirmation</title>
+</head>
+<body class="{{ session['theme'] }}">
+    {% include 'layouts/balance_popup.html' %}
+
+    {% extends "layouts/form.html" %}
+
+    {% set title = "Deposit confirmation" %}    
+    <!-- Mensagem de erro, se houver -->
+    {% if error_message %}
+        {% set error = error_message %}    
+    {% endif %}
+
+    <!-- Todos os inputs com os labels -->
+    {% block form_inline %}
+        <form class="form" action="/deposit/confirm", method="post">
+            <label class="input-label" style="text-align: center;">Would you like to make a deposit of {{ currency }} {{ deposited_value }}?</label> 
+            <br>
+            <input class="submit-btn" type="submit" value="Yes, I would like" name="button" id="button">
+        </form>
+
+        <script>
+            // Carrega um sweet alert se o authorize for verdadeiro e redireciona para a proxima pagina
+            // OBS: ignore estes erros, pois o js diz que nao reconhece o jinja mas no site reconhece
+             document.addEventListener("DOMContentLoaded", function() {
+                {% if authorize %} 
+                            Swal.fire({
+                            title: 'Success',
+                            text: '{{ authorize}}',
+                            icon: 'success',
+                            confirmButtonText: 'Continue'
+                        }).then((result) => {
+                    if (result.isDismissed) { // Verifica se o modal foi fechado clicando fora
+                        {% if redirect_url %}
+                            window.location.href = "{{ redirect_url }}";
+                        {% endif %}
+                    }
+                });
+    
+                    const interval = setInterval(() => {
+                    const confirmButton = document.querySelector('.swal2-confirm');
+                    if (confirmButton) {
+                        clearInterval(interval); 
+                        confirmButton.addEventListener('click', function () {
+                            {% if redirect_url %}
+                                window.location.href = "{{ redirect_url }}";
+                            {% endif %}
+                            });
+                        }
+                    }, 1)}); 
+                {% endif %}
+        </script>
+    {% endblock %}
+</body>
+
+</html>

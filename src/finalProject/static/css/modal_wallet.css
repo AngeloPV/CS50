@@ -1,0 +1,67 @@
+/* Fundo do modal */
+.modal {
+    display: none; /* Ocultar por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6); /* Transparência do fundo */
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background-color: var(--primary-color); /* Cor semelhante ao fundo da página */
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid var(--alt2-color); /* Bordas sutis */
+    border-radius: 8px; /* Bordas arredondadas */
+    width: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: var(--secondary-color); /* Texto branco */
+    font-family: 'Arial', sans-serif;
+}
+
+body.dark-theme .modal-content {
+    background-color: var(--background-color); /* Cor semelhante ao fundo da página */
+}
+
+/* Fechar botão */
+.close {
+    color: var(--alt4-color); /* Vermelho suave */
+    float: right;
+    top: 0;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--main3-color);
+    text-decoration: none;
+}
+/* Título do modal */
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--alt2-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.modal-info {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.modal-main-info {
+    padding-left: 11px;
+}
+/* Destaque para labels */
+body.dark-theme .modal-info strong {
+    color: var(--alt1-color);
+}
+body.light-theme .modal-info strong {
+    color: var(--background-color);
+}

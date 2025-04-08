@@ -1,0 +1,34 @@
+<div id="search-trade" class="modal">
+    <div class="modal-content search-trade">
+        <span id="closeModalBtn" class="close_modal search">&times;</span>
+        <h3>Search Trade</h3>
+        <div class="form">
+            <div class="trade-type">
+                <label>
+                    <input type="radio" name="trade_type" value="own_trades" checked>
+                    My Trades
+                </label>
+                <label>
+                    <input type="radio" name="trade_type" value="general_trades">
+                    General Trades
+                </label>
+            </div>
+            <div id='search_container' class="container_cryptocurrencies receive">
+                <select id='search_sender' name="cryptocurrencies_receive">
+                    <option value="Select" selected hidden>***Cryptocurrency you want to Search</option>
+                    <option value="Bitcoin">Bitcoin</option>
+                    <option value="Ethereum">Ethereum</option>
+                </select>
+                <div class="inputs-container">
+                    <input type="text" name="cripto_receive" id="search_maximum" placeholder="Maximum trade value">
+                    <input type="text" name="cripto_minimum" id="search_minumum" placeholder="Minimum trade value">
+                </div>
+                <div id="search_error" class="error-message"></div>
+            </div>
+            <div class="footer">
+                <input id='search_trade' type="submit" value="Search Trade" class="submit-input">
+                <p class="note">Fields that have *** are mandatory</p>
+            </div>
+        </div>
+    </div>
+</div>

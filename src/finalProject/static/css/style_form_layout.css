@@ -1,0 +1,183 @@
+
+
+/* Estilos básicos para o corpo */
+.content {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+}
+
+
+
+/* Estilo para o contêiner de login */
+.form-container {
+    background-color: var(--background-color);
+    padding: 45px 35px;
+    border-radius: 30px;
+    width: var(--container-width, 400px); /* Valor padrão é 400px */
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Estilo para o título com menos margem */
+.title {
+    background-color: var(--alt1-color);
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin: 10px 0; /* Ajuste a margem superior e inferior conforme necessário */
+    position: relative; /* Permite ajustar o posicionamento se necessário */
+    top: -16px; 
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Estilo para a mensagem de erro */
+.error-message {
+    font-size: 16px;
+    color: var(--main2-color);
+    background-color: var(--main3-color);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Estilo para o formulário */
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo para os rótulos */
+.input-label{
+    color: var(--alt1-color);
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: left;
+}
+
+/* Estilo para os campos de entrada */
+.input-field{
+    margin-bottom: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Quando o campo está em foco */
+.input-field:focus {
+    outline: none;
+    border: 2px solid var(--main2-color);
+    background-color: var(--primary-color);
+}
+
+.input-field::placeholder {
+    opacity: 0.7;  
+}
+
+/* Estilo para o botão de enviar */
+.submit-btn {
+    padding: 14px;
+    border: none;
+    border-radius: 20px;
+    background: var(--main2-color);
+    color: var(--alt1-color);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-top: 5px;
+    width: 100%;
+}
+
+/* Efeito de hover para o botão */
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    animation: pulse 1.5s ease-in-out;
+}
+
+/* Efeito de clique (pressionado) */
+.submit-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Animação de pulsação */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.line{
+    border: none;
+    height: 1.5px;
+    background: linear-gradient(to right, var(--main2-color), rgba(255, 255, 255, 0.1), var(--main2-color));
+    margin: 15px 0;
+    opacity: 0.8;
+}
+
+/* Estilo para os links de recuperação de senha e cadastro */
+.links-container {
+    display: flex;
+    margin-top: 10px;
+}
+
+.links-container.center {
+    justify-content: center;
+}
+
+.links-container.space-between {
+    justify-content: space-between;
+}
+
+
+
+.link {
+    color: var(--alt1-color);
+    text-decoration: none;
+    font-size: 17px;
+    transition: color 0.3s ease;
+}
+
+.link:hover {
+    color: var(--main2-color);
+    text-decoration: underline;
+}
+
+#password-requirements {
+    color: var(--secondary-color);
+    font-size: 16px;
+    text-align: left;
+}
+
+#password-requirements li {
+    list-style-position:inside; /* Faz a bolinha aparecer dentro do texto */
+}

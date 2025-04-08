@@ -1,0 +1,70 @@
+
+body{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin-top: 1.5vh;
+   
+}
+
+.icones{
+    margin-top: 4vh;
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.alter-email-block{
+    background-color: #495057;
+    margin-bottom: 5vh;
+    
+}
+.alter-email-block button{
+    background-color: #ff6f3c;
+    color: #f9f9fa
+}
+
+.alter-password-block, .alter-phone-block{
+    background-color: #2d3339e4;
+}
+.alter-email-block, .alter-password-block, .alter-phone-block{
+    display: flex;
+    flex-direction: column;
+    width: 50vh;
+    height: 80vh;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0px 4px 5px 0px rgba(255, 111, 60, 0.5);
+    transition: transform 0.3s ease;
+}
+.alter-email-block:hover, .alter-password-block:hover, .alter-phone-block:hover {
+    transform: translateY(-10px);
+}
+
+button{
+    margin-top: 20vh;
+    padding: 20px;
+    color: #f8f9fa;
+    background-color: #ff6f3c;
+    font-size: 18px;
+    width: 25vh;
+    border: 0;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px 0px rgb(0, 0, 0, 0.5);
+
+}
+
+button:hover{
+    transform: scale(1.08);
+    background-color: #1B263B;
+
+}
+
+h2{
+    font-family: 'Montserrat', 'sans-serif';
+    color: #f8f9fa;
+    margin-top: 3vh;
+}

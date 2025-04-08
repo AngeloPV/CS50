@@ -1,0 +1,69 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='../static/css/modal_buy.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='../static/css/responsiveness/re_modal_buy.css') }}">
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
+            <img src="{{ url_for('static', filename='images/cryptocurrencies_icons/' + shop.name|lower + '.png') }}" id="logo-currency-icon">
+            <h2 class="modal-title">{{ shop.name }}</h2>
+        </div>
+        {% if request.args.get('msg') %}
+            <div class="error-message">
+                {{ request.args.get('msg') }}
+            </div>
+        {% endif %}
+
+        <div class="form">
+            <form action="" method="post">
+                <label for="payment" class="input-label">I want to pay (USD):</label>
+                <div class="input-container">
+                    <span class="currency-symbol">$</span>
+                    <input id="payment" class="input-field" autocomplete="off" autofocus name="payment"
+                        placeholder="Amount to pay" type="number" value="" min="0" step="any" >
+                </div>
+                
+                <div id="estimated-container">
+                    <span class="estimated-value">Estimated {{ shop.name }}:</span>
+                    <span id="estimated" class="estimated-value">0.000000</span>
+                </div><br>
+
+                <label for="4_digits_password" class="input-label">Four digits password:</label>
+                <input id="4_digits_password" class="input-field" autocomplete="off" name="4_digits_password"
+                    placeholder="Put your four digits password" type="password" value="" maxlength="4" 
+                    pattern="\d{4}">
+
+                <input name="SendBuy" id="submitButton" class="submit-btn" type="submit" value="Buy" >
+                
+                {% set current_price = session['shop'][crypto].current_price %}
+
+                <script>
+                     document.addEventListener('DOMContentLoaded', function() {
+                        const modal = document.getElementById("myModal");
+                        const paymentInput = document.getElementById('payment');
+                        const estimatedSpan = document.getElementById('estimated');
+                        const currentPrice = {{ current_price | safe }};
+
+                        paymentInput.addEventListener('input', function() {
+                            if (paymentInput.value.length > 7) {
+                                paymentInput.value = paymentInput.value.slice(0, 7); // Limita a 8 dígitos
+                            }
+                            const paymentValue = parseFloat(paymentInput.value) || 0; // Obtém o valor digitado ou 0
+                            const estimatedValue = (paymentValue / currentPrice).toFixed(6); // Calcula a quantidade estimada
+                            estimatedSpan.textContent = paymentValue > 0 ? estimatedValue : '0.000000'; // Atualiza o span
+                        });
+                    
+                        // define a opacidade e a escala do modal
+                        modal.style.opacity = '1';
+                        modal.style.transform = 'scale(1)';
+                    });
+                </script>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='../static/js/modal_buy.js') }}"></script>
+
+

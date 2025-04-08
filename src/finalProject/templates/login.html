@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
+
+</head>
+<body class="dark-theme">
+   
+    {% extends "layouts/form.html" %}
+
+    {% set title = "Login" %}    
+    <!-- Mensagem de erro, se houver -->
+    {% if error_message %}
+        {% set error = error_message | safe %}    
+    {% endif %}
+
+    <!-- Todos os inputs com os labels -->
+    {% block form_inputs %}
+        <label for="username" class="input-label">Username:</label>
+        <input id="username" class="input-field" autocomplete="off" autofocus name="user" 
+            placeholder="Enter your Email or Name" type="text" value="{{ user if user else '' }}">
+
+        <label for="password" class="input-label">Password:</label>
+        <input id="password" class="input-field" autocomplete="off" autofocus name="password" 
+            placeholder="Enter your Password" type="password" value="{{ password if password else '' }}">
+        
+
+        <input name="SendLogin" id="submitButton" class="submit-btn" type="submit" value="Login">
+
+
+        {% set authorize = authorize | default(none) %}
+
+        {% set Change_password = Change_password | default(none) %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Substitui o estado do histórico para evitar o reenvio de formulário
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                // Pega o valor de autorização, que será um valor booleano, 
+                // e converte para JSON (ou seja, formata-o para que o valor possa ser lido em JavaScript)
+                const isAuthorized = {{ authorize | tojson }}; // Just ignore this error
+                const Change_password = {{ Change_password | tojson}}
+
+                // Verifica se conta foi autorizada, se sim roda sweet alert de sucesso, senao roda de erro
+                if (isAuthorized) {
+                    showCustomAlert(
+                        '.form-container',
+                        'Account Verified Successfully',
+                        '<p>Your account has been successfully verified!</p>',
+                        'success',
+                        'Continue',
+                        ["custom-title_sucess", "custom-succes-button"]
+                    );
+                } else if ( isAuthorized === false ) {
+
+                    showCustomAlert(
+                        '.form-container',
+                        'An error occurred',
+                        `<p>Account has been created, but unable to verify your account via email.
+                        {% set user_email = TODO %}
+                        <a href="{{ url_for('main_routes.route_method', route_name='Resend_authentication_email', method='index') }}" 
+                        style="color: #ff6f3c; text-decoration: underline;">Click here</a> to restart the verification process.</p>`,
+                        'error',
+                        'Continue',
+                        ["custom-title_error", "custom-error-button"]
+                    );
+                } else if (Change_password) {
+                    showCustomAlert(
+                        '.form-container',
+                        'Password updated successfully',
+                        '<p>You have successfully changed your account password</p>',
+                        'success',
+                        'Continue',
+                        ["custom-title_sucess", "custom-succes-button"]
+                    );
+                }
+        
+                // Checa se a senha é forte
+                passwordStrength();
+            });
+
+       
+        </script>
+    {% endblock %}
+
+    <!-- Links para recuperação de senha e cadastro -->
+    {% set num_links = 2 %}
+    {% block links_container %}
+        <a href='{{ url_for("main_routes.route_method", route_name="Recover_password", method="index") }}' class="link">Forgot password?</a>
+        <a href='{{ url_for("main_routes.route_method", route_name="Register", method="index") }}' class="link">Register</a>
+    {% endblock %}
+</body> 
+</html>

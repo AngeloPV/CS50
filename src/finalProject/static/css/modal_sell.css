@@ -1,0 +1,80 @@
+/* Estilo para o modal */
+.modal {
+    top: -60px;
+    height: 150%;
+}
+#sell-modal-title {
+    text-transform: capitalize;
+}
+
+.modal-content .sell-button{
+    display: flex;
+    margin: auto;
+}
+
+body.light-theme #form-sell-container .modal-info strong
+{
+    color: var(--secondary-color);
+}
+
+body.dark-theme #form-sell-container .modal-info strong{
+    color: var(--alt1-color);
+}
+
+#form-sell-container{
+    margin-bottom: 3vh;
+}
+
+/* Estilo para os campos de entrada */
+.input-field{
+    margin-bottom: 10px;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    color: var(--main1-color);
+    font-size: 16px;
+    transition: all 0.1s ease;
+    width: 100%;
+}
+
+
+.input-field::placeholder {
+    color: var(--main1-color);
+}
+
+/* Quando o campo está em foco */
+.input-field:focus {
+    outline: none;
+    border: 2px solid var(--secondary-color);
+    background-color: var(--primary-color);
+}
+body.dark-theme .input-field:focus{
+    background-color: var(--alt2-color);
+}
+
+#sell-modal-value-form{
+    padding-left: 2vh;
+}
+
+/* Remove as setinhas do input type number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Remove o estilo do navegador */
+    margin: 0; 
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Remove a aparência padrão das setinhas no Firefox */
+}
+
+/* Para garantir que a cor da setinha seja aplicada também no Firefox */
+input[type="number"]::-ms-clear {
+    display: none; /* Remove a setinha do IE/Edge */
+}
+
+
+/* Estilo padrão para o modal */
+.modal {
+    top: -60px;
+    height: 150%;
+}

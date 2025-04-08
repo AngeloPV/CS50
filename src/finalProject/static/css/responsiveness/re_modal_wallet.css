@@ -1,0 +1,68 @@
+/* Responsividade do modal */
+@media screen and (max-width: 1024px) {
+    .modal-content {
+        width: 70%;
+        height: 28%;
+        margin: 15% auto;
+        padding: 18px;
+    }
+    
+    .modal-title {
+        font-size: 23px;
+    }
+    
+    .modal-info {
+        font-size: 17px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 75%;
+        margin: 20% auto;
+        padding: 16px;
+    }
+    
+    .modal-title {
+        font-size: 20px;
+    }
+    
+    .modal-info {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-content {
+        width: 90%;
+        /* height: 20%; */
+        margin: 25% auto;
+        padding: 14px;
+        border-radius: 6px;
+    }
+
+    .modal-title {
+        font-size: 18px;
+    }
+
+    .modal-info {
+        font-size: 13px;
+    }
+
+    .close {
+        font-size: 24px;
+    }
+}
+
+
+@media screen and (max-width: 400px) {
+    .modal-content {
+        height: 35%;
+        width: 95%;
+        margin: 35% auto;
+    }
+    .modal-info {
+        font-size: 12px;
+        word-break: break-all;
+    }
+}

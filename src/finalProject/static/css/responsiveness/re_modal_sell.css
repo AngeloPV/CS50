@@ -1,0 +1,83 @@
+/* Responsividade para telas maiores (até 1024px) */
+@media screen and (max-width: 1024px) {
+    .modal-content {
+        width: 60%;
+        padding: 20px;
+        margin: 10% auto;
+    }
+
+    .modal-title {
+        font-size: 24px;
+    }
+
+    .sell-button {
+        font-size: 16px;
+    }
+
+    .input-field {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    #sell-modal-value-form {
+        padding-left: 1vh;
+    }
+}
+
+/* Responsividade para tablets (até 768px) */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 80%;
+        padding: 18px;
+        margin: 15% auto;
+    }
+
+    .modal-title {
+        font-size: 22px;
+    }
+
+    .sell-button {
+        font-size: 15px;
+    }
+
+    .input-field {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    #sell-modal-value-form {
+        padding-left: 2vh;
+    }
+}
+
+/* Responsividade para telas menores (até 468px) */
+@media screen and (max-width: 480px) {
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+        margin: 40% auto;
+    }
+
+    .modal-title {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .sell-button {
+        font-size: 14px;
+    }
+
+    .input-field {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    #sell-modal-value-form {
+        padding-left: 3vh;
+    }
+
+    /* Ajusta o botão de fechar para um tamanho mais adequado em telas pequenas */
+    .close {
+        font-size: 24px;
+    }
+}

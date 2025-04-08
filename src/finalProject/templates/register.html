@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <script src="{{ url_for('static', filename='js/register/mask.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/register/list_requirements.js') }}" defer></script>
+  
+    <body class="dark-theme">
+        {% set width = 470 %}
+        
+        {% extends "layouts/form.html" %}
+
+        {% set title = "Register" %}    
+
+
+        {% block form_inputs %}
+            <div class="input-group">
+                {% if error_message and error_message.get('all') %}
+                    <div class="error-message">
+                        {{ error_message['all'] }}
+                    </div>
+                {% endif %}
+            
+                <input class="input-full" autocomplete="off" autofocus name="name" placeholder="Enter your Name" type="text" value="{{ name if name else '' }}">
+
+                {% if error_message and error_message.get('email') %}
+                    <div class="error-message">
+                        {{ error_message['email'] }}
+                    </div>
+                {% endif %}
+                
+                <input class="input-full" autocomplete="off" autofocus name="email" placeholder="Enter you Email" type="email" value="{{ email if email else '' }}">
+                
+                {% if error_message %}
+                    {% if error_message.get('cpf') %}
+                        <div class="error-message">
+                            {{ error_message['cpf'] }}
+                        </div>
+                    {% elif error_message.get('phone') %}
+                        <div class="error-message">
+                            {{ error_message['phone'] }}
+                        </div>
+                    {% endif %} 
+                {% endif %}
+
+                <div class="input-row">
+                    <input  oninput="Cpfmask(this)" class="input-half" autocomplete="off" name="cpf" placeholder="Enter your CPF" type="text" maxlength="14" value="{{ cpf if cpf else '' }}">
+                    <input  oninput="Phonemask(this)" class="input-half" autocomplete="off" name="phone" placeholder="Enter your Number" type="text" maxlength="14" value="{{ phone if phone else '' }}">
+                </div>
+
+                {% if error_message and error_message.get('password') %}
+                    <div class="error-message">
+                        {{ error_message['password'] }}
+                    </div>
+                {% endif %}
+                
+                <div class="input-row">
+                    <input class="input-half" autocomplete="off" id="password"  name="password" placeholder="Enter your Password" type="password" value="{{ password if password else '' }}">
+                    <input class="input-half" autocomplete="off" id="password-confirm" name="ConfirmPass" placeholder="Confirm your password" type="password" value="{{ ConfirmPass if ConfirmPass else '' }}">
+                    
+                </div>
+
+                <ul id="password-requirements" style="display: none;">
+                    <li>Password must be at least 8 characters long.</li>
+                    <li>It must contain at least one special character.</li>
+                    <li>It must include at least one uppercase letter.</li>
+                </ul> 
+
+            </div><br>
+            <input class="submit-btn" name="SendRegister" type="submit" value="Register" id="a">
+        {% endblock %}
+            
+        {% set num_links = 1 %}
+        {% block links_container %}
+            <a href='{{ url_for("main_routes.route_method", route_name="Login", method="index") }}' class="link">Already have an account?</a>
+        {% endblock %}
+        
+    </body>
+    </html>

@@ -1,0 +1,29 @@
+.file-upload {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}
+
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    width: 80%;
+    height: 20%;
+    cursor: pointer;
+    background-color: var(--main4-color); /* Cor de fundo */
+    color: var(--alt1-color); /* Cor do texto */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s; /* Transição suave */
+    margin-bottom: 5vh;
+}
+
+.custom-file-upload:hover {
+    background-color: var(--main3-color); /* Cor ao passar o mouse */
+    color: var(--main2-color);
+}
+
+.input-field {
+    display: none; /* Oculta o input padrão */
+}
