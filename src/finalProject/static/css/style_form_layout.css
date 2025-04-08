@@ -172,38 +172,11 @@
     text-decoration: underline;
 }
 
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
-    .form-container {
-        width: 85%;
-        height: 73%;
-    }
-
-    .form-container.error {
-        height: 85%;
-    }
-
-    input {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    .submit-btn {
-        font-size: 16px;
-        padding: 12px;
-    }
-
-    .error-message {
-        font-size: 14px;
-        padding: 8px;
-    }
-}
 #password-requirements {
     color: var(--secondary-color);
     font-size: 16px;
     text-align: left;
 }
-
 
 #password-requirements li {
     list-style-position:inside; /* Faz a bolinha aparecer dentro do texto */

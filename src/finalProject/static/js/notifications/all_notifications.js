@@ -1,9 +1,9 @@
 function all_notifcations(hidden) {
 
-    var selectedCheckbox = document.getElementById('selectedCheckbox')
-    selectedCheckbox.replaceWith(selectedCheckbox.cloneNode(true));  // Remove os listeners antigos O importante é que os event listeners não são copiados para o novo nó, por isso usamos esse método para "limpar" os listeners existentes
+    var selectedCheckboxs = document.getElementById('selectedCheckbox')
+    selectedCheckboxs.replaceWith(selectedCheckboxs.cloneNode(true));  // Remove os listeners antigos O importante é que os event listeners não são copiados para o novo nó, por isso usamos esse método para "limpar" os listeners existentes
 
-    var selectedCheckbox = document.getElementById('selectedCheckbox')
+    var selectedCheckboxs = document.getElementById('selectedCheckbox')
 
     var checkboxs = document.querySelectorAll('.checkbox')
 
@@ -12,7 +12,7 @@ function all_notifcations(hidden) {
             action_opacity()
 
             if (selectCheckbox(getVisibleCheckboxes()) == 'Error') {
-                selectedCheckbox.checked = false
+                selectedCheckboxs.checked = false
             }
         })
     })
@@ -23,12 +23,12 @@ function all_notifcations(hidden) {
 
     selectAll = document.getElementById('selectAll');  // Redefine a variável
 
-    [selectAll, selectedCheckbox].forEach(element => {
+    [selectAll, selectedCheckboxs].forEach(element => {
         element.addEventListener('click', () => {
-            action_opacity()
 
             let checkboxes = getVisibleCheckboxes(); 
             allCheckbox(checkboxes)
+            action_opacity()
         })              
     })
 

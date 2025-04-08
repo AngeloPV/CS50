@@ -108,5 +108,3 @@ class NotificationNamespace(Namespace):
         if isinstance(obj, datetime):
             return obj.strftime('%Y-%m-%d %H:%M:%S')
         raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
-
-    

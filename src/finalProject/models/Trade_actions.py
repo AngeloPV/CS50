@@ -34,6 +34,7 @@ class Trade_actions:
         self.result = self.select.get_result()
 
         if self.result:
+            print(self.result)
             return self.result[0][0]
         
         return None 
@@ -51,14 +52,12 @@ class Trade_actions:
             select_id = data_id
 
         self.select.exe_select(f'''SELECT user_id, amount_min, amount_max, sender.acronym, recipient.acronym, sender.cripto_name, 
-                                recipient.cripto_name, amount_cripto_sender, reg_trade.id FROM reg_trade 
+                                recipient.cripto_name, amount_cripto_sender, reg_trade.id, reg_trade.created FROM reg_trade 
                                 INNER JOIN criptocurrencies AS sender ON cripto_sender_id = sender.id 
                                 INNER JOIN criptocurrencies AS recipient ON cripto_recepient_id = recipient.id WHERE {camp_id} {condition} %s''', 
                                 f'{{"{camp_id}": "{select_id}"}}', False)
 
-        # self.select.exe_select(f'SELECT *  FROM wallets WHERE user_id {condition} %s',  f'{{"user_id": "{session["user_id"]}"}}', False)
         self.result = self.select.get_result()
-        
 
         if self.result:
             new_result = list(self.select.get_result())
@@ -82,7 +81,8 @@ class Trade_actions:
 
     
     def get_values_trade(self, trade_id):
-        self.select.exe_select(f'''SELECT SUM(amount_sender), SUM(amount_recipient) FROM trades WHERE reg_trade_id = %s''',
+        self.select.exe_select(f'''SELECT ROUND(SUM(amount_sender), 3), ROUND(SUM(amount_recipient), 3), COUNT(*) FROM 
+                               trades WHERE reg_trade_id = %s''',
                                f'{{"reg_trade_id": "{trade_id}"}}', False) 
         
         self.result = self.select.get_result()
@@ -145,7 +145,7 @@ class Trade_actions:
                                f'{{"user_id": "{session["user_id"]}"}}', False) 
         self.result = self.select.get_result()
         
-        print(self.result)
+        print(self.result[0][0])
         if self.result:
             if self.validate.encryption(password, self.result[0][0]):
                 return True
@@ -193,24 +193,28 @@ class Trade_actions:
             dic_send['user_recipient_id'] = self.get_user_id(adress)
 
             if dic_send['user_recipient_id'] != None:
-                teste = dic_send['max_value'] - dic_send['amount_sender'] 
-
+                
                 self.insert.exe_insert(dic_send, "trades", None, True)
                 result = self.insert.getResult()
 
                 if result:
-                    self.update_amount_user(dic_send['user_sender_id'], dic_send['amount_recipient'], cripto_recipient)
-                    self.update_amount_user(dic_send['user_recipient_id'], dic_send['amount_sender'], cripto_sender)    
+                    self.update_amount_user(dic_send['user_sender_id'], dic_send['amount_recipient'], cripto_recipient, True)
+                    self.update_amount_user(dic_send['user_sender_id'], dic_send['amount_sender'], cripto_sender, False)
+                    self.update_amount_user(dic_send['user_recipient_id'], dic_send['amount_sender'], cripto_sender, True)    
                     return True
                 
         return False
     
 
-    def update_amount_user(self, user_id, amount, coin):
+    def update_amount_user(self, user_id, amount, coin, cond):
         print(user_id, amount, coin)
         amount_coin = self.get_amount_coin(user_id, coin)
 
-        amount_coin = float(amount_coin) + float(amount)
+        if cond:
+            amount_coin = float(amount_coin) + float(amount)
+        else:
+            amount_coin = float(amount_coin) - float(amount)
+
         dic_update = {'amount': amount_coin}
         dic_where = {'user_id': user_id}
 

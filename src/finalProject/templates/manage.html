@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/manage.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/responsiveness/re_manage.css') }}">
     <script src="{{ url_for('static', filename='js/manage.js') }}" defer></script>
 
 
@@ -35,8 +36,10 @@
                         <span class="currency-title">Bitcoin (BTC)</span>
                     </div>
                     
-                    <span class="currency-balance">{{ bitcoin_balance }}</span>
-                    <span class="currency-to-dol">{{ bitcoin_to_dol|round(2) }} US$</span>
+                    <div class="column">
+                        <span class="currency-balance">{{ bitcoin_balance }}</span>
+                        <span class="currency-to-dol">{{ bitcoin_to_dol|round(2) }} US$</span>
+                    </div>
                     <button class="sell-button" onclick="openSellModal('bitcoin')">Sell</button>
                 </div>
                 <div class="balance-ethereum-content">
@@ -45,8 +48,10 @@
                         <span class="currency-title">Ethereum (ETH)</span>
                     </div>
 
-                    <span class="currency-balance">{{ ethereum_balance}}</span>
-                    <span class="currency-to-dol">{{ ethereum_to_dol|round(2) }} US$</span>
+                    <div class="column">
+                        <span class="currency-balance">{{ ethereum_balance}}</span>
+                        <span class="currency-to-dol">{{ ethereum_to_dol|round(2) }} US$</span>
+                    </div>
                     <button class="sell-button" onclick="openSellModal('ethereum')">Sell</button>
                 </div>
             </div>

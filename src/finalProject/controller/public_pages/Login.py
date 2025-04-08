@@ -2,9 +2,7 @@ from flask import request, redirect, url_for, session
 
 from ...renderer import template_render
 from ...models.Login_user import Login_user
-# A fazer:
-# 1. Fazer a pagina pra quando o usaruio acessar pelo email, quando aceessar atualizar o banco email_sit
-# Depois no Lohin verificar se o usario esta com a conta autorizada ja
+
 class Login:
     """
     Classe responsável pelo gerenciamento do processo de login de usuários.
@@ -62,12 +60,18 @@ class Login:
         else:
             if 'Authorize' in session:
                 authorize = session['Authorize'] #armazena o valor da flag Authorize na sessao
-                print(authorize)
                 
                 del session['Authorize'] # Remove a autorização da sessão após o uso
 
                 # Renderiza a página de login com o status de autorização
                 return template_render("login.html", authorize=authorize)
 
+            if 'Change_password' in session:
+                change = session['Change_password'] #armazena o valor da flag Authorize na sessao
+                
+                del session['Change_password'] # Remove a autorização da sessão após o uso
+
+                # Renderiza a página de login com o status de autorização
+                return template_render("login.html", Change_password=change)
             #Caso não haja autorização na sessão, renderiza a página de login sem a flag
             return template_render("login.html")

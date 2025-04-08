@@ -31,9 +31,12 @@ class Verify_code:
                 user_code += digit
 
             login = request.form.get('login')  # Obtém o valor do campo 'login'
+            Recover = request.form.get('Recover')  # Obtém o valor do campo 'Recover'
 
             # Se o código fornecido pelo usuário for igual ao código armazenado na sessão
             if session['code'] == user_code.upper():
+                if Recover == 'True':
+                    return redirect(url_for("main_routes.route_method", route_name="Change_password", method="index", parameter=session['code']))
 
                 if login == 'True':
                     # Se o usuário já está logado e a conta foi atualizada com sucesso
@@ -41,10 +44,12 @@ class Verify_code:
                         del(session["user_authentication_id"])  # Remove o ID de autenticação da sessão
 
                         session['Authorize'] = True  # Marca a conta como autorizada
+                        session.pop('code', None) # Limpa o código de autenticação da sessão
                         return redirect(url_for("main_routes.route_method", route_name="login", method="index"))
                     
                     # Caso a atualização da conta falhe, marca a conta como não autorizada
                     session['Authorize'] = False
+                    session.pop('code', None) # Limpa o código de autenticação da sessão
                     return redirect(url_for("main_routes.route_method", route_name="login", method="index"))
                 
                 # Caso o código esteja correto e o login não seja 'True', o sistema prepara para renderizar a página de atualização de dados
@@ -56,6 +61,10 @@ class Verify_code:
                 return template_render('update_data.html', **data)
                 
             else:
+                if Recover == 'True':
+                    data = {"msg": "Invalid code"}
+                    return template_render('verify.html', Recover_password=True, **data)
+                
                 if login == 'True':
                     data = {"msg": "Invalid code"}
                     return template_render('verify.html', register_email=True, **data)

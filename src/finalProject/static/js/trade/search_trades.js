@@ -30,7 +30,7 @@ function search_trades() {
 
     search_maximum.addEventListener('input', function(event) {
         maximum_return = add_coin(search_maximum.selectionStart, event.data, event.target.value, dic_search['search_sender'], 
-            'search_error', 12, true)
+            'search_error', 12, 15)
 
         if (maximum_return['senderValue']) {
             search_maximum.value = maximum_return['senderValue']
@@ -46,7 +46,7 @@ function search_trades() {
  
     search_minumum.addEventListener('input', function(event) {
         minumum_return = add_coin(search_minumum.selectionStart, event.data, event.target.value, dic_search['search_sender'], 
-            'search_error', 12, true)
+            'search_error', 12, 15)
 
         if (minumum_return['senderValue']) {
             search_minumum.value = minumum_return['senderValue']
@@ -76,27 +76,30 @@ function search_trades() {
             container.style.marginBottom = "10px";
 
             hideError()
-            showError(JSON.parse(data.response), JSON.parse(data.id), true) 
+            showError(JSON.parse(data.response), JSON.parse(data.id), 15) 
         } else {
             container.style.marginBottom = "30px";
             hideError()
             
             var your_trades = document.getElementById('your_trades');
 
-            // Voltar à lista correta de trades (não trocar enquanto a ação estiver em andamento)
-
             var type = null
-
-            if (data.condition) {
-                your_trades.textContent = "";
-                your_trades.innerHTML += "<i class='fa-solid fa-backward'></i> Return";
-                type = 'your_trade'
-            } else {
+            
+            if (cond_change == 'your_trade') {
                 your_trades.textContent = "";
                 your_trades.innerHTML += "<i class='fa-solid fa-eye'></i> Your Trades";
-                type = 'all_trade'
+                your_trades.value ='all_trade'
+            } else {
+                your_trades.textContent = "";
+                your_trades.innerHTML += "<i class='fa-solid fa-backward'></i> All Trades";
+                your_trades.value = 'your_trade'
             }
 
+            if (JSON.parse(data.condition)) {
+                type = 'all_trade'
+            } else {
+                type = 'your_trade'
+            }
 
             change_html(data, type)
         }

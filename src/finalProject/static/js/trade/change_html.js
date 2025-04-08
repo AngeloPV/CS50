@@ -19,7 +19,7 @@ function change_html(data, type) {
         let newRow
         
         newRow = `<section class="trade-card ${row[5]}">`
-
+        
         if (type == 'checkbox') {
             newRow += `<input value='${row[8]}' type="checkbox" class="checkbox" />`
         }
@@ -40,13 +40,18 @@ function change_html(data, type) {
             `<hr>
 
             <div class="trade-info">
-                <p><i class="fas fa-coins"></i><b>value offered</b> ${row[7]} ${row[3]}</p>
+                <p><i class="fas fa-coins"></i><b>Value offered</b> ${row[7]} ${row[3]}</p>
                 <p><i class="fa-solid fa-dollar-sign"></i><b>Greater value:</b> ${row[2]} ${row[4]}</p>
                 <p><i class="fa-solid fa-dollar-sign"></i><b>Lowest value:</b> ${row[1]} ${row[4]}</p>
-            </div>
+            </div>`
 
-            <button value="${row[7]}" class="open_modal button" data-modal="trade-details">Ver mais</button>
-        </section>`
+        if (type == 'your_trade') {
+            newRow += `<button value="${row[8]}" class="open_modal button" data-modal="y_trade-details">Ver mais</button>`
+        } else {
+            newRow += `<button value="${row[8]}" class="open_modal button" data-modal="trade-details">Ver mais</button>`
+        }
+        
+        newRow += `</section>`
 
         main_html.innerHTML += newRow
 

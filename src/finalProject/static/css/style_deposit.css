@@ -20,4 +20,8 @@ select{
 }
 
 
-
+@media (max-width: 1024px) {
+    input {
+        font-size: 18px !important;
+    }
+}

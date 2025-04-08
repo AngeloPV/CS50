@@ -57,7 +57,7 @@ function change_html(data, type) {
         button_standard.innerHTML = 'Unarchive All'
 
         actionsSelected.innerHTML = `<i class="fas fa-star" id="favorite_selected" title="Favorite Selected"></i>
-        <i class="fa-regular fa-folder-open standard_selected" id="standard_selected" title="Unarchive Selected"></i>
+        <i class="fa-regular fa-folder-open standard_selected" title="Unarchive Selected"></i>
         <i class="fas fa-envelope-open-text" id="read_selected" title="Read Selected"></i>
         <i class="fas fa-trash" id="delete_selected" title="Deletar"></i>`
     } else if (hidden.value == 'favorite') {
@@ -66,7 +66,7 @@ function change_html(data, type) {
         button_standard.style.display = 'block'
         button_standard.innerHTML = 'Unfavorite All'
 
-        actionsSelected.innerHTML = `<i class='image_selected standard_selected' id="standard_selected" title="Unfavorite Selected"></i>
+        actionsSelected.innerHTML = `<i class='fa-regular fa-star standard_selected ' title="Unfavorite Selected"></i>
         <i class="fas fa-archive" id="archive_selected" title="Archive Selected"></i>
         <i class="fas fa-envelope-open-text" id="read_selected" title="Read Selected"></i>
         <i class="fas fa-trash" id="delete_selected" title="Deletar"></i>`
@@ -108,8 +108,8 @@ function change_html(data, type) {
             <i class="fas fa-trash deleteButtons" title="Delete"></i>
             </div>`
         } else if (hidden.value == 'favorite') {
-            new_icons = `<div class="actions tre">
-            <i class='image_star notifcationsProx'></i>
+            new_icons = `<div class="actions">
+            <i class='fa-regular fa-star notifcationsCSS notifcationsProx' title="Unfavorite"></i>
             <i class="fas fa-archive archiveProx" title="Archive"></i>
             <i class="fas fa-envelope-open-text readProx" title="Read"></i>
             <i class="fas fa-trash deleteButtons" title="Delete"></i>

@@ -1,0 +1,254 @@
+
+/* RESPONSIVIDADE */
+
+
+
+@media (max-width: 1024px) {
+    .main-container {
+        padding: 0 2vw; /* Adiciona um espaçamento interno menor */
+        margin-left: 1vh;
+        justify-content: center;
+    }
+
+    .main-container h2 {
+        font-size: 26px;
+    }
+
+    .main-container h3 {
+        font-size: 20px;
+    }
+
+    .main-container button {
+        padding: 1.5vh;
+        width: 80%;
+    }
+
+    
+
+    .main-balance, .main-wallet {
+        width: 95%;
+        height: 80%;
+        /* max-width: 400px; */
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 3vh;
+        /* margin-left: 8vh; */
+        /* margin-right: 4vh; */
+    }
+
+    .eye-icon {
+        width: 3.5vh;
+        height: 3.5vh;
+        margin-top: -1.2vh;
+    }
+    
+    .main-table {
+        width: 93.5%; /* Mantém a largura adaptável */
+        max-width: 1100px; /* Limita o tamanho máximo */
+        margin: 4vh 4vh; /* Aplica margem superior e inferior e centraliza horizontalmente */
+        display: block; /* Usa block para evitar flexbox desnecessário */
+        overflow-x: auto; /* Garante que a rolagem horizontal só apareça quando necessário */
+        padding: 1vh;
+    }
+
+    table {
+        width: 100%;
+        min-width: 600px; /* Evita que a tabela fique muito pequena */
+    }
+}
+
+@media (max-width: 770px) {
+    .main-container {
+        margin-left: 1.5vh;
+    }
+    
+    .main-container h2 {
+        font-size: 25px;
+    }
+
+    .main-container h3 {
+        font-size: 20px;
+    }
+
+    .main-balance-value {
+        font-size: 17px;
+    }
+
+    .main-container button {
+        width: 90%;
+        font-size: 18px;
+        padding: 1vh;
+    }
+    
+    .main-balance button {
+        margin-top: 4.6vh;
+    }
+
+    .wallet-button.wallets {
+        margin-top: 2rem !important;
+    }
+
+    .main-balance, .main-wallet {
+        width: 90%;
+        height: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .eye-icon {
+        width: 3.5vh;
+        height: 3.5vh;
+    }
+
+    .main-table {
+        width: 92%;
+    }
+
+    table {
+        width: 100%;
+        min-width: 600px; /* Evita que a tabela fique muito pequena */
+    }
+
+    th, td {
+        font-size: 16px;
+        padding: 10px;
+    }
+}
+
+
+@media (max-width: 739px) {
+    .main-balance h2 {
+        margin-bottom: 1vh;
+    }
+
+    .main-balance button {
+        margin-top: 3.7vh;
+    }
+}
+
+
+@media (max-width: 667px) {
+    .main-container h2 {
+        font-size: 20px;
+    }
+
+    .main-container h3 {
+        font-size: 16px;
+    }
+
+    .main-balance-value {
+        font-size: 15px;
+    }
+    
+    .main-balance h2 {
+        margin-bottom: 0;
+    }
+
+    .main-balance button {
+        margin-top: -0.3vh;
+    }
+
+    .wallet-button.wallets {
+        margin-top: 0.2vh !important;
+    }
+
+    .eye-icon {
+        width: 3vh;
+        height: 3vh;
+        margin-top: -0.5vh;
+    }
+
+    .main-table {
+        width: 94%;
+        margin: 4vh 2vh; /* Aplica margem superior e inferior e centraliza horizontalmente */
+    }    
+}
+
+
+@media (max-width: 555px) {
+    .eye-icon {
+        margin-top: 1.2vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 0 2vw; /* Adiciona um espaçamento interno menor */
+        margin-left: 3vh;
+        justify-content: center;
+    }
+   
+    .main-table {
+        width: 98%;
+        margin: 4vh 1vh; /* Aplica margem superior e inferior e centraliza horizontalmente */
+    }
+    
+    th, td {
+        font-size: 15px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 436px) {
+    .main-wallet button{
+        margin-top: -2vh;
+    }   
+
+    .wallet-button.wallets {
+        margin-top: 0.2vh !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .main-container {
+        padding: 0 5vw; /* Adiciona um espaçamento interno menor */
+        margin-left: 1vh;
+        justify-content: center;
+    }   
+    
+    .menu-toggle {
+        width: 20px;
+    }
+
+    .main-container h2 {
+        font-size: 16px;
+    }
+
+    .main-container h3 {
+        font-size: 13px;
+    }
+
+    .main-container button {
+        font-size: 11px;
+    }
+
+    .main-balance-value {
+        font-size: 13px;
+    }    
+
+    .main-wallet button {
+        margin-top: 1.6vh;
+        width: 100%;        
+    }
+
+    .main-balance  button {
+        margin-top: 2vh  !important;
+        width: 100%;        
+    }
+    .wallet-button.wallets {
+        margin-top: 0.2vh !important;
+    }
+
+    .eye-icon {
+        margin-top: 1vh;
+        width: 2vh;
+        height: 2vh;
+    }
+}
+
+@media (max-width: 336px) {
+    .wallet-button.wallets {
+        margin-top: -2vh !important;
+    }
+}

@@ -82,5 +82,4 @@ function reassignEventListeners() {
     all_notifcations(hidden)
     prox_notifications(hidden)
     selected_actions(hidden)
-
 }

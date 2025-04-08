@@ -159,21 +159,6 @@ img {
         font-size: 24px;
         cursor: pointer;
     }
-
-    /* css image unfavorite selected */
-    & .image_selected {
-        margin-right: -4%;
-        width: 32px; /* Ajuste conforme necessário */
-        height: 32px; /* Ajuste conforme necessário */
-        background-image: url("/static/images/notifications/unfavorite2.png");
-        background-size: cover; /* Para cobrir completamente o elemento */
-        background-position: center; /* Para centralizar a imagem */
-        transition: width 0.3s ease-in-out /* Combinar transições em uma única linha */
-    }
-    
-    & .image_selected:hover {
-        width: 40px; /* Ajuste conforme necessário */
-    }
     /* CSS FROM THE DIV OF THE ICONS SELECTEDS END HERE*/
 }
 
@@ -387,28 +372,6 @@ section.notification-item {
         transform: scale(1.2);
         cursor: pointer;
     }
-
-    /* css image unfavorite */
-    .image_star {
-        margin-right: -4%;
-        width: 24px; /* Ajuste conforme necessário */
-        height: 24px; /* Ajuste conforme necessário */
-        background-image: url("/static/images/notifications/unfavorite2.png");
-        background-size: cover; /* Para cobrir completamente o elemento */
-        background-position: center; /* Para centralizar a imagem */
-        transition: width 0.3s ease-in-out; /* Combinar transições em uma única linha */
-        margin-top: -0.30%;
-    }
-    
-    .tre {
-        /* width: 20px; */
-        height: 18px;
-        margin-top: 80%;
-    }
-
-    .tre .image_star:hover {
-        width: 36px; /* Ajuste conforme necessário */
-    }
 }
 
 body.dark-theme section.notification-item:hover{
@@ -427,3 +390,105 @@ section.active_section {
 }
 
 /* CSS FROM SECTIONS NOTIFICAITONS END HERE*/
+
+
+
+/* teste */
+
+/* Update the expanded content styles */
+.expanded-content {
+    display: none;
+    background-color: var(--primary-color);
+    border-radius: 0 0 8px 8px;
+    padding: 15px;
+    margin-top: -5px;
+    margin-bottom: 10px; /* Add spacing between notifications */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.expanded-content.show {
+    display: block;
+}
+
+/* Update notification item styles */
+.notification-item {
+    border-radius: 8px 8px 0 0; /* Round only top corners when expanded */
+}
+
+.notification-item.expanded {
+    margin-bottom: 0; /* Remove margin when expanded */
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.notification-item.expanded .content {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    max-width: 100%;
+}
+
+/* Add styles for currency exchange notifications */
+.expanded-content {
+    & .currency-icons {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 16px;
+        /* margin-right: 18px; */
+    }
+
+    & .currency-icon {
+        width: 28px;
+        height: 28px;
+        /* border-radius: 50%; */
+    }
+
+    & .detail_coin {
+        display: flex;
+        gap: 12px;
+    }
+    
+    & .exchange-arrow {
+        color: var(--main2-color);
+        font-size: 22px;
+    }
+    & .exchange-text {
+        font-size: 16px;
+        color: var(--secondary-color);
+    }
+
+    & .currency-amount {
+        font-weight: bold;
+        font-size: 17px;
+        color: var(--main2-color);
+    }
+
+
+    & .purchase_cripto, & .sale_cripto {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        gap: 3rem;
+        letter-spacing: 0.1rem;
+    }
+
+    & .purchase-icon, & .sale-icon {
+        color: var(--main2-color);
+        font-size: 18px;
+        margin: 0 8px;
+    }
+
+    & .purchase-text, & .sale-text {
+        font-size: 16px;
+        color: var(--secondary-color);
+    }
+
+    & .fiat-amount {
+        font-weight: bold;
+        color: var(--secondary-color);
+    }
+}
+

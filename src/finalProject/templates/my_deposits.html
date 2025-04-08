@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_my_deposits.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/responsiveness/re_my_deposits.css') }}">
     <script src="{{ url_for('static', filename='js/my_deposits.js') }}" defer></script>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
 
@@ -40,7 +41,7 @@
                     <h2 class="main-wallet-title">Wallet</h2>
                     {% if wallet %}
                         <h3 class="wallet-text-content">You already have a wallet</h3>
-                        <button class="wallet-button" onclick="openWalletModal()">See wallet details</button>
+                        <button class="wallet-button wallets" onclick="openWalletModal()">See wallet details</button>
                     {% else %}
                         <h3 class="wallet-text-content">You dont have a wallet yet</h3>
                         <button class="wallet-button add_wallet">Add a new wallet</button>

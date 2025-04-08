@@ -201,7 +201,7 @@ We use **GitLens** to enhance our collaboration and streamline the development p
 
     - Deposit history
       Display every deposit made by the user
-  <br><br>
+  <br><br>
 
 6. **Account**  
   Page where the user's preferences and data are stored

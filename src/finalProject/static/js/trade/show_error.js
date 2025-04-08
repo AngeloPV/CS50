@@ -1,4 +1,4 @@
-function showError(message, errorElementId, cond=false) {
+function showError(message, errorElementId, margin_bottom) {
     var existingError = document.querySelector('.error-message:not([style*="display: none"])')
 
     if (existingError) {
@@ -9,13 +9,14 @@ function showError(message, errorElementId, cond=false) {
 
     if (errorElement) {
         errorElement.innerText = message
-        
+        console.log(`-${margin_bottom}px`)    
         errorElement.style.display = 'block'
-        if (cond) {
-            errorElement.style.marginBottom = '-14px'
-        } else {
-            errorElement.style.marginBottom = '-17px'
-        }
+        errorElement.style.marginBottom = `-${margin_bottom}px` //margin_bottom
+        // if (cond) {
+        //     errorElement.style.marginBottom = '-14px'
+        // } else {
+        //     errorElement.style.marginBottom = '-10px'
+        // }
 
     }
 }

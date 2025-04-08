@@ -3,10 +3,12 @@ from ...models.Trade_actions import Trade_actions
 from ...controller.public_pages.Error import Error
 from ..protected_pages.Coin_conversion import Coin_conversion
 
+
 from flask import Blueprint, session, request
 from flask_socketio import Namespace, emit # type: ignore
 from flask.views import MethodView
 import json
+from datetime import datetime
 
 class Trade(MethodView):
     def __init__(self):
@@ -31,11 +33,13 @@ class TradeNamespace(Namespace):
     def on_connect(self):
         emit('response', {'data': 'Connected to trade namespace!'})
 
+
     def on_your_trade(self, cond):
         get_trade = Trade_actions().get_trades(cond)
 
-        emit('your_trade', {'data': json.dumps(get_trade)}, broadcast=True)
+        emit('your_trade', {'data': json.dumps(get_trade, default=self.custom_serializer)}, broadcast=True)
         
+
     def on_search_trade(self, data, trade_type):
         if data['search_sender'] == 'Select':
             camp_error = '*You need to choose the cryptocurrency!'
@@ -52,7 +56,6 @@ class TradeNamespace(Namespace):
         else:
             data['amount_min'] = 0
             data['amount_max'] = 2e9 
-
         
         search_trade = Trade_actions().search_trade(data, trade_type)
         
@@ -86,7 +89,6 @@ class TradeNamespace(Namespace):
             camp_id = 'cripto_receive'
             emit('add_trade', {'response': json.dumps(camp_error), 'id': json.dumps(camp_id)}, broadcast=True)
             return
-
         
         data['amount_cripto_sender'] = round(float(data['amount_cripto_sender']) - (float(data['amount_cripto_sender']) * 0.03), 3)
         
@@ -110,7 +112,6 @@ class TradeNamespace(Namespace):
         camp_id = 'cripto_sender'
         emit('add_trade', {'response': json.dumps(camp_error), 'id': json.dumps(camp_id)}, broadcast=True)
         return
-
         
 
     def on_estimulated_value(self, coin, amount, back_coin):
@@ -141,17 +142,46 @@ class TradeNamespace(Namespace):
             emit('delete_trade', {'response': json.dumps(response)}, broadcast=True)
 
         
-    def on_get_trade(self, data_id):
+    def on_get_trade(self, data_id, type_modal):
         if(data_id):
-            print(data_id)
             get_trade = Trade_actions().get_trades(True, data_id)
             print(get_trade)
-            adress = get_trade[1][0]
+            if get_trade[1][0] != None:
+                adress = get_trade[1][0]
 
-            emit('get_trade', {'response': json.dumps(get_trade[0][0]), 'user_adress': json.dumps(adress), 'trade_id': json.dumps(data_id)}, broadcast=True)
+            if type_modal == 'y_trade-details':
+                get_your_trade = Trade_actions().get_values_trade(data_id)
+            else:
+                get_your_trade = None
 
+            emit('get_trade', {'response': json.dumps(get_trade[0][0], default=self.custom_serializer), 'user_adress': json.dumps(adress), 
+                            'trade_id': json.dumps(data_id), 'trades': json.dumps(get_your_trade)}, broadcast=True)
+    
+    def custom_serializer(self, obj):
+        """
+        Custom serializer function to handle datetime objects during JSON serialization.
+
+        Parameters:
+        obj (object): The object to be serialized.
+
+        Returns:
+        str or TypeError: If the object is a datetime instance, it returns a string in the format '%Y-%m-%d %H:%M:%S'.
+                          If the object is not a datetime instance, it raises a TypeError with a descriptive message.
+        """
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
+
+    
 
     def on_update_trade(self, dic_send, adress):
+        if dic_send['amount_sender'] == '':
+            response = '*The field needs to be filled in!'
+            id = 'sender_view'
+            emit('update_trade', {'response': json.dumps(response), 'id': json.dumps(id)}, broadcast=True)
+            
+            return
+
         if float(dic_send['max_value']) < float(dic_send['amount_sender']):
             response = '*The amount you want to exchange cannot be greater than the max value!'
             id = 'sender_view'
@@ -161,9 +191,10 @@ class TradeNamespace(Namespace):
         elif float(dic_send['min_value']) > float(dic_send['amount_sender']):
             response = '*The amount you want to exchange cannot be less than the min value!'
             id = 'sender_view'
-            emit('update_trade', {'response': json.dumps(response), 'id': json.dumps(id)}, broadcast=True)
-        
+            emit('update_trade', {'response': json.dumps(response), 'id': json.dumps(id)}, broadcast=True)        
             return
+        del dic_send['max_value']
+        del dic_send['min_value']
         
         dic_send['amount_sender'] = round(float(dic_send['amount_sender']) - (float(dic_send['amount_sender']) * 0.03), 3)
         dic_send['amount_recipient'] = round(float(dic_send['amount_recipient']) - (float(dic_send['amount_recipient']) * 0.03), 3)
@@ -181,7 +212,6 @@ class TradeNamespace(Namespace):
             response = '*Unexpected error contact us if the error persists!'
             id = 'sender_view'
             emit('update_trade', {'response': json.dumps(response), 'id': json.dumps(id)}, broadcast=True)
-  
             return 
 
         response = '*You do not have enough value of this cryptocurrency!'

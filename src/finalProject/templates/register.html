@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
     <script src="{{ url_for('static', filename='js/register/mask.js') }}" defer></script>
-
+    <script src="{{ url_for('static', filename='js/register/list_requirements.js') }}" defer></script>
   
     <body class="dark-theme">
         {% set width = 470 %}
@@ -68,27 +68,7 @@
                     <li>It must contain at least one special character.</li>
                     <li>It must include at least one uppercase letter.</li>
                 </ul> 
-                <script>
-                    // Mostra a lista de requisitos quando o campo de senha é clicado
-                    document.getElementById('password').addEventListener('focus', function() {
-                        document.getElementById('password-requirements').style.display = 'block';
-                    });
-            
-                    // Esconde a lista de requisitos quando o campo de senha perde o foco
-                    document.getElementById('password').addEventListener('blur', function() {
-                        document.getElementById('password-requirements').style.display = 'none';
-                    });
-            
-                    // Mostra a lista de requisitos quando o campo de confirmação de senha é clicado
-                    document.getElementById('password-confirm').addEventListener('focus', function() {
-                        document.getElementById('password-requirements').style.display = 'block';
-                    });
-            
-                    // Esconde a lista de requisitos quando o campo de confirmação de senha perde o foco
-                    document.getElementById('password-confirm').addEventListener('blur', function() {
-                        document.getElementById('password-requirements').style.display = 'none';
-                    });
-                </script>
+
             </div><br>
             <input class="submit-btn" name="SendRegister" type="submit" value="Register" id="a">
         {% endblock %}

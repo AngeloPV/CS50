@@ -35,7 +35,7 @@ class Create_Wallet:
         self.btc['public_key'] = btc_wallet.address  # Endereço Bitcoin gerado
         self.btc['private_key'] = btc_wallet.to_wif()  # Chave privada BTC no formato WIF
         
-        self.insert_wallet.exe_insert(self.eth, 'wallets', None, True)
+        self.insert_wallet.exe_insert(self.btc, 'wallets', None, True)
     
         result = self.insert_wallet.getResult()
 

@@ -16,6 +16,9 @@ function allCheckbox(checkboxes_Send, actual_type, value_update=null) {
         if (cond == false) {
             checkbox.checked = true
         } else if (cond == true && value_update == null) {
+            var selectedCheckboxs = document.getElementById('selectedCheckbox')
+            selectedCheckboxs.checked = false
+
             checkbox.checked = false
         }
     })

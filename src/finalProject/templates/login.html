@@ -35,6 +35,8 @@
 
         {% set authorize = authorize | default(none) %}
 
+        {% set Change_password = Change_password | default(none) %}
+
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Substitui o estado do histórico para evitar o reenvio de formulário
@@ -44,6 +46,7 @@
                 // Pega o valor de autorização, que será um valor booleano, 
                 // e converte para JSON (ou seja, formata-o para que o valor possa ser lido em JavaScript)
                 const isAuthorized = {{ authorize | tojson }}; // Just ignore this error
+                const Change_password = {{ Change_password | tojson}}
 
                 // Verifica se conta foi autorizada, se sim roda sweet alert de sucesso, senao roda de erro
                 if (isAuthorized) {
@@ -60,13 +63,22 @@
                     showCustomAlert(
                         '.form-container',
                         'An error occurred',
-                        `<p>Unable to verify your account via email.
+                        `<p>Account has been created, but unable to verify your account via email.
                         {% set user_email = TODO %}
                         <a href="{{ url_for('main_routes.route_method', route_name='Resend_authentication_email', method='index') }}" 
                         style="color: #ff6f3c; text-decoration: underline;">Click here</a> to restart the verification process.</p>`,
                         'error',
                         'Continue',
                         ["custom-title_error", "custom-error-button"]
+                    );
+                } else if (Change_password) {
+                    showCustomAlert(
+                        '.form-container',
+                        'Password updated successfully',
+                        '<p>You have successfully changed your account password</p>',
+                        'success',
+                        'Continue',
+                        ["custom-title_sucess", "custom-succes-button"]
                     );
                 }
         

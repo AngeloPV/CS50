@@ -49,7 +49,7 @@ function add_trade() {
 
     amount_sender.addEventListener('input', function(event) {
         amount_return = add_coin(amount_sender.selectionStart, event.data, event.target.value, dic_values['cripto_sender_id'], 
-            'cripto_sender', 10, true)
+            'cripto_sender', 10, 21)
         
         if (amount_return['senderValue']) {
             amount_sender.value = amount_return['senderValue']
@@ -65,7 +65,6 @@ function add_trade() {
   
         if (amount_sender.value !== '' && dic_values['cripto_sender_id'] != 'Select' && dic_values['cripto_recepient_id'] != 'Select' && 
             dic_values['cripto_recepient_id'] != dic_values['cripto_sender_id']) {
-            console.log('aa')
             socket.emit('estimulated_value', dic_values['cripto_sender_id'], amount_sender.value.split(' ')[0], dic_values['cripto_recepient_id'])
         } else {
             estimated_value.value = ''
@@ -79,7 +78,7 @@ function add_trade() {
 
     amount_min.addEventListener('input', function(event) {
         amount_return = add_coin(amount_min.selectionStart, event.data, event.target.value, dic_values['cripto_recepient_id'], 'cripto_receive', 
-            10, true)
+            10, 21)
        
         if (amount_return['senderValue']) {
             amount_min.value = amount_return['senderValue']
@@ -108,7 +107,7 @@ function add_trade() {
     socket.on('estimulated_value', (data) => {
         if (data.id) {
             hideError()
-            showError(JSON.parse(data.response), JSON.parse(data.id), true)   
+            showError(JSON.parse(data.response), JSON.parse(data.id), 24)   
         } else if (amount_sender.value.trim() === '') {
             estimated_value.value = ''
         } else {
@@ -122,7 +121,7 @@ function add_trade() {
     socket.on('add_trade', (data) => {
         if (data.id) {
             hideError()
-            showError(JSON.parse(data.response), JSON.parse(data.id), true)   
+            showError(JSON.parse(data.response), JSON.parse(data.id), 14)   
         } else {
             hideError()
 

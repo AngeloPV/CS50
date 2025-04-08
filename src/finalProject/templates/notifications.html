@@ -96,6 +96,82 @@
                                 <i class="fas fa-trash deleteButtons" title="Deletar"></i>
                             </div>
                         </section>
+                        <div class="expanded-content">
+                            <!-- vender criptmoedas -->
+                            <!-- <div class="sale_cripto">
+                                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="BTC" class="currency-icon">
+                                <i class="fas fa-minus-circle sale-icon"></i>
+                                <span class="sale-text">You successfully sold <span class="currency-amount">0.5 BTC</span> for a total of <span class="fiat-amount">$15,750 USD</span>. The transaction has been completed.</span>
+                            </div> -->
+
+                            <!-- compra de criptmoedas -->
+                            <!-- <div class="purchase_cripto">
+                                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="BTC" class="currency-icon">
+                                <i class="fas fa-plus-circle purchase-icon"></i>
+                                <span class="purchase-text">You have successfully completed the purchase of <span class="currency-amount">0.5 BTC</span> for a total of <span class="fiat-amount">$15,750 USD</span></span>
+                            </div> -->
+
+
+                            <!-- Delete Trade -->
+                            <!-- <div class="currency-icons">
+                                <div class="detail_coin">
+                                    "Uma de suas trades foi apagada com sucesso. As informações foram atualizadas automaticamente para refletir essa mudança. Agora, a trade não está mais disponível em seu histórico. Caso tenha apagado a trade por engano ou deseje mais informações sobre o processo, estamos à disposição para ajudar."
+                                    <i class="fa-solid fa-trash exchange-arrow"></i>
+                                    <span class="exchange-text">You deleted the (hash) trade</span>
+                                    <span class="currency-amount">the following amount of the coin was founded 7.3 ETH</span>
+                                    <img src="/path/to/eth-icon.png" alt="ETH" class="currency-icon">
+                                </div>
+                            </div> -->
+
+                            <!-- quando adcionar uma nova trade -->
+                            <!-- <div class="currency-icons">
+                                <span class="exchange-text">You registered a trade where you want</span>
+                                <div class="detail_coin">
+                                    <span class="currency-amount">exchange 0.5 BTC</span>
+                                    <img src="/path/to/btc-icon.png" alt="BTC" class="currency-icon">
+                                </div>
+                                <i class="fas fa-arrow-right exchange-arrow"></i>
+                                <div class="detail_coin">
+                                    <span class="currency-amount">for 7.3 ETH</span>
+                                    <img src="/path/to/eth-icon.png" alt="ETH" class="currency-icon">
+                                </div>
+                                <span class="exchange-text"> your trade:(hash indentificador da trade)</span>
+                            </div> -->
+
+                            <!-- quando algum user comporar sua trade -->
+                            <!-- <div class="currency-icons">
+                                <span class="exchange-text">The user (user's public address)</span>
+                                <div class="detail_coin">
+                                    <span class="currency-amount">exchanged 0.5 BTC</span>
+                                    <img src="/path/to/btc-icon.png" alt="BTC" class="currency-icon">
+                                </div>
+                                <i class="fas fa-arrow-right exchange-arrow"></i>
+                                <div class="detail_coin">
+                                    <span class="currency-amount">for your 7.3 ETH</span>
+                                    <img src="/path/to/eth-icon.png" alt="ETH" class="currency-icon">
+                                </div>
+                                <span class="exchange-text"> in your registered trade (hash indentificador da trade)</span>
+                            </div> -->
+
+                            <!-- quando voce trocar uma trade -->
+                            <!-- <div class="currency-icons">
+                                <span class="exchange-text">You exchanged</span>
+                                <div class="detail_coin">
+                                    <span class="currency-amount">0.5 BTC</span>
+                                    <img src="/path/to/btc-icon.png" alt="BTC" class="currency-icon">
+                                </div>
+                                <i class="fas fa-arrow-right exchange-arrow"></i>
+                                <div class="detail_coin">
+                                    <span class="currency-amount">for 7.3 ETH</span>
+                                    <img src="/path/to/eth-icon.png" alt="ETH" class="currency-icon">
+                                </div>
+                            </div> -->
+                            <!-- <h3 class="expanded-title"></h3>
+                            <p class="expanded-details"></p>
+                            <div class="expanded-footer">
+                                <small class="expanded-time"></small>
+                            </div> -->
+                        </div>
                 {% else %}
                     <section class="notification-item" style="background-color: #f8f9fae9;">
                         <input type="checkbox" class='checkbox' value="{{ row[4] }}">
@@ -108,10 +184,61 @@
                             <i class="fas fa-trash deleteButtons" title="Delete"></i>
                         </div>
                     </section>
+                    <div class="expanded-content">
+                        <!-- <div class="currency-icons">
+                            <span class="exchange-text">You exchanged</span>
+                            <span class="currency-amount">0.5 BTC</span><img src="/path/to/btc-icon.png" alt="BTC" class="currency-icon">
+                            <i class="fas fa-arrow-right exchange-arrow"></i>
+                            <span class="currency-amount">for 7.3 ETH</span><img src="/path/to/eth-icon.png" alt="ETH" class="currency-icon">
+                        </div> -->
+                        <!-- <h3 class="expanded-title"></h3>
+                        <p class="expanded-details"></p>
+                        <div class="expanded-footer">
+                            <small class="expanded-time"></small>
+                        </div> -->
+                    </div>
                 {% endif %}
             {% endfor %}   
             {% endif %} 
         </div>
+
+        <script>
+                    // Update the click handler
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Don't expand if clicking checkbox or actions
+                if (e.target.classList.contains('checkbox') || 
+                    e.target.closest('.actions')) {
+                    return;
+                }
+
+                // Close all other expanded notifications
+                document.querySelectorAll('.notification-item').forEach(notification => {
+                    if (notification !== this) {
+                        notification.classList.remove('expanded');
+                        const content = notification.nextElementSibling;
+                        if (content && content.classList.contains('expanded-content')) {
+                            content.classList.remove('show');
+                        }
+                    }
+                });
+
+                // Toggle current notification
+                this.classList.toggle('expanded');
+                const expandedContent = this.nextElementSibling;
+                if (expandedContent && expandedContent.classList.contains('expanded-content')) {
+                    expandedContent.classList.toggle('show');
+                    
+                    // Get the full content from the notification
+                    <!-- const fullContent = 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.' -->
+                    <!-- expandedContent.querySelector('.expanded-details').textContent = fullContent; -->
+                    expandedContent.querySelector('.expanded-time').textContent = this.querySelector('.time').textContent;
+                }
+            });
+        });
+
+        </script>
+
 
         <script>
             document.addEventListener('keydown', function(event) {

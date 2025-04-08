@@ -37,3 +37,9 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+@media (max-width: 450px) {
+    h3 {
+        font-size: 23px !important;
+    }
+}

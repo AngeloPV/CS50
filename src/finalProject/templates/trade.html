@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/trade/modal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sweet_alert/login_sweet_alert.css') }}">
 
-    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ url_for('static', filename='js/sweet_alert/alert_login.js') }}" defer></script>
 
@@ -32,6 +31,7 @@
     {% include 'modal/add_trade.html' %}
     {% include 'modal/search-trade.html' %}
     {% include 'modal/view_trade.html' %}
+    {% include 'modal/view_your_trade.html' %}
 
 
     <div class="header-trade">
@@ -77,7 +77,7 @@
                 <hr>
     
                 <div class="trade-info">
-                    <p><i class="fas fa-coins"></i><b>Value offered</b> {{ row[6] }} {{ row[3] }}</p>
+                    <p><i class="fas fa-coins"></i><b>Value offered</b> {{ row[7] }} {{ row[3] }}</p>
                     <p><i class="fa-solid fa-dollar-sign"></i><b>Greater value:</b> {{ row[2] }} {{ row[4] }}</p>
                     <p><i class="fa-solid fa-dollar-sign"></i><b>Lowest value:</b> {{ row[1] }} {{ row[4] }}</p>
                 </div>

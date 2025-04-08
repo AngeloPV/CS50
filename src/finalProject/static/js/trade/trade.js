@@ -2,6 +2,9 @@ var socket = io.connect('/trade', {
     transports: ['websocket', 'polling']
 });
 
+var cond_change = 'all_trade'
+
+
 function checkSocketConnection() {
     if (!socket.connected) {
         socket.connect(); // Reconnect if disconnected
@@ -26,7 +29,6 @@ window.addEventListener('beforeunload', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     checkSocketConnection();
-    view_trade()
     delete_trades()
     your_trades()
     add_trade()
@@ -44,8 +46,15 @@ function open_modals() {
         button.addEventListener("click", () => {
             var id_modal = button.dataset.modal
 
-            if('trade-details' == id_modal) {
-                get_data_view(button.value)
+            var types_modal = ['trade-details', 'y_trade-details']
+
+            for (var i = 0; i < 2; i++) {
+                if(types_modal[i] == id_modal) {
+                    get_data_view(button.value, types_modal[i])
+                    console.log(types_modal[i])
+                    break
+
+                }
             }
 
             var modal_open = document.getElementById(id_modal)

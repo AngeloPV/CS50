@@ -71,3 +71,10 @@ input[type="number"] {
 input[type="number"]::-ms-clear {
     display: none; /* Remove a setinha do IE/Edge */
 }
+
+
+/* Estilo padrão para o modal */
+.modal {
+    top: -60px;
+    height: 150%;
+}

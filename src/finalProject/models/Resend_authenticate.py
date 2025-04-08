@@ -40,7 +40,7 @@ class Resend_authenticate:
         self.select_send.exe_select("SELECT id, name, email, conf_email FROM user_data WHERE email = %s LIMIT %s", f'{{"email": "{self.data_email["email"]}", "LIMIT": "1"}}', True)
 
         #valida o email
-        if self.validate.valitdate_email(self.data_email['email'], False):
+        if self.validate.validate_email(self.data_email['email'], False):
             # Verifica e atualiza a situação de confirmação do e-mail
             if self.update_conf_email():
                 if self.email_resend(): # Envia o e-mail de autenticação novament

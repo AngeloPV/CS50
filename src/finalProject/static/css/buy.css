@@ -136,4 +136,3 @@ table tr:hover td {
 .sort-btn.desc::after {
     content: "▼"; /* Ícone para ordenação decrescente */
 }
-

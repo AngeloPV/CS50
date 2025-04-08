@@ -12,12 +12,11 @@ body{
 
 /* estilo do main containerr */
 
-.main-container{
+.main-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     box-sizing: border-box; /* Inclui padding no cálculo das dimensões */
-
 }
 
 /* Estilo da main balance */

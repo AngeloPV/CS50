@@ -146,7 +146,7 @@ class Validate():
         if schema.validate(data):
             return True
 
-        session["error_validate"]["password"] = "Password invalid! Must be between 8 and 50 characters, include upper and lower case letters, numbers, symbols and not contain spaces."
+        session["error_validate"]["password"] = "Invalid password! Follow the password rules below."
         return False
 
     def encryption(self, user_password, db_password=None):

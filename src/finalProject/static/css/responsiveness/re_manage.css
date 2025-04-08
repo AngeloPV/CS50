@@ -1,0 +1,239 @@
+/* Ajustes gerais para responsividade */
+@media (max-width: 1024px) {
+    .main {
+        margin-left: 4vh;
+        grid-template-columns: 15% 85%;
+    }
+    
+    #title {
+        position: absolute;
+        top: 5vh;
+        font-size: 3.5vw;
+        left: -45% !important;
+    }
+
+    #history.selected {
+        width: 11.5vh;
+    }
+
+    .side-nav_btn, .nav_btn {
+        font-size: 1.5vw;
+    }
+
+    .balance-content .column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .history-content .square {
+        width: 6.5vh;
+        height: 6.5vh;
+    }
+}
+
+@media (max-width: 630px) {
+    #title {
+        position: absolute;
+        top: 5cqh;
+        left: -30%;
+        font-size: 3.5vw;
+    }
+
+    .balance-content .sell-button {
+        padding: 5px;
+        font-size: 2.5vw;
+    }
+    
+    .balance-content .currency-title {
+        font-size: 3vw;
+    }
+
+    .balance-content .currency-balance {
+        font-size: 2.5vw;
+    }
+
+    .balance-content .balance-bitcoin-content {
+        height: 92%;
+    }
+
+    .balance-content .balance-ethereum-content {
+        height: 92%;
+    }
+
+    .side-nav_btn, .nav_btn {
+        font-size: 2vw;
+    }
+
+    .history-content {
+        margin-top: -2vh;
+    }
+
+    .history-content .square {
+        width: 5vh;
+        height: 5vh;
+        margin-top: 0.5vh;
+    } 
+    .history-content .content .content-title {
+        font-size: 3.3vw;
+    }
+
+    .history-content .content .content-amount {
+        font-size: 2vw;
+    }
+
+    .history-content .difference .difference-amount.text-gain {
+        font-size: 2.5vw !important;
+    } 
+
+    .history-content .difference .currency {
+        font-size: 2vw !important;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .main {
+        display: flex;
+        flex-direction: column;
+        margin-left: 0.2rem;
+        margin-right: 0.2rem;
+        height: auto;
+    }
+
+    #title {
+        position: absolute;
+        top: 5vh;
+        left: -40% !important;
+        font-size: 5vw;
+    }
+
+    .side-content {
+        width: 100%;    
+        display: flex;
+        justify-content: space-around;
+        border-right: none;
+        border-bottom: 1px solid var(--main1-color);
+    }
+
+    #history.selected {
+        padding: 4px;
+    }
+    
+    .side-nav_btn, .nav_btn {
+        font-size: 4vw;
+        text-align: center;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .balance-content { 
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .balance-content .balance-bitcoin-content {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .balance-content .balance-ethereum-content {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 2vh;
+    }
+
+    .balance-content .balance-title {
+        max-width: 130px;
+    }
+
+    .balance-content .currency-title {
+        font-size: 3.5vw;
+        font-weight: 550;
+    }
+
+    .balance-content .column {
+        display: flex;
+        flex-direction: column;       
+        align-items: left;
+        gap: 5px;
+        margin-top: 0.3rem;
+        width: 40%;
+        word-wrap: break-word;
+    
+        overflow-wrap: break-word;
+    }
+
+    .balance-content .currency-balance, .balance-content .currency-to-dol {
+        font-size: 3.8vw;
+        font-weight: 500;
+    }
+
+    .balance-content .sell-button {
+        max-width: 4rem;
+        font-size: 3vw;
+    }
+
+    .history-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .history-nav .nav_btn {
+        width: 100%;
+        text-align: center;
+        font-size: 4vw;
+    }
+
+    #trade {
+        border-bottom: 2px solid var(--alt1-color);
+    }
+
+    .history-itens {
+        height: 30vh;
+        overflow-y: scroll !important;
+        min-height: 0;
+        padding: 1vh;
+    }
+
+    .history-itens::-webkit-scrollbar-thumb {
+        background-color: var(--alt1-color); /* Cor da barra de rolagem */
+    }
+
+    .history-iten .content-title {
+        font-size: 4.5vw !important;
+    }
+
+    .history-iten .content-amount {
+        font-size: 2.8vw !important;
+    }
+
+    .history-iten .difference .difference-amount.text-gain {
+        font-size: 3.5vw !important;
+    }
+
+    .history-iten .difference .currency {
+        font-size: 3vw !important;
+    }
+}   
+
+
+@media (max-width: 435px) {
+    #title {
+        position: absolute;
+        top: 5vh;
+        left: -80% !important;
+        font-size: 7vw;
+    }
+}
+
+@media (max-width: 385px) {
+    #title {
+        position: absolute;
+        top: 5vh;
+        left: -75% !important;
+        font-size: 6vw;
+    }
+}

@@ -1,0 +1,106 @@
+/* Media Queries para Responsividade */
+@media (max-width: 1024px) {
+    .menu-toggle {
+        display: block;
+    }
+    /* Estilos da Sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh; 
+        width: 55px; 
+        background-color: #111312;
+        transition: width 0.3s ease, opacity 0.3s ease;
+        overflow-y: auto; 
+        overflow-x: hidden; 
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 10px; 
+        opacity: 0; 
+    }
+    .sidebar.expand-animation {
+        animation: expandAnimation 0.3s forwards; 
+    }
+
+    .sidebar.contract-animation {
+        animation: contractAnimation 0.3s forwards;
+    }
+
+    .sidebar:not(.expanded) .menu-item,
+    .sidebar:not(.expanded) .submenu {
+        pointer-events: none; /* Impede cliques */
+        visibility: hidden; /* Oculta visualmente */
+        opacity: 0; /* Torna invisível */
+        transition: visibility 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* Quando a sidebar estiver expandida (após clicar no hambúrguer), os itens voltam ao normal */
+    .sidebar.expanded .menu-item,
+    .sidebar.expanded .submenu {
+        pointer-events: auto; /* Permite cliques */
+        visibility: visible; /* Torna visível */
+        opacity: 1; /* Mostra os itens */
+    }
+
+
+    @keyframes expandAnimation {
+        from {
+            width: 55px; 
+            opacity: 0; 
+        }
+        to {
+            width: 250px;
+            opacity: 1; 
+        }
+    }
+
+    @keyframes contractAnimation {
+        from {
+            width: 250px; 
+            opacity: 1; 
+        }
+        to {
+            width: 55px; 
+            opacity: 0; 
+        }
+    }
+}
+
+/* Responsividade extra para telas menores que 400px */
+@media (max-width: 400px) {
+    .sidebar {
+        width: 50px; /* Sidebar um pouco menor */
+    }
+
+    .sidebar.expanded {
+        width: 200px; /* Sidebar expandida menor */
+    }
+
+    .sidebar.expanded #logo {
+        margin-right: 5px; /* Sidebar expandida menor */
+    }
+
+    .menu-toggle {
+        top: 5px;
+        left: 5px;
+        width: 25px;
+        height: 25px;
+    }
+
+    .menu-toggle::before {
+        font-size: 20px; /* Ícone menor */
+    }
+
+    .sidebar .menu-item {
+        font-size: 14px; /* Menor tamanho de fonte */
+        padding: 8px 10px;
+    }
+
+    .sidebar.expanded .menu-item::after {
+        right: 10px;
+    }
+}

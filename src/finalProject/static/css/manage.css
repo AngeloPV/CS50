@@ -300,4 +300,3 @@ body.dark-theme .content-title{
 .history-itens::-webkit-scrollbar-thumb:hover {
     background-color: var(--main2-color); /* Muda a cor da barra ao passar o mouse */
 }
-

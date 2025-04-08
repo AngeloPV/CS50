@@ -219,9 +219,10 @@ class User:
         Retorno:
         - dict|False: Dicionário com dados da carteira ou False caso não haja carteira.
         """
-        self.select.exe_select(f'SELECT *  FROM wallets WHERE user_id = %s',  
+        self.select.exe_select(f'SELECT * FROM wallets WHERE user_id = %s',  
                                f'{{"user_id": "{user_id}"}}', False)
         wallet = self.select.get_result()
+        print(wallet)
         if wallet:
             return wallet
         return False

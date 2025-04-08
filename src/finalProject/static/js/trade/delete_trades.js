@@ -12,12 +12,21 @@ function delete_trades() {
     btn_delete.addEventListener('click', () => {
         div_deletes.style.display = 'flex'
 
-        your_trades.textContent = "";
-        your_trades.innerHTML += "<i class='fa-solid fa-eye'></i> All Trades";
-
         socket.emit('your_trade', true)
     
         type = 'checkbox'
+
+        var your_trades = document.getElementById('your_trades');
+
+        if (cond_change == 'your_trade') {
+            your_trades.textContent = "";
+            your_trades.innerHTML += "<i class='fa-solid fa-eye'></i> Your Trades";
+            your_trades.value ='all_trade'
+        } else {
+            your_trades.textContent = "";
+            your_trades.innerHTML += "<i class='fa-solid fa-backward'></i> All Trades";
+            your_trades.value = 'your_trade'
+        }
     })
 
     socket.on('your_trade', (data) => {
@@ -61,8 +70,6 @@ function delete_trades() {
             checkbox.checked = false;
         });
     })
-
-
 }
 
 

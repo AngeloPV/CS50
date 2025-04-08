@@ -1,4 +1,4 @@
-function formarted_input(value, dic_camp, elementId=null, limit_input, cond) {
+function formarted_input(value, dic_camp, elementId=null, limit_input, margin_bottom) {
     var senderValue = value.trim()
     
     var parts = senderValue.split('.')
@@ -19,7 +19,7 @@ function formarted_input(value, dic_camp, elementId=null, limit_input, cond) {
 
             var camp_text = `*You only can have ${limit_input} integers and 3 decimal numbers!`
             var camp_id = elementId 
-            showError(camp_text, camp_id, cond)
+            showError(camp_text, camp_id, margin_bottom)
             
             decimalPart = decimalPart.slice(0, 3)
             verify = true
@@ -43,7 +43,7 @@ function formarted_input(value, dic_camp, elementId=null, limit_input, cond) {
 
 
 
-function add_coin(cursor_position, lastData, senderValue, dic_camp, elementId, limit_input=10, cond=false){
+function add_coin(cursor_position, lastData, senderValue, dic_camp, elementId, limit_input=10, margin_bottom=false){
     hideError()
 
     let lastValue = lastData
@@ -60,11 +60,11 @@ function add_coin(cursor_position, lastData, senderValue, dic_camp, elementId, l
         if (parts[0].length > limit_input) {
 
             change_coin[0] = change_coin[0].slice(0, cursor_position - 1) + change_coin[0].slice(cursor_position);
-            showError(camp_text, camp_id, cond)
+            showError(camp_text, camp_id, margin_bottom)
        
         } else if (parts[1].length > 3) {
             change_coin[0] = change_coin[0].slice(0, cursor_position - 1) + change_coin[0].slice(cursor_position);
-            showError(camp_text, camp_id, cond)
+            showError(camp_text, camp_id, margin_bottom)
         }
     }
 
@@ -73,8 +73,6 @@ function add_coin(cursor_position, lastData, senderValue, dic_camp, elementId, l
         return ''
     }
 
-    console.log(change_coin)
-    console.log(cursor_position)
     if (change_coin[1]) {
         if(lastValue == null && cursor_position > change_coin[0].length) {
             console.log('a')
@@ -101,7 +99,7 @@ function add_coin(cursor_position, lastData, senderValue, dic_camp, elementId, l
     }
 
 
-    return formarted_input(senderValue, dic_camp, elementId, limit_input, cond)
+    return formarted_input(senderValue, dic_camp, elementId, limit_input, margin_bottom)
 }
 
 

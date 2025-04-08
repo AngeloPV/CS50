@@ -74,7 +74,7 @@ class Routes:
                     funcao = getattr(classe_instance, method)
                         
                     
-                    return self.verifyParamenter(funcao, parameter)
+                    return self.verifyParamenter(funcao)
                 return "method n existe", 404
             else:
                 return "route_name n existe", 404
@@ -82,7 +82,7 @@ class Routes:
         return self.erro.show_error(self.page.get_msg(), 500)
 
 
-    def verifyParamenter(self, funcao, parameter):
+    def verifyParamenter(self, funcao):
         """
         funcao: receba a função da classe
         parameter: recebe o parameter pela url
@@ -90,7 +90,7 @@ class Routes:
         A função verifyParamenter verifica se esta função recebe um parameter, caso receba, verifica se é obrigatorio ou opcional, 
         e tambem verifica se o parameter é nulo ou possui um valor, caso n receba apenas retorna a função
         """
-
+        parameter = request.args.get('parameter')  # Obtém o parâmetro da query string
         signature = inspect.signature(funcao)
         params = signature.parameters
         
@@ -101,9 +101,9 @@ class Routes:
 
                 #param.default: Refere-se ao valor padrão do parâmetro, dentro da assinatura da função. Se o parâmetro não tiver um valor padrão, param.default será inspect.Parameter.empty.
                 #Veficar se o paramentro da classe é obrigatio e se o paramentr é vazio
+                print(parameter)
                 if param.default == inspect.Parameter.empty and parameter is None:
-                    print(f'O parâmetro "{param_name}" é obrigatório.')
-                    return "parametro obrigartio", 404
+                    return self.erro.show_error('Page not found', 500)
                 #Veficar se o paramentro da classe é opcional e se o paramentr é vazio
                 elif(parameter is not None or param.default != inspect.Parameter.empty):
                     print(f'O parâmetro "{param_name}" é opcional.')
