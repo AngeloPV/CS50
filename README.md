@@ -1,6 +1,6 @@
 # Crypto Af: Cryptocurrency Exchange Platform
 
-#### 📽️ Video Demo: [Insert URL Here]
+#### 📽️ Video Demo: [[Project Summary](https://www.youtube.com/watch?v=TtjShLW2MrM&t=13s)]
 
 ## 🤝 Collaborative Work
 
